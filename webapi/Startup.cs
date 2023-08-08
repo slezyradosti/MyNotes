@@ -37,13 +37,17 @@ namespace webapi
             //app.UseMiddleware<ExceptionMiddleware>();
 
             if (webHostEnvironment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+            { 
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseHsts();
