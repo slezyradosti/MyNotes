@@ -6,6 +6,7 @@ namespace Domain.Models.Base
     {
         [Key]
         public Guid Id { get; set; }
+
         [Timestamp]
         public byte[] Timestamp { get; set; }
     }

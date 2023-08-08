@@ -6,31 +6,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Domain.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class detabasescelet : Migration
+    public partial class recreationBasicDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_notebooks",
-                table: "notebooks");
-
-            migrationBuilder.RenameTable(
-                name: "notebooks",
-                newName: "Notebooks");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Notebooks",
-                table: "Notebooks",
-                column: "Id");
+            migrationBuilder.CreateTable(
+                name: "Notebooks",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notebooks", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Units",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,10 +47,10 @@ namespace Domain.Repositories.Migrations
                 name: "Pages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,9 +67,9 @@ namespace Domain.Repositories.Migrations
                 name: "Notes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Record = table.Column<string>(type: "text", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Record = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,18 +95,8 @@ namespace Domain.Repositories.Migrations
             migrationBuilder.DropTable(
                 name: "Units");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Notebooks",
-                table: "Notebooks");
-
-            migrationBuilder.RenameTable(
-                name: "Notebooks",
-                newName: "notebooks");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_notebooks",
-                table: "notebooks",
-                column: "Id");
+            migrationBuilder.DropTable(
+                name: "Notebooks");
         }
     }
 }

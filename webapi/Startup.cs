@@ -16,7 +16,7 @@ namespace webapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options =>
-                options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(_configuration.GetConnectionString("MSSQLConnection")));
             services.AddControllers(options =>
             {
                 //authorization policy
