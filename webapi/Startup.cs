@@ -59,6 +59,7 @@ namespace webapi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/error", () => Results.Problem());
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             });
