@@ -3,12 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
 {
-    public class Notebook : BaseEntity
+    public class Unit : BaseEntity
     {
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        public Notebook Notebook { get; set; }
 
-        public ICollection<Unit> Units { get; set; } = new List<Unit>();
+        public ICollection<Page> Pages { get; set; } = new List<Page>();
     }
 }
