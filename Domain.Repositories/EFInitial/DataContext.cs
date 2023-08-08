@@ -23,22 +23,19 @@ namespace Domain.Repositories.EFInitial
             modelBuilder.Entity<Notebook>()
                 .HasMany(e => e.Units)
                 .WithOne(e => e.Notebook)
-                .HasForeignKey(e => e.Id)
-                .HasPrincipalKey(e => e.Id)
+                .HasForeignKey(e => e.NotebookId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Unit>()
                 .HasMany(e => e.Pages)
                 .WithOne(e => e.Unit)
-                .HasForeignKey(e => e.Id)
-                .HasPrincipalKey(e => e.Id)
+                .HasForeignKey(e => e.UnitId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Page>()
                 .HasMany(e => e.Notes)
                 .WithOne(e => e.Page)
-                .HasForeignKey(e => e.Id)
-                .HasPrincipalKey(e => e.Id)
+                .HasForeignKey(e => e.PageId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);

@@ -8,6 +8,7 @@ namespace Domain.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        public Guid NotebookId { get; set; }
         public Notebook Notebook { get; set; }
 
         public ICollection<Page> Pages { get; set; } = new List<Page>();
