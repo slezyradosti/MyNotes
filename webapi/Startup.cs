@@ -35,15 +35,21 @@ namespace webapi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
         {
             //app.UseMiddleware<ExceptionMiddleware>();
-
-            if (webHostEnvironment.IsDevelopment())
+            if (_configuration.GetValue<bool>("UseSwagger"))
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
+            }
+            if (_configuration.GetValue<bool>("UseDeveloperExceptionPage"))
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseHsts();
@@ -55,6 +61,7 @@ namespace webapi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/error", () => Results.Problem());
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             });
