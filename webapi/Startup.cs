@@ -35,14 +35,16 @@ namespace webapi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
         {
             //app.UseMiddleware<ExceptionMiddleware>();
-
-            if (webHostEnvironment.IsDevelopment())
-            { 
+            if (_configuration.GetValue<bool>("UseSwagger"))
+            {
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
+            }
+            if (_configuration.GetValue<bool>("UseDeveloperExceptionPage"))
+            {
                 app.UseDeveloperExceptionPage();
             }
             else
