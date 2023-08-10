@@ -1,6 +1,7 @@
 ﻿using Domain.Repositories.EFInitial;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using webapi.Extensions;
 
 namespace webapi
 {
@@ -29,6 +30,8 @@ namespace webapi
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
+
+            services.AddApplicationServices(_configuration);
             // then add here identitypolicy and applicaton policy
         }
 
