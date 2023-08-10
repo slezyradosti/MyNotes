@@ -21,7 +21,7 @@ namespace Application.Notebooks
 
             public async Task<Notebook> Handle(Query request, CancellationToken cancellationToken)
             {
-                var notebook = _notebookRepository.Details(request.Id);
+                var notebook = await _notebookRepository.DetailsAsync(request.Id);
 
                 if (notebook == null) throw new Exception("There is notebook with this Id");
 

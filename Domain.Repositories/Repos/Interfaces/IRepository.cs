@@ -1,4 +1,4 @@
-﻿namespace Domain.Repositories.Repos
+﻿namespace Domain.Repositories.Repos.Interfaces
 {
     public interface IRepository<T>
     {

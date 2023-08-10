@@ -14,7 +14,7 @@ namespace Domain.Models
         /// <summary>
         /// T[JsonIgnore] using to not include Notebook filed to returning data
         /// it also make dead cycle
-        /// TO-DO: Mb there is another way to solve this thing
+        /// TO-DO: Mb there is another way to solve this thing. Try to use DTO!!
         /// </summary>
         [JsonIgnore]
         public Notebook Notebook { get; set; }

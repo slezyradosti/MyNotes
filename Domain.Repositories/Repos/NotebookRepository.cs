@@ -11,12 +11,17 @@ namespace Domain.Repositories.Repos
         {
             
         }
+        public async Task<Notebook> DetailsAsync(Guid id)
+            => await Context.Notebooks.Where(notebook => notebook.Id == id)
+            .Include(notebook => notebook.Units)
+            .FirstAsync();
 
-        public Notebook Details(Guid id)
-            => Context.Notebooks.Where(notebook => notebook.Id == id)
+        public async Task<Notebook> FullDetailsAsync(Guid id)
+            => await Context.Notebooks.Where(notebook => notebook.Id == id)
             .Include(notebook => notebook.Units)
             .ThenInclude(unit => unit.Pages)
-            .ThenInclude(page => page.Notes).First();
+            .ThenInclude(page => page.Notes)
+            .FirstAsync();
 
     }
 }

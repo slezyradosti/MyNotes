@@ -1,6 +1,5 @@
 ﻿using Application.Notebooks;
 using Domain.Models;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi.Controllers
@@ -17,6 +16,12 @@ namespace webapi.Controllers
         public async Task<Notebook> GetNotebook(Guid id)
         {
             return await Mediator.Send(new Details.Query { Id = id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNotebook(Notebook notebook)
+        {
+            return Ok(await Mediator.Send(new Create.Command { Notebook = notebook }));
         }
     }
 }
