@@ -4,5 +4,6 @@ namespace Domain.Repositories.Repos.Interfaces
 {
     public interface INotebookRepository : IRepository<Notebook>
     {
+        public Notebook Details(Guid id);
     }
 }
