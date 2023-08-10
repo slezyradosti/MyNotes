@@ -59,6 +59,8 @@ namespace webapi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
             
             //authentication and authorization
 
