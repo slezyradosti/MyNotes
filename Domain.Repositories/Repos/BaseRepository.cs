@@ -48,14 +48,19 @@ namespace Domain.Repositories.Repos
             return await SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(Guid id, byte[] rowVersion)
+        public async Task<int> DeleteAsStateAsync(Guid id, byte[] rowVersion)
         {
             _db.Entry(new T() { Id = id, Timestamp = rowVersion }).State = EntityState.Deleted;
             return await SaveChangesAsync();
         }
 
+        public async Task<int> RemoveAsync(T entity)
+        {
+            _db.Remove(entity);
+            return await SaveChangesAsync();
+        }
 
-        public async Task<int> DeleteAsync(T entity)
+        public async Task<int> DeleteAsStateAsync(T entity)
         {
             _db.Entry(entity).State = EntityState.Deleted;
             return await SaveChangesAsync();
