@@ -24,19 +24,19 @@ namespace Domain.Repositories.EFInitial
                 .HasMany(e => e.Units)
                 .WithOne(e => e.Notebook)
                 .HasForeignKey(e => e.NotebookId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Unit>()
                 .HasMany(e => e.Pages)
                 .WithOne(e => e.Unit)
                 .HasForeignKey(e => e.UnitId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Page>()
                 .HasMany(e => e.Notes)
                 .WithOne(e => e.Page)
                 .HasForeignKey(e => e.PageId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,6 +1,7 @@
 ﻿using Domain.Repositories.EFInitial;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using webapi.Extensions;
 
 namespace webapi
@@ -20,7 +21,11 @@ namespace webapi
                 options.UseSqlServer(_configuration.GetConnectionString("MSSQLConnection")));
             services.AddControllers(options =>
             {
-                //authorization policy
+                //
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
             services.AddHttpsRedirection(options =>
             {

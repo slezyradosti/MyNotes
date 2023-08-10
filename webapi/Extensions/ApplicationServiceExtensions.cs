@@ -1,4 +1,5 @@
-﻿using Application.Notebooks;
+﻿using Application.Core;
+using Application.Notebooks;
 using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ namespace webapi.Extensions
             });
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             services.AddScoped<INotebookRepository, NotebookRepository>();
 
