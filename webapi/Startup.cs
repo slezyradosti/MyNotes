@@ -26,10 +26,6 @@ namespace webapi
             {
                 options.HttpsPort = 5001;
             });
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            });
 
             services.AddApplicationServices(_configuration);
             // then add here identitypolicy and applicaton policy
