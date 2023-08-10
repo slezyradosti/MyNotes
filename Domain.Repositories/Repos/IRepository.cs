@@ -2,15 +2,15 @@
 {
     public interface IRepository<T>
     {
-        int Add(T entity);
-        int AddRange(IList<T> entities);
-        int Save(T entity);
-        int Delete(Guid id, byte[] rowVersion);
-        int Delete(T entity);
-        T GetOne(Guid? id);
-        List<T> GetAll();
+        Task<int> AddAsync(T entity);
+        Task<int> AddRangeAsync(IList<T> entities);
+        Task<int> SaveAsync(T entity);
+        Task<int> DeleteAsync(Guid id, byte[] rowVersion);
+        Task<int> DeleteAsync(T entity);
+        Task<T> GetOneAsync(Guid? id);
+        Task<List<T>> GetAllAsync();
 
-        List<T> ExecuteQuery(string sqlQuery);
-        List<T> ExecuteQuery(string sqlQuery, object[] sqlParametersObjects);
+        Task<List<T>> ExecuteQueryAsync(string sqlQuery);
+        Task<List<T>> ExecuteQueryAsync(string sqlQuery, object[] sqlParametersObjects);
     }
 }

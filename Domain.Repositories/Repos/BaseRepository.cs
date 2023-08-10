@@ -15,63 +15,66 @@ namespace Domain.Repositories.Repos
         private readonly DataContext _db;
         protected DataContext Context => _db;
 
-        public BaseRepository()
+        public BaseRepository() : this(new DataContext())
         {
-            _db = new DataContext();
+        }
+        public BaseRepository(DataContext context)
+        {
+            _db = context;
             _table = _db.Set<T>();
         }
 
         public void Dispose()
         {
-            _db?.Dispose();
+             _db?.Dispose();
         }
 
-        public int Add(T entity)
+        public async Task<int> AddAsync(T entity)
         {
-            _table.Add(entity);
-            return SaveChanges();
+            await _table.AddAsync(entity);
+            return await SaveChangesAsync();
         }
 
-        public int AddRange(IList<T> entities)
+        public async Task<int> AddRangeAsync(IList<T> entities)
         {
-            _table.AddRange(entities);
-            return SaveChanges();
+            await _table.AddRangeAsync(entities);
+            return await SaveChangesAsync();
         }
 
-        public int Save(T entity)
+        public async Task<int> SaveAsync(T entity)
         {
             _db.Entry(entity).State = EntityState.Modified;
-            return SaveChanges();
+            return await SaveChangesAsync();
         }
 
-        public int Delete(Guid id, byte[] rowVersion)
+        public async Task<int> DeleteAsync(Guid id, byte[] rowVersion)
         {
             _db.Entry(new T() { Id = id, Timestamp = rowVersion }).State = EntityState.Deleted;
-            return SaveChanges();
+            return await SaveChangesAsync();
         }
 
 
-        public int Delete(T entity)
+        public async Task<int> DeleteAsync(T entity)
         {
             _db.Entry(entity).State = EntityState.Deleted;
-            return SaveChanges();
+            return await SaveChangesAsync();
         }
 
         //could be problem
-        public T GetOne(Guid? id) => _table.Find(id);
+        public async Task<T> GetOneAsync(Guid? id) => await _table.FindAsync(id);
 
-        public virtual List<T> GetAll() => _table.ToList();
+        public virtual async Task<List<T>> GetAllAsync() => await _table.ToListAsync();
 
-        public List<T> ExecuteQuery(string sql) => _table.FromSqlRaw(sql).ToList();
+        public async Task<List<T>> ExecuteQueryAsync(string sql) => await _table.FromSqlRaw(sql).ToListAsync();
 
-        public List<T> ExecuteQuery(string sql, object[] sqlParametersObjects)
-            => _table.FromSqlRaw(sql, sqlParametersObjects).ToList();
+        public async Task<List<T>> ExecuteQueryAsync(string sql, object[] sqlParametersObjects)
+            => await _table.FromSqlRaw(sql, sqlParametersObjects).ToListAsync();
 
-        internal int SaveChanges()
+        internal async Task<int> SaveChangesAsync()
         {
             try
             {
-                return _db.SaveChanges();
+                return await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
