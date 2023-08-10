@@ -10,6 +10,12 @@ namespace Domain.Models
         [StringLength(50)]
         public string Name { get; set; }
         public Guid NotebookId { get; set; }
+
+        /// <summary>
+        /// T[JsonIgnore] using to not include Notebook filed to returning data
+        /// it also make dead cycle
+        /// TO-DO: Mb there is another way to solve this thing
+        /// </summary>
         [JsonIgnore]
         public Notebook Notebook { get; set; }
 
