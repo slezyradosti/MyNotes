@@ -86,7 +86,7 @@ namespace Domain.Repositories.Repos
             {
                 //Thrown when there is a concurrency error
                 //for now, just rethrow the exception
-                throw;
+                throw ex;
             }
             catch (DbUpdateException ex)
             {
@@ -94,18 +94,18 @@ namespace Domain.Repositories.Repos
                 //Examine the inner exception(s) for additional 
                 //details and affected objects
                 //for now, just rethrow the exception
-                throw;
+                throw ex;
             }
             catch (CommitFailedException ex)
             {
                 //handle transaction failures here
                 //for now, just rethrow the exception
-                throw;
+                throw ex;
             }
             catch (Exception ex)
             {
                 //some other exception happened and should be handled
-                throw;
+                throw ex;
             }
         }
     }

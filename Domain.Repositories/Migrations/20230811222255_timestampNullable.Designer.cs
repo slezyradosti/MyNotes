@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230811174048_timestampNullable")]
+    [Migration("20230811222255_timestampNullable")]
     partial class timestampNullable
     {
         /// <inheritdoc />
@@ -40,6 +40,7 @@ namespace Domain.Repositories.Migrations
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -63,6 +64,7 @@ namespace Domain.Repositories.Migrations
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -87,6 +89,7 @@ namespace Domain.Repositories.Migrations
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
@@ -116,6 +119,7 @@ namespace Domain.Repositories.Migrations
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 

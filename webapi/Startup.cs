@@ -53,7 +53,7 @@ namespace webapi
             }
             if (_configuration.GetValue<bool>("UseDeveloperExceptionPage"))
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 
             app.UseHsts();
