@@ -1,8 +1,11 @@
 ﻿using Domain.Repositories.EFInitial;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using webapi.Extensions;
+using webapi.Middleware;
 
 namespace webapi
 {
@@ -38,7 +41,8 @@ namespace webapi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
         {
-            //app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
+
             if (_configuration.GetValue<bool>("UseSwagger"))
             {
                 app.UseSwagger();
@@ -49,11 +53,7 @@ namespace webapi
             }
             if (_configuration.GetValue<bool>("UseDeveloperExceptionPage"))
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/error");
+                //app.UseDeveloperExceptionPage();
             }
 
             app.UseHsts();
@@ -67,7 +67,6 @@ namespace webapi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/error", () => Results.Problem());
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             });

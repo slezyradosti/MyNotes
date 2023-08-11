@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 
 namespace Application.Core

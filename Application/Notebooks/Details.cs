@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Core;
+using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
 using MediatR;
 
@@ -6,12 +7,12 @@ namespace Application.Notebooks
 {
     public class Details
     {
-        public class Query : IRequest<Notebook>
+        public class Query : IRequest<Result<Notebook>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Notebook>
+        public class Handler : IRequestHandler<Query, Result<Notebook>>
         {
             private readonly INotebookRepository _notebookRepository;
             public Handler(INotebookRepository notebookRepository)
@@ -19,13 +20,11 @@ namespace Application.Notebooks
                 _notebookRepository = notebookRepository;
             }
 
-            public async Task<Notebook> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<Notebook>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var notebook = await _notebookRepository.DetailsAsync(request.Id);
 
-                if (notebook == null) throw new Exception("There is notebook with this Id");
-
-                return notebook;
+                return Result<Notebook>.Success(notebook);
             }
         }
     }
