@@ -1,4 +1,6 @@
 ﻿using Domain.Repositories.EFInitial;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
@@ -67,7 +69,10 @@ namespace webapi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/error", () => Results.Problem());
+                endpoints.MapGet("/error",
+                    [EnableCors("AnyOrigin")]
+                    [ResponseCache(NoStore = true)]
+                    () => Results.Problem());
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             });

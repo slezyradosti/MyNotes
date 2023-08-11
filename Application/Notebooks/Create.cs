@@ -14,6 +14,7 @@ namespace Application.Notebooks
         public class Handler : IRequestHandler<Command, MediatR.Unit>
         {
             private readonly INotebookRepository _notebookRepository;
+
             public Handler(INotebookRepository notebookRepository)
             {
                 _notebookRepository = notebookRepository;
