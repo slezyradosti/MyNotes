@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Core;
+using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
 using MediatR;
 
@@ -6,12 +7,12 @@ namespace Application.Notebooks
 {
     public class Create
     {
-        public class Command : IRequest<MediatR.Unit>
+        public class Command : IRequest<Result<MediatR.Unit>>
         {
             public Notebook Notebook { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, MediatR.Unit>
+        public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {
             private readonly INotebookRepository _notebookRepository;
 
@@ -20,11 +21,13 @@ namespace Application.Notebooks
                 _notebookRepository = notebookRepository;
             }
 
-            public async Task<MediatR.Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                await _notebookRepository.AddAsync(request.Notebook);
+                var result = await _notebookRepository.AddAsync(request.Notebook) > 0;
 
-                return MediatR.Unit.Value;
+                if (!result) return Result<MediatR.Unit>.Failure("Failed to create notebook");
+
+                return Result<MediatR.Unit>.Success(MediatR.Unit.Value);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Core;
+using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
 using MediatR;
 
@@ -6,12 +7,12 @@ namespace Application.Notebooks
 {
     public class List
     {
-        public class Query : IRequest<List<Notebook>> 
+        public class Query : IRequest<Result<List<Notebook>>> 
         { 
             
         }
 
-        public class Handler : IRequestHandler<Query, List<Notebook>>
+        public class Handler : IRequestHandler<Query, Result<List<Notebook>>>
         {
             private readonly INotebookRepository _notebookRepository;
 
@@ -20,13 +21,9 @@ namespace Application.Notebooks
                 _notebookRepository = notebookRepository;
             }
 
-            public async Task<List<Notebook>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Notebook>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var notebooks = await _notebookRepository.GetAllAsync();
-
-                if (notebooks == null) throw new Exception("There is no notebooks");
-
-                return notebooks;
+                return Result<List<Notebook>>.Success(await _notebookRepository.GetAllAsync());
             }
         }
     }
