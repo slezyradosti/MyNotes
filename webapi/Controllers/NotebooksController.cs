@@ -1,4 +1,5 @@
-﻿using Application.Notebooks;
+﻿using Application.DTOs;
+using Application.Notebooks;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,13 +20,13 @@ namespace webapi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNotebook(Notebook notebook)
+        public async Task<IActionResult> CreateNotebook(NotebookDto notebook)
         {
             return HandleResult(await Mediator.Send(new Create.Command { Notebook = notebook }));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditNotebook(Guid id, Notebook notebook)
+        public async Task<IActionResult> EditNotebook(Guid id, NotebookDto notebook)
         {
             notebook.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command { Notebook = notebook }));

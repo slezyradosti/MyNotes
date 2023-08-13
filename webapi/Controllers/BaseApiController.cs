@@ -5,8 +5,8 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace webapi.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class BaseApiController : ControllerBase
     {
         private IMediator _mediator;
