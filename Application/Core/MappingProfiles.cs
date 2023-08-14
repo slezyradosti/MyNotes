@@ -11,6 +11,14 @@ namespace Application.Core
             CreateMap<Notebook,  Notebook>()
                 .ForMember(x => x.Units, y => y.Ignore())
                 .ForMember(x => x.Timestamp, y => y.Ignore());
+
+            CreateMap<NotebookDto, Notebook>()
+                .ForMember(x => x.Units, y => y.Ignore())
+                .ForMember(x => x.Timestamp, y => y.Ignore());
+
+            CreateMap<UnitDto, Unit>()
+                .ForMember(x => x.Pages, y => y.Ignore())
+                .ForMember(x => x.Timestamp, y => y.Ignore());
         }
     }
 }

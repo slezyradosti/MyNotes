@@ -38,6 +38,7 @@ namespace webapi.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             services.AddScoped<INotebookRepository, NotebookRepository>();
+            services.AddScoped<IUnitRepository, UnitRepository>();
 
             return services;
         }

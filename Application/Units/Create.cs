@@ -1,38 +1,37 @@
 ﻿using Application.Core;
 using Application.DTOs;
 using AutoMapper;
-using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
 using MediatR;
+using Unit = Domain.Models.Unit;
 
-namespace Application.Notebooks
+namespace Application.Units
 {
     public class Create
     {
         public class Command : IRequest<Result<MediatR.Unit>>
         {
-            public NotebookDto Notebook { get; set; }
+            public UnitDto Unit { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {
-            private readonly INotebookRepository _notebookRepository;
+            private readonly IUnitRepository _unitRepository;
             private readonly IMapper _mapper;
 
-            public Handler(INotebookRepository notebookRepository, IMapper mapper)
+            public Handler(IUnitRepository unitRepository, IMapper mapper)
             {
-                _notebookRepository = notebookRepository;
+                _unitRepository = unitRepository;
                 _mapper = mapper;
             }
-
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var notebook = new Notebook();
-                _mapper.Map(request.Notebook, notebook);
+                var Unit = new Unit();
+                _mapper.Map(request.Unit, Unit);
+                
+                var result = await _unitRepository.AddAsync(Unit) > 0;
 
-                var result = await _notebookRepository.AddAsync(notebook) > 0;
-
-                if (!result) return Result<MediatR.Unit>.Failure("Failed to create notebook");
+                if (!result) return Result<MediatR.Unit>.Failure("Faild to create Unit");
 
                 return Result<MediatR.Unit>.Success(MediatR.Unit.Value);
             }

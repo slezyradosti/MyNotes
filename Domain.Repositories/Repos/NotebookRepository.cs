@@ -7,10 +7,8 @@ namespace Domain.Repositories.Repos
 {
     public class NotebookRepository : BaseRepository<Notebook>, INotebookRepository
     {
-        public NotebookRepository(DataContext dataContext) : base(dataContext)
-        {
-            
-        }
+        public NotebookRepository(DataContext dataContext) : base(dataContext) { }
+
         public async Task<Notebook> DetailsAsync(Guid id)
             => await Context.Notebooks.Where(notebook => notebook.Id == id)
             .Include(notebook => notebook.Units)

@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.DTOs;
 using AutoMapper;
 using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
@@ -10,7 +11,7 @@ namespace Application.Notebooks
     {
         public class Command : IRequest<Result<MediatR.Unit>>
         {
-            public Notebook Notebook { get; set; }
+            public NotebookDto Notebook { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
