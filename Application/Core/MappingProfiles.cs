@@ -19,6 +19,10 @@ namespace Application.Core
             CreateMap<UnitDto, Unit>()
                 .ForMember(x => x.Pages, y => y.Ignore())
                 .ForMember(x => x.Timestamp, y => y.Ignore());
+
+            CreateMap<PageDto, Page>()
+                .ForMember(x => x.Notes, y => y.Ignore())
+                .ForMember(x => x.Timestamp, y => y.Ignore());
         }
     }
 }

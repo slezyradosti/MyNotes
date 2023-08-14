@@ -39,6 +39,7 @@ namespace webapi.Extensions
 
             services.AddScoped<INotebookRepository, NotebookRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
+            services.AddScoped<IPageRepository, PageRepository>();
 
             return services;
         }
