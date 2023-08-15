@@ -1,11 +1,17 @@
 ﻿using Domain.Models;
-using System.Data.Entity;
+using Domain.Repositories.EFInitial;
+using Domain.Repositories.Repos.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.Repos
 {
-    public class NoteRepository : BaseRepository<Note>
+    public class NoteRepository : BaseRepository<Note>, INoteRepository
     {
-        //public override List<Note> GetAllFromSpecificPage(string id)
-        //    => Context.Notes.Where(x => x.Page.Id == id);
+        public NoteRepository(DataContext dataContext) : base(dataContext) { }
+
+        public async Task<List<Note>> GetAllFromSpecificPageAsync(Guid id)
+            => await Context.Notes
+            .Where(x => x.PageId == id)
+            .ToListAsync();
     }
 }

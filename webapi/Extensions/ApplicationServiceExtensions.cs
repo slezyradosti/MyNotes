@@ -2,9 +2,7 @@
 using Application.Notebooks;
 using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using webapi.Controllers;
 
 namespace webapi.Extensions
 {
@@ -39,6 +37,8 @@ namespace webapi.Extensions
 
             services.AddScoped<INotebookRepository, NotebookRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
+            services.AddScoped<IPageRepository, PageRepository>();
+            services.AddScoped<INoteRepository, NoteRepository>();
 
             return services;
         }

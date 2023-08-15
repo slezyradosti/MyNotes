@@ -21,7 +21,6 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUnit(UnitDto unit)
         {
-            //unit.NotebookId = nbId;
             return HandleResult(await Mediator.Send(new Create.Command { Unit = unit }));
         }
 
