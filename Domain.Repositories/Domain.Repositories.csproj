@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain.Models\Domain.Models.csproj" />
+    <ProjectReference Include="..\IndentityLogic\IndentityLogic.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\" />

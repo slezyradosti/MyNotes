@@ -36,6 +36,7 @@ namespace webapi
             });
 
             services.AddApplicationServices(_configuration);
+            services.AddIdentityServices(_configuration);
             // then add here identitypolicy and applicaton policy
         }
 
@@ -63,7 +64,8 @@ namespace webapi
 
             app.UseCors();
             
-            //authentication and authorization
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
