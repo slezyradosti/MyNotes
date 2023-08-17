@@ -1,5 +1,8 @@
 ﻿using Domain.Repositories.EFInitial;
+using Domain.Repositories.Repos.Interfaces;
+using Domain.Repositories.Repos;
 using IndentityLogic;
+using IndentityLogic.Interfaces;
 
 namespace webapi.Extensions
 {
@@ -15,6 +18,8 @@ namespace webapi.Extensions
             .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication();
+
+            services.AddScoped<ILogin, Login>();
 
             return services;
         }

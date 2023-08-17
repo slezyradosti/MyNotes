@@ -1,15 +1,32 @@
 ﻿using Domain.Models;
+using IndentityLogic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Repositories.EFInitial
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<ApplicationUser> userManager)
         {
             var notebooks = new List<Notebook>();
             var units = new List<Unit>();
             var pages = new List<Page>();
             var notes = new List<Note>();
+            var users = new List<ApplicationUser>();
+
+            if (!userManager.Users.Any())
+            {
+                users = new List<ApplicationUser> {
+                    new ApplicationUser { UserName = "jack", DisplayName = "Jack", Email = "jack@tack.com" },
+                    new ApplicationUser { UserName = "john", DisplayName = "John", Email = "john@tack.com" },
+                    new ApplicationUser { UserName = "ron", DisplayName = "Ron", Email = "ron@tack.com" },
+                };
+
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
 
             if (!context.Notebooks.Any())
             {
