@@ -1,5 +1,6 @@
 ﻿using IndentityLogic.DTOs;
 using IndentityLogic.Interfaces;
+using IndentityLogic.Services;
 using Microsoft.AspNetCore.Identity;
 
 namespace IndentityLogic
@@ -7,10 +8,13 @@ namespace IndentityLogic
     public class Login : ILogin
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly TokenService _tokenService;
 
-        public Login(UserManager<ApplicationUser> userManager)
+        public Login(UserManager<ApplicationUser> userManager, 
+            TokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         public async Task<UserDto> LoginHandleAsync(LoginDto loginDto)
@@ -25,7 +29,7 @@ namespace IndentityLogic
                 return new UserDto
                 {
                     DisplayName = user.DisplayName,
-                    Token = "to do",
+                    Token = _tokenService.CreateToken(user),
                     Username = user.UserName
                 };
             }

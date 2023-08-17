@@ -1,8 +1,10 @@
 ﻿using Domain.Repositories.EFInitial;
-using Domain.Repositories.Repos.Interfaces;
-using Domain.Repositories.Repos;
 using IndentityLogic;
 using IndentityLogic.Interfaces;
+using IndentityLogic.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace webapi.Extensions
 {
@@ -17,9 +19,23 @@ namespace webapi.Extensions
             })
             .AddEntityFrameworkStores<DataContext>();
 
-            services.AddAuthentication();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecurityKey:SymmetricSecurityKey"]));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
 
             services.AddScoped<ILogin, Login>();
+            services.AddScoped<TokenService>();
 
             return services;
         }

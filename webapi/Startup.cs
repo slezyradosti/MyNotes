@@ -1,8 +1,6 @@
 ﻿using Domain.Repositories.EFInitial;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+using IndentityLogic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using webapi.Extensions;
 using webapi.Middleware;
@@ -22,6 +20,7 @@ namespace webapi
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("MSSQLConnection")));
+
             services.AddControllers(options =>
             {
                 //
@@ -34,6 +33,8 @@ namespace webapi
             {
                 options.HttpsPort = 5001;
             });
+
+            services.Configure<Security>(_configuration.GetSection("SecurityKey"));
 
             services.AddApplicationServices(_configuration);
             services.AddIdentityServices(_configuration);

@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Notebooks;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi.Controllers
