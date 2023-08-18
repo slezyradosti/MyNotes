@@ -1,5 +1,5 @@
 ﻿using Domain.Models;
-using IndentityLogic;
+using IndentityLogic.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Repositories.EFInitial

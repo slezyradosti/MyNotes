@@ -1,6 +1,7 @@
 ﻿using Domain.Repositories.EFInitial;
 using IndentityLogic;
 using IndentityLogic.Interfaces;
+using IndentityLogic.Models;
 using IndentityLogic.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +39,7 @@ namespace webapi.Extensions
 
             services.AddScoped<ILogin, Login>();
             services.AddScoped<IRegister, Register>();
+            services.AddScoped<IUserHandler, UserHandler>();
             
             return services;
         }

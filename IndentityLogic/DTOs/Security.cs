@@ -1,4 +1,4 @@
-﻿namespace IndentityLogic
+﻿namespace IndentityLogic.DTOs
 {
     public class Security
     {

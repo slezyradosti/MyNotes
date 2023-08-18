@@ -1,5 +1,7 @@
-﻿using IndentityLogic.DTOs;
+﻿using IndentityLogic.Core;
+using IndentityLogic.DTOs;
 using IndentityLogic.Interfaces;
+using IndentityLogic.Models;
 using IndentityLogic.Services;
 using Microsoft.AspNetCore.Identity;
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Repositories.EFInitial;
-using IndentityLogic;
+using IndentityLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;

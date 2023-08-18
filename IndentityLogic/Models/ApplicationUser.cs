@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace IndentityLogic
+namespace IndentityLogic.Models
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
