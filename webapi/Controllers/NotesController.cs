@@ -6,7 +6,7 @@ namespace webapi.Controllers
 {
     public class NotesController : BaseApiController
     {
-        [HttpGet("pageId")]
+        [HttpGet]
         public async Task<IActionResult> GetNotes(Guid pageId)
         {
             return HandleResult(await Mediator.Send(new List.Query { PageId = pageId }));

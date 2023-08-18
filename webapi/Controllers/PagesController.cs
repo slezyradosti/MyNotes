@@ -6,7 +6,7 @@ namespace webapi.Controllers
 {
     public class PagesController : BaseApiController
     {
-        [HttpGet("unitId")]
+        [HttpGet]
         public async Task<IActionResult> GetPages(Guid unitId)
         {
             return HandleResult(await Mediator.Send(new List.Query { UnitId = unitId }));
