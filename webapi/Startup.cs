@@ -1,8 +1,8 @@
 ﻿using Domain.Repositories.EFInitial;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+using IndentityLogic.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using webapi.Extensions;
 using webapi.Middleware;
@@ -22,20 +22,27 @@ namespace webapi
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("MSSQLConnection")));
+
             services.AddControllers(options =>
             {
-                //
+                //every controller requires auth
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
+
             services.AddHttpsRedirection(options =>
             {
                 options.HttpsPort = 5001;
             });
 
+            services.Configure<Security>(_configuration.GetSection("SecurityKey"));
+
             services.AddApplicationServices(_configuration);
+            services.AddIdentityServices(_configuration);
             // then add here identitypolicy and applicaton policy
         }
 
@@ -63,7 +70,8 @@ namespace webapi
 
             app.UseCors();
             
-            //authentication and authorization
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

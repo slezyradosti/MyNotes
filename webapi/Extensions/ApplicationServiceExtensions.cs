@@ -2,7 +2,9 @@
 using Application.Notebooks;
 using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 
 namespace webapi.Extensions
 {
