@@ -4,6 +4,6 @@ namespace IndentityLogic.Interfaces
 {
     public interface ILogin
     {
-        public Task<UserDto> LoginHandleAsync(LoginDto loginDto);
+        public Task<AccountResult<UserDto, string>> LoginHandleAsync(LoginDto loginDto);
     }
 }

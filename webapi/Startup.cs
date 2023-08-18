@@ -1,5 +1,7 @@
 ﻿using Domain.Repositories.EFInitial;
 using IndentityLogic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using webapi.Extensions;
@@ -23,12 +25,15 @@ namespace webapi
 
             services.AddControllers(options =>
             {
-                //
+                //every controller requires auth
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
+
             services.AddHttpsRedirection(options =>
             {
                 options.HttpsPort = 5001;

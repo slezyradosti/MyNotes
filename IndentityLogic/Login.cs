@@ -17,8 +17,10 @@ namespace IndentityLogic
             _tokenService = tokenService;
         }
 
-        public async Task<UserDto> LoginHandleAsync(LoginDto loginDto)
+        public async Task<AccountResult<UserDto, string>> LoginHandleAsync(LoginDto loginDto)
         {
+            if (loginDto == null) return null;
+
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null) return null;
 
@@ -26,15 +28,18 @@ namespace IndentityLogic
 
             if (result)
             {
-                return new UserDto
+                var userDto = new UserDto
                 {
                     DisplayName = user.DisplayName,
                     Token = _tokenService.CreateToken(user),
                     Username = user.UserName
                 };
+
+                return new AccountResult<UserDto, string>(userDto, true);
             }
 
-            return null;
+            return new AccountResult<UserDto, string>(isSuccessful: false,
+                errors: "Failed to login");
         }
     }
 }

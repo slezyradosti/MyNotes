@@ -16,6 +16,7 @@ namespace webapi.Extensions
             services.AddIdentityCore<ApplicationUser>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<DataContext>();
 
@@ -33,10 +34,11 @@ namespace webapi.Extensions
                     };
                 });
 
-
-            services.AddScoped<ILogin, Login>();
             services.AddScoped<TokenService>();
 
+            services.AddScoped<ILogin, Login>();
+            services.AddScoped<IRegister, Register>();
+            
             return services;
         }
     }
