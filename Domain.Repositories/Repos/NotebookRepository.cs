@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Repositories.EFInitial;
+using Domain.Repositories.Repos.DTOs;
 using Domain.Repositories.Repos.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
@@ -22,17 +23,16 @@ namespace Domain.Repositories.Repos
             .ThenInclude(page => page.Notes)
             .FirstAsync();
 
-        public async Task<List<Notebook>> GetAllFilteredAsync(int pageIndex, int pageSize, 
-            string sortColumn, string sortOrder, string? filter)
+        public async Task<List<Notebook>> GetAllFilteredAsync(IFilter filter)
         {
             var query = Context.Notebooks.AsQueryable()
-                .OrderBy($"{sortColumn} {sortOrder}") // to-do: change order filter
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize);
+                .OrderBy($"{filter.SortColumn} {filter.SortOrder}")
+                .Skip(filter.PageIndex * filter.PageSize)
+                .Take(filter.PageSize);
 
-            if (!string.IsNullOrEmpty(filter))
+            if (!string.IsNullOrEmpty(filter.FilterQuery))
             {
-                query = query.Where(x => x.Name.Contains(filter));
+                query = query.Where(x => x.Name.Contains(filter.FilterQuery));
             }
 
             return await query.ToListAsync();

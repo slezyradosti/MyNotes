@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using Domain.Repositories.Repos.DTOs;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs
 {
-    public class RequestDto
+    public class RequestDto : IFilter
     {
         [DefaultValue(0)]
         public int PageIndex { get; set; } = 0;

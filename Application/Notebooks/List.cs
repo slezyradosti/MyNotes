@@ -25,9 +25,8 @@ namespace Application.Notebooks
             public async Task<Result<PageList<Notebook>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 int count = await _notebookRepository.GetCountAsync();
-                var notebooks = await _notebookRepository.GetAllFilteredAsync(request.RequestDto.PageIndex, 
-                    request.RequestDto.PageSize, request.RequestDto.SortColumn, request.RequestDto.SortOrder, 
-                    request.RequestDto.FilterQuery);
+                
+                var notebooks = await _notebookRepository.GetAllFilteredAsync(request.RequestDto);
 
                 var notebooksPaged = new PageList<Notebook>(notebooks, request.RequestDto.PageIndex,
                     request.RequestDto.PageSize, count);

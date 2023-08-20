@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Repositories.Repos.DTOs;
 
 namespace Domain.Repositories.Repos.Interfaces
 {
@@ -6,7 +7,6 @@ namespace Domain.Repositories.Repos.Interfaces
     {
         public Task<Notebook> DetailsAsync(Guid id);
         public Task<Notebook> FullDetailsAsync(Guid id);
-        public Task<List<Notebook>> GetAllFilteredAsync(int pageIndex, int pageSize,
-            string sortColumn, string sortOrder, string? filter);
+        public Task<List<Notebook>> GetAllFilteredAsync(IFilter filter);
     }
 }
