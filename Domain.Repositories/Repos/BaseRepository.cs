@@ -2,6 +2,7 @@
 using Domain.Repositories.EFInitial;
 using Domain.Repositories.Repos.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Data.Entity.Infrastructure;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
 using DbUpdateException = Microsoft.EntityFrameworkCore.DbUpdateException;
@@ -67,6 +68,8 @@ namespace Domain.Repositories.Repos
 
         //could be problem
         public async Task<T> GetOneAsync(Guid? id) => await _table.FindAsync(id);
+
+        public async Task<int> GetCountAsync() => await _table.CountAsync();
 
         public virtual async Task<List<T>> GetAllAsync() => await _table.ToListAsync();
 

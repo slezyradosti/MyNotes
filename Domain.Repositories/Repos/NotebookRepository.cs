@@ -2,6 +2,7 @@
 using Domain.Repositories.EFInitial;
 using Domain.Repositories.Repos.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace Domain.Repositories.Repos
 {
@@ -21,5 +22,20 @@ namespace Domain.Repositories.Repos
             .ThenInclude(page => page.Notes)
             .FirstAsync();
 
+        public async Task<List<Notebook>> GetAllFilteredAsync(int pageIndex, int pageSize, 
+            string sortColumn, string sortOrder, string? filter)
+        {
+            var query = Context.Notebooks.AsQueryable()
+                .OrderBy($"{sortColumn} {sortOrder}") // to-do: change order filter
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize);
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                query = query.Where(x => x.Name.Contains(filter));
+            }
+
+            return await query.ToListAsync();
+        }
     }
 }
