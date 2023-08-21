@@ -1,7 +1,7 @@
 ﻿using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
+using webapi.Extensions;
 
 namespace webapi.Controllers
 {
@@ -18,6 +18,19 @@ namespace webapi.Controllers
             if (!result.IsSuccess) return BadRequest(result.Error);        
             if (result.IsSuccess && result.Value == null) return NotFound();
             if (result.IsSuccess && result.Value != null) return Ok(result.Value);
+            return BadRequest();
+        }
+
+        protected ActionResult HandlePagedResult<T>(Result<PageList<T>> result)
+        {
+            if (result == null) return NotFound();
+            if (!result.IsSuccess) return BadRequest(result.Error);
+            if (result.IsSuccess && result.Value == null) return NotFound();
+            if (result.IsSuccess && result.Value != null)
+            {
+                Response.AddPaginationHeader(result.Value);
+                return Ok(result.Value);
+            }
             return BadRequest();
         }
     }

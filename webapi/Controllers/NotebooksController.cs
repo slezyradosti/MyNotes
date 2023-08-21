@@ -9,7 +9,7 @@ namespace webapi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetNotebooks([FromQuery] RequestDto request)
         {
-            return HandleResult(await Mediator.Send(new List.Query { RequestDto = request }));
+            return HandlePagedResult(await Mediator.Send(new List.Query { RequestDto = request }));
         }
 
         [HttpGet("{id}")]
