@@ -35,14 +35,17 @@ namespace Domain.Repositories.EFInitial
                     new Notebook
                     {
                         Name = "Notebook1",
+                        Author = users[0]
                     },
                     new Notebook
                     {
                         Name = "Notebook2",
+                        Author = users[0]
                     },
                     new Notebook
                     {
                         Name = "Notebook3",
+                        Author = users[1]
                     }
                 };
                 await context.Notebooks.AddRangeAsync(notebooks);

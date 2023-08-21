@@ -24,6 +24,12 @@ namespace Domain.Repositories.EFInitial
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Notebook>()
+                .HasOne(e => e.Author)
+                .WithMany(e => e.Notebooks)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Notebook>()
                 .HasMany(e => e.Units)
                 .WithOne(e => e.Notebook)
                 .HasForeignKey(e => e.NotebookId)
