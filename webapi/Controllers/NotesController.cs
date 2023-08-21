@@ -10,7 +10,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> GetNotes(Guid pageId,
             [FromQuery] RequestDto requestDto)
         {
-            return HandleResult(await Mediator.Send(new List.Query { PageId = pageId, RequestDto = requestDto }));
+            return HandlePagedResult(await Mediator.Send(new List.Query { PageId = pageId, RequestDto = requestDto }));
         }
 
         [HttpGet("{id}")]

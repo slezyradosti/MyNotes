@@ -10,7 +10,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> GetPages(Guid unitId,
             [FromQuery] RequestDto requestDto)
         {
-            return HandleResult(await Mediator.Send(new List.Query { UnitId = unitId, RequestDto = requestDto }));
+            return HandlePagedResult(await Mediator.Send(new List.Query { UnitId = unitId, RequestDto = requestDto }));
         }
 
         [HttpGet("{id}")]
