@@ -17,5 +17,10 @@ namespace IndentityLogic
         {
             return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
         }
+
+        public Guid GetUserId()
+        {
+            return  Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
     }
 }

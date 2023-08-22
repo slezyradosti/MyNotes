@@ -21,7 +21,7 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNotebook(NotebookDto notebook)
         {
-            return HandleResult(await Mediator.Send(new Create.Command { Notebook = notebook }));
+            return HandleResult(await Mediator.Send(new Create.Command { NotebookDto = notebook }));
         }
 
         [HttpPut("{id}")]
