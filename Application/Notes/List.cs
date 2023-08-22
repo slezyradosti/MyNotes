@@ -1,8 +1,8 @@
 ﻿using Application.Core;
 using Application.DTOs;
 using Domain.Models;
-using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Notes
@@ -18,15 +18,22 @@ namespace Application.Notes
         public class Handler : IRequestHandler<Query, Result<PageList<Note>>>
         {
             private readonly INoteRepository _noteRepository;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(INoteRepository noteRepository)
+            public Handler(INoteRepository noteRepository, IUserAccessor userAccessor)
             {
                 _noteRepository = noteRepository;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<PageList<Note>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 int count = await _noteRepository.GetCountAsync();
+
+                if (!await _noteRepository.IfUserHasAccessToTheNotes(request.PageId, _userAccessor.GetUserId()))
+                {
+                    return Result<PageList<Note>>.Failure("You have no access to this data");
+                }
 
                 var notes = await _noteRepository.GetAllFilteredAsync(request.PageId, request.RequestDto);
 

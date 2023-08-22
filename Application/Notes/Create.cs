@@ -3,6 +3,7 @@ using Application.DTOs;
 using AutoMapper;
 using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Notes
@@ -18,15 +19,24 @@ namespace Application.Notes
         {
             private readonly INoteRepository _noteRepository;
             private readonly IMapper _mapper;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(INoteRepository noteRepository, IMapper mapper)
+            public Handler(INoteRepository noteRepository, IMapper mapper,
+                IUserAccessor userAccessor)
             {
                 _noteRepository = noteRepository;
                 _mapper = mapper;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                //TODO : check if it works correctly with 'null' notes on the page
+                if (!await _noteRepository.IfUserHasAccessToTheNotes(request.NoteDto.PageId, _userAccessor.GetUserId()))
+                {
+                    return Result<MediatR.Unit>.Failure("You have no access to this data");
+                }
+
                 var note = new Note();
                 _mapper.Map(request.NoteDto, note);
 

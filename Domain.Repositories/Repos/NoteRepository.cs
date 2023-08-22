@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Azure;
+using Domain.Models;
 using Domain.Repositories.EFInitial;
 using Domain.Repositories.Repos.DTOs;
 using Domain.Repositories.Repos.Interfaces;
@@ -30,6 +31,49 @@ namespace Domain.Repositories.Repos
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task<List<Note>> GetAuthorSFilteredAsync(Guid pageId, Guid authorId, 
+            IFilter filter)
+        {
+            var query = Context.Notes.AsQueryable()
+                .Where(x => x.PageId == pageId)
+                .OrderBy($"{filter.SortColumn} {filter.SortOrder}")
+                .Skip(filter.PageIndex * filter.PageSize)
+                .Take(filter.PageSize);
+
+            if (!string.IsNullOrEmpty(filter.FilterQuery))
+            {
+                query = query.Where(x => x.Record.Contains(filter.FilterQuery));
+            }
+
+            //check for author
+            var notes = await query.Select(note => new {Note = note, UserId = note.Page.Unit.Notebook.UserId})
+                .ToListAsync();
+
+            if (notes.Count > 0 && notes.First().UserId != authorId) return null; //throw new Exception("No access");
+
+            return notes.Select(x => x.Note).ToList();
+        }
+
+        public async Task<bool> IfUserHasAccessToTheNotes(Guid pageId, Guid authorId)
+        {
+            var notes = await Context.Notes
+                .Where(x => x.PageId == pageId)
+                .Select(x => x.Page.Unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return notes == authorId;
+        }
+
+        public async Task<bool> IfUserHasAccessToTheNote(Guid noteId, Guid authorId)
+        {
+            var notes = await Context.Notes
+                .Where(x => x.Id == noteId)
+                .Select(x => x.Page.Unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return notes == authorId;
         }
     }
 }
