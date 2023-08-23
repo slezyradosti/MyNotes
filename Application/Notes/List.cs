@@ -28,12 +28,12 @@ namespace Application.Notes
 
             public async Task<Result<PageList<Note>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                int count = await _noteRepository.GetCountAsync();
-
                 if (!await _noteRepository.IfUserHasAccessToTheNotes(request.PageId, _userAccessor.GetUserId()))
                 {
                     return Result<PageList<Note>>.Failure("You have no access to this data");
                 }
+
+                int count = await _noteRepository.GetOwnedCountAsync(request.PageId);
 
                 var notes = await _noteRepository.GetAllFilteredAsync(request.PageId, request.RequestDto);
 

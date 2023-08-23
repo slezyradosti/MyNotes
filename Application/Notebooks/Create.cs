@@ -31,10 +31,7 @@ namespace Application.Notebooks
 
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var username = _userAccessor.GetUsername();
-
-                var userId = _userAccessor.GetUserId();
-                request.NotebookDto.UserId = userId;
+                request.NotebookDto.UserId = _userAccessor.GetUserId();
 
                 var notebook = new Notebook();
                 _mapper.Map(request.NotebookDto, notebook);

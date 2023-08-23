@@ -11,5 +11,6 @@ namespace Domain.Repositories.Repos.Interfaces
             IFilter filter);
         public Task<bool> IfUserHasAccessToTheNotes(Guid pageId, Guid authorId);
         public Task<bool> IfUserHasAccessToTheNote(Guid noteId, Guid authorId);
+        public Task<int> GetOwnedCountAsync(Guid pageId);
     }
 }

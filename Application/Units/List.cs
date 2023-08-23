@@ -3,6 +3,7 @@ using Application.DTOs;
 using Domain.Models;
 using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 using Unit = Domain.Models.Unit;
 
@@ -19,14 +20,21 @@ namespace Application.Units
         public class Handler : IRequestHandler<Query, Result<PageList<Unit>>>
         {
             private readonly IUnitRepository _unitRepository;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(IUnitRepository unitRepository)
+            public Handler(IUnitRepository unitRepository, IUserAccessor userAccessor)
             {
                 _unitRepository = unitRepository;
+                _userAccessor = userAccessor;
             }
             public async Task<Result<PageList<Unit>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                int count = await _unitRepository.GetCountAsync();
+                if (!await _unitRepository.IfUserHasAccessToTheUnits(request.NotebookId, _userAccessor.GetUserId()))
+                {
+                    return Result<PageList<Unit>>.Failure("You have no access to this data");
+                }
+
+                int count = await _unitRepository.GetOwnedCountAsync(request.NotebookId);
 
                 var units = await _unitRepository.GetAllFilteredAsync(request.NotebookId, request.RequestDto);
 

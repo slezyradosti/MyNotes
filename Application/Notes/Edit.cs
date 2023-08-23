@@ -32,14 +32,14 @@ namespace Application.Notes
 
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var note = await _noteRepository.GetOneAsync(request.NoteDto.Id);
+
+                if (note == null) return null;
+
                 if (!await _noteRepository.IfUserHasAccessToTheNote(request.NoteDto.Id, _userAccessor.GetUserId()))
                 {
                     return Result<MediatR.Unit>.Failure("You have no access to this data");
                 }
-
-                var note = await _noteRepository.GetOneAsync(request.NoteDto.Id);
-
-                if (note == null) return null;
 
                 _mapper.Map(request.NoteDto, note);
 

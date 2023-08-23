@@ -25,15 +25,16 @@ namespace Application.Notes
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                //TODO : when you try to delete unexisted data, you also have the following error. Bur or not?)
-                if (!await _noteRepository.IfUserHasAccessToTheNote(request.Id, _userAccessor.GetUserId()))
-                {
-                    return Result<MediatR.Unit>.Failure("You have no access to this data");
-                }
+                //TODO : when you try to delete unexisted data, you also have "false". Bug or not?)
 
                 var note = await _noteRepository.GetOneAsync(request.Id);
 
                 if (note == null) return null;
+
+                if (!await _noteRepository.IfUserHasAccessToTheNote(request.Id, _userAccessor.GetUserId()))
+                {
+                    return Result<MediatR.Unit>.Failure("You have no access to this data");
+                }
 
                 var result = await _noteRepository.RemoveAsync(note) > 0;
 

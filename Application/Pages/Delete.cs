@@ -1,5 +1,6 @@
 ﻿using Application.Core;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Pages
@@ -14,17 +15,24 @@ namespace Application.Pages
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {
             private readonly IPageRepository _pageRepository;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(IPageRepository pageRepository)
+            public Handler(IPageRepository pageRepository, IUserAccessor userAccessor)
             {
                 _pageRepository = pageRepository;
+                _userAccessor = userAccessor;
             }
 
-            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var page = await _pageRepository.GetOneAsync(request.Id);
 
                 if (page == null) return null;
+
+                if (!await _pageRepository.IfUserHasAccessToThePage(request.Id, _userAccessor.GetUserId()))
+                {
+                    return Result<MediatR.Unit>.Failure("You have no access to this data");
+                }
 
                 var result = await _pageRepository.RemoveAsync(page) > 0;
 

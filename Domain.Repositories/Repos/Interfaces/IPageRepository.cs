@@ -8,5 +8,8 @@ namespace Domain.Repositories.Repos.Interfaces
         public Task<List<Page>> GetAllFromOneUnitAsync(Guid unitId);
         public Task<List<Page>> GetAllFilteredAsync(Guid unitId, IFilter filter);
         public Task<Page> GetOneWithItsNotesAsync(Guid id);
+        public Task<bool> IfUserHasAccessToThePages(Guid unitId, Guid authorId);
+        public Task<bool> IfUserHasAccessToThePage(Guid pageId, Guid authorId);
+        public Task<int> GetOwnedCountAsync(Guid unitId);
     }
 }

@@ -2,6 +2,7 @@
 using Application.DTOs;
 using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Notebooks
@@ -16,17 +17,22 @@ namespace Application.Notebooks
         public class Handler : IRequestHandler<Query, Result<PageList<Notebook>>>
         {
             private readonly INotebookRepository _notebookRepository;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(INotebookRepository notebookRepository)
+            public Handler(INotebookRepository notebookRepository, IUserAccessor userAccessor)
             {
                 _notebookRepository = notebookRepository;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<PageList<Notebook>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                int count = await _notebookRepository.GetCountAsync();
+                var userId = _userAccessor.GetUserId();
+
+                int count = await _notebookRepository.GetOwnedCountAsync(userId);
                 
-                var notebooks = await _notebookRepository.GetAllFilteredAsync(request.RequestDto);
+                var notebooks = await _notebookRepository.GetUsersAllFilteredAsync(userId,
+                    request.RequestDto);
 
                 var notebooksPaged = new PageList<Notebook>(notebooks, request.RequestDto.PageIndex,
                     request.RequestDto.PageSize, count);

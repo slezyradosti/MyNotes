@@ -30,10 +30,37 @@ namespace Domain.Repositories.Repos
             return await query.ToListAsync();
         }
 
-        public async Task<Page> GetOneWithItsNotesAsync(Guid id) 
+        public async Task<Page> GetOneWithItsNotesAsync(Guid id)
             => await Context.Pages
             .Where(page => page.Id == id)
             .Include(page => page.Notes)
             .FirstAsync();
+
+        public async Task<bool> IfUserHasAccessToThePages(Guid unitId, Guid authorId)
+        {
+            var pagesAuthorId = await Context.Pages
+                .Where(page => page.UnitId == unitId)
+                .Select(page => page.Unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return pagesAuthorId == authorId;
+        }
+
+        public async Task<bool> IfUserHasAccessToThePage(Guid pageId, Guid authorId)
+        {
+            var pageAuthorId = await Context.Pages
+                .Where(page => page.Id == pageId)
+                .Select(page => page.Unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return pageAuthorId == authorId;
+        }
+
+        public async Task<int> GetOwnedCountAsync(Guid unitId)
+        {
+            return await Context.Pages
+                .Where(page => page.UnitId == unitId)
+                .CountAsync();
+        }
     }
 }

@@ -58,22 +58,29 @@ namespace Domain.Repositories.Repos
 
         public async Task<bool> IfUserHasAccessToTheNotes(Guid pageId, Guid authorId)
         {
-            var notes = await Context.Notes
+            var notesAuthorId = await Context.Notes
                 .Where(x => x.PageId == pageId)
                 .Select(x => x.Page.Unit.Notebook.UserId)
                 .FirstOrDefaultAsync();
 
-            return notes == authorId;
+            return notesAuthorId == authorId;
         }
 
         public async Task<bool> IfUserHasAccessToTheNote(Guid noteId, Guid authorId)
         {
-            var notes = await Context.Notes
+            var noteAuthorId = await Context.Notes
                 .Where(x => x.Id == noteId)
                 .Select(x => x.Page.Unit.Notebook.UserId)
                 .FirstOrDefaultAsync();
 
-            return notes == authorId;
+            return noteAuthorId == authorId;
+        }
+
+        public async Task<int> GetOwnedCountAsync(Guid pageId)
+        {
+            return await Context.Notes
+                .Where(note => note.PageId == pageId)
+                .CountAsync();
         }
     }
 }

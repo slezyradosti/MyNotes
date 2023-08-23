@@ -35,5 +35,32 @@ namespace Domain.Repositories.Repos
             .Where(unit => unit.Id == unitId)
             .Include(unit => unit.Pages)
             .FirstAsync();
+
+        public async Task<bool> IfUserHasAccessToTheUnits(Guid notebookId, Guid authorId)
+        {
+            var unitsAuthorId = await Context.Units
+                .Where(unit => unit.NotebookId == notebookId)
+                .Select(unit => unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return unitsAuthorId == authorId;
+        }
+
+        public async Task<bool> IfUserHasAccessToTheUnit(Guid unitId, Guid authorId)
+        {
+            var unitAuthorId = await Context.Units
+                .Where(unit => unit.Id == unitId)
+                .Select(unit => unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return unitAuthorId == authorId;
+        }
+
+        public async Task<int> GetOwnedCountAsync(Guid notebookId)
+        {
+            return await Context.Units
+                .Where(unit => unit.NotebookId == notebookId)
+                .CountAsync();
+        }
     }
 }

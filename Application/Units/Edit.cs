@@ -2,6 +2,7 @@
 using Application.DTOs;
 using AutoMapper;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 using Unit = Domain.Models.Unit;
 
@@ -18,17 +19,25 @@ namespace Application.Units
         {
             private readonly IUnitRepository _unitRepository;
             private readonly IMapper _mapper;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(IUnitRepository unitRepository, IMapper mapper)
+            public Handler(IUnitRepository unitRepository, IMapper mapper, 
+                IUserAccessor userAccessor)
             {
                 _unitRepository = unitRepository;
                 _mapper = mapper;
+                _userAccessor = userAccessor;
             }
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var unit = await _unitRepository.GetOneAsync(request.Unit.Id);
 
                 if (unit == null) return null;
+
+                if (!await _unitRepository.IfUserHasAccessToTheUnit(request.Unit.Id, _userAccessor.GetUserId()))
+                {
+                    return Result<MediatR.Unit>.Failure("You have no access to this data");
+                }
 
                 _mapper.Map(request.Unit, unit);
 
