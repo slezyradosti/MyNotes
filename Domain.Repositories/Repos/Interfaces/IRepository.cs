@@ -9,6 +9,7 @@
         Task<int> RemoveAsync(T entity);
         Task<int> DeleteAsStateAsync(T entity);
         Task<T> GetOneAsync(Guid? id);
+        Task<int> GetCountAsync();
         Task<List<T>> GetAllAsync();
         Task<List<T>> ExecuteQueryAsync(string sqlQuery);
         Task<List<T>> ExecuteQueryAsync(string sqlQuery, object[] sqlParametersObjects);

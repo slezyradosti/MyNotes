@@ -3,6 +3,7 @@ using Application.DTOs;
 using AutoMapper;
 using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Pages
@@ -18,15 +19,23 @@ namespace Application.Pages
         {
             private readonly IPageRepository _pageRepository;
             private readonly IMapper _mapper;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(IPageRepository pageRepository, IMapper mapper)
+            public Handler(IPageRepository pageRepository, IMapper mapper,
+                IUserAccessor userAccessor)
             {
                 _pageRepository = pageRepository;
                 _mapper = mapper;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                if (!await _pageRepository.IfUserHasAccessToThePages(request.pageDto.UnitId, _userAccessor.GetUserId()))
+                {
+                    return Result<MediatR.Unit>.Failure("You have no access to this data");
+                }
+
                 var page = new Page();
                 _mapper.Map(request.pageDto, page);
 

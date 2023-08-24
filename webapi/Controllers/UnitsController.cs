@@ -7,9 +7,11 @@ namespace webapi.Controllers
     public class UnitsController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetUnits(Guid nbId)
+        public async Task<IActionResult> GetUnits(Guid nbId, 
+            [FromQuery] RequestDto requestDto)
         {
-            return HandleResult(await Mediator.Send(new List.Query { NotebookId = nbId }));
+            return HandlePagedResult(await Mediator.Send(new List.Query { NotebookId = nbId, 
+                RequestDto = requestDto }));
         }
 
         [HttpGet("{id}")]

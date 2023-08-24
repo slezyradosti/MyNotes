@@ -1,5 +1,6 @@
 ﻿using Application.Core;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Units
@@ -14,10 +15,12 @@ namespace Application.Units
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {
             private readonly IUnitRepository _unitRepository;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(IUnitRepository unitRepository)
+            public Handler(IUnitRepository unitRepository, IUserAccessor userAccessor)
             {
                 _unitRepository = unitRepository;
+                _userAccessor = userAccessor;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
@@ -25,6 +28,11 @@ namespace Application.Units
                 var unit = await _unitRepository.GetOneAsync(request.Id);
 
                 if (unit == null) return null;
+
+                if (!await _unitRepository.IfUserHasAccessToTheUnit(request.Id, _userAccessor.GetUserId()))
+                {
+                    return Result<MediatR.Unit>.Failure("You have no access to this data");
+                }
 
                 var result = await _unitRepository.RemoveAsync(unit) > 0;
 

@@ -4,6 +4,7 @@ using IndentityLogic.Interfaces;
 using IndentityLogic.Models;
 using IndentityLogic.Services;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace IndentityLogic
 {
@@ -11,12 +12,14 @@ namespace IndentityLogic
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly IUserHandler _userHandler;
 
         public Login(UserManager<ApplicationUser> userManager, 
-            TokenService tokenService)
+            TokenService tokenService, IUserHandler userHandler)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _userHandler = userHandler;
         }
 
         public async Task<AccountResult<UserDto, string>> LoginHandleAsync(LoginDto loginDto)
@@ -30,6 +33,9 @@ namespace IndentityLogic
 
             if (result)
             {
+                //addign claim to user for easier access to his Id
+                await _userHandler.AddIdClaimToUserAsync(user.Email);
+
                 var userDto = new UserDto
                 {
                     DisplayName = user.DisplayName,

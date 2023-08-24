@@ -3,9 +3,9 @@ using Application.Notebooks;
 using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
 using IndentityLogic;
+using IndentityLogic.Interfaces;
 using Microsoft.OpenApi.Models;
-using System.Configuration;
-
+ 
 namespace webapi.Extensions
 {
     public static class ApplicationServiceExtensions
@@ -41,6 +41,8 @@ namespace webapi.Extensions
             services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddScoped<IPageRepository, PageRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAcessor>();
 
             return services;
         }

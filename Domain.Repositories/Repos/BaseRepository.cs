@@ -68,6 +68,8 @@ namespace Domain.Repositories.Repos
         //could be problem
         public async Task<T> GetOneAsync(Guid? id) => await _table.FindAsync(id);
 
+        public async Task<int> GetCountAsync() => await _table.CountAsync();
+
         public virtual async Task<List<T>> GetAllAsync() => await _table.ToListAsync();
 
         public async Task<List<T>> ExecuteQueryAsync(string sql) => await _table.FromSqlRaw(sql).ToListAsync();

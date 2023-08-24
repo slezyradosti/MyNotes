@@ -2,7 +2,6 @@ using Domain.Repositories.EFInitial;
 using IndentityLogic.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using webapi;
 
 namespace API

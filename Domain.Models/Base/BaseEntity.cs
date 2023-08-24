@@ -9,5 +9,6 @@ namespace Domain.Models.Base
 
         [Timestamp]
         public byte[] Timestamp { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,7 +1,5 @@
 ﻿using Application.DTOs;
 using Application.Notebooks;
-using Domain.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi.Controllers
@@ -9,9 +7,9 @@ namespace webapi.Controllers
     public class NotebooksController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetNotebooks()
+        public async Task<IActionResult> GetNotebooks([FromQuery] RequestDto request)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query { RequestDto = request }));
         }
 
         [HttpGet("{id}")]
@@ -23,7 +21,7 @@ namespace webapi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNotebook(NotebookDto notebook)
         {
-            return HandleResult(await Mediator.Send(new Create.Command { Notebook = notebook }));
+            return HandleResult(await Mediator.Send(new Create.Command { NotebookDto = notebook }));
         }
 
         [HttpPut("{id}")]

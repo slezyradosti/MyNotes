@@ -1,31 +1,46 @@
 ﻿using Application.Core;
+using Application.DTOs;
 using Domain.Models;
 using Domain.Repositories.Repos.Interfaces;
+using IndentityLogic.Interfaces;
 using MediatR;
 
 namespace Application.Notes
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Note>>>
+        public class Query : IRequest<Result<PageList<Note>>>
         {
             public Guid PageId { get; set; }
+            public RequestDto RequestDto { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<List<Note>>>
+        public class Handler : IRequestHandler<Query, Result<PageList<Note>>>
         {
             private readonly INoteRepository _noteRepository;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(INoteRepository noteRepository)
+            public Handler(INoteRepository noteRepository, IUserAccessor userAccessor)
             {
                 _noteRepository = noteRepository;
+                _userAccessor = userAccessor;
             }
 
-            public async Task<Result<List<Note>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PageList<Note>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var notes = await _noteRepository.GetAllFromSpecificPageAsync(request.PageId);
+                if (!await _noteRepository.IfUserHasAccessToTheNotes(request.PageId, _userAccessor.GetUserId()))
+                {
+                    return Result<PageList<Note>>.Failure("You have no access to this data");
+                }
 
-                return Result<List<Note>>.Success(notes);
+                int count = await _noteRepository.GetOwnedCountAsync(request.PageId);
+
+                var notes = await _noteRepository.GetAllFilteredAsync(request.PageId, request.RequestDto);
+
+                var notesPaged = new PageList<Note>(notes, request.RequestDto.PageIndex,
+                    request.RequestDto.PageSize, count);
+
+                return Result<PageList<Note>>.Success(notesPaged);
             }
         }
     }

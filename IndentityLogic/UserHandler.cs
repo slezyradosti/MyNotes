@@ -4,7 +4,6 @@ using IndentityLogic.Interfaces;
 using IndentityLogic.Models;
 using IndentityLogic.Services;
 using Microsoft.AspNetCore.Identity;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace IndentityLogic
@@ -38,6 +37,17 @@ namespace IndentityLogic
 
             return new AccountResult<UserDto, string>(isSuccessful: false,
                 errors: "Failed to find the user");
+        }
+
+        public async Task AddIdClaimToUserAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+            if (!userClaims.Any(x => x.Type == "UserId"))
+            {
+                await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id.ToString().ToLower()));
+            }
         }
     }
 }
