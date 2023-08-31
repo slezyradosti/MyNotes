@@ -43,7 +43,6 @@ namespace webapi
 
             services.AddApplicationServices(_configuration);
             services.AddIdentityServices(_configuration);
-            // then add here identitypolicy and applicaton policy
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
@@ -75,9 +74,13 @@ namespace webapi
 
             app.Use((context, next) =>
             {
-                context.Response.Headers["cache-control"] =
-                    "no-cache, no store";
-                return next.Invoke();
+                context.Response.GetTypedHeaders().CacheControl =
+                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                    {
+                        NoCache = true,
+                        NoStore = true
+                    };
+                return next.Invoke(); // nonblocking
             });
 
             app.UseEndpoints(endpoints =>
