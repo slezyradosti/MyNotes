@@ -7,6 +7,7 @@ namespace webapi.Controllers
     public class NotebooksController : BaseApiController
     {
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 600)]
         public async Task<IActionResult> GetNotebooks([FromQuery] RequestDto request)
         {
             return HandlePagedResult(await Mediator.Send(new List.Query { RequestDto = request }));

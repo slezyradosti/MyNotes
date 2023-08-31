@@ -7,6 +7,7 @@ namespace webapi.Controllers
     public class UnitsController : BaseApiController
     {
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 600)]
         public async Task<IActionResult> GetUnits(Guid nbId, 
             [FromQuery] RequestDto requestDto)
         {

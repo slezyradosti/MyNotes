@@ -7,6 +7,7 @@ namespace webapi.Controllers
     public class NotesController : BaseApiController
     {
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 600)]
         public async Task<IActionResult> GetNotes(Guid pageId,
             [FromQuery] RequestDto requestDto)
         {
