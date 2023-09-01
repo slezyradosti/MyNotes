@@ -10,10 +10,7 @@ namespace Application.Notes
 {
     public class Create
     {
-        public class Command : IRequest<Result<MediatR.Unit>>
-        {
-            public NoteDto NoteDto { get; set; }
-        }
+        public record Command(NoteDto NoteDto) : IRequest<Result<MediatR.Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {

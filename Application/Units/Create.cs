@@ -10,10 +10,7 @@ namespace Application.Units
 {
     public class Create
     {
-        public class Command : IRequest<Result<MediatR.Unit>>
-        {
-            public UnitDto Unit { get; set; }
-        }
+        public record Command(UnitDto Unit) : IRequest<Result<MediatR.Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {

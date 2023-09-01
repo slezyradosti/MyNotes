@@ -1,8 +1,6 @@
 ﻿using Application.Core;
 using Application.DTOs;
 using AutoMapper;
-using Domain.Models;
-using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
 using IndentityLogic.Interfaces;
 using MediatR;
@@ -11,10 +9,7 @@ namespace Application.Pages
 {
     public class Edit
     {
-        public class Command : IRequest<Result<MediatR.Unit>>
-        {
-            public PageDto PageDto { get; set; }
-        }
+        public record Command(PageDto PageDto) : IRequest<Result<MediatR.Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {

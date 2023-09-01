@@ -9,10 +9,7 @@ namespace Application.Notebooks
 {
     public class Details
     {
-        public class Query : IRequest<Result<Notebook>>
-        {
-            public Guid Id { get; set; }
-        }
+        public record Query(Guid Id) : IRequest<Result<Notebook>>;
 
         public class Handler : IRequestHandler<Query, Result<Notebook>>
         {
