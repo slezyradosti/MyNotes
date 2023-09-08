@@ -1,5 +1,4 @@
 ﻿using IndentityLogic.Core;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi.Controllers
