@@ -16,13 +16,6 @@ namespace Domain.Repositories.Repos
             .Include(notebook => notebook.Units)
             .FirstAsync();
 
-        public async Task<Notebook> FullDetailsAsync(Guid id)
-            => await Context.Notebooks.Where(notebook => notebook.Id == id)
-            .Include(notebook => notebook.Units)
-            .ThenInclude(unit => unit.Pages)
-            .ThenInclude(page => page.Notes)
-            .FirstAsync();
-
         public async Task<List<Notebook>> GetUsersAllFilteredAsync(Guid authorId, IFilter filter)
         {
             var query = Context.Notebooks.AsQueryable()

@@ -7,10 +7,7 @@ namespace Application.Pages
 {
     public class Delete
     {
-        public class Command : IRequest<Result<MediatR.Unit>>
-        {
-            public Guid Id { get; set; }
-        }
+        public record Command(Guid Id) : IRequest<Result<MediatR.Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {

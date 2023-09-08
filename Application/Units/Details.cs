@@ -8,10 +8,7 @@ namespace Application.Units
 {
     public class Details
     {
-        public class Query : IRequest<Result<Unit>>
-        {
-            public Guid UnitId { get; set; }
-        }
+        public record Query(Guid UnitId) : IRequest<Result<Unit>>;
 
         public class Handler : IRequestHandler<Query, Result<Unit>>
         {

@@ -1,7 +1,6 @@
 ﻿using Application.Core;
 using Application.DTOs;
 using Domain.Models;
-using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
 using IndentityLogic.Interfaces;
 using MediatR;
@@ -10,11 +9,7 @@ namespace Application.Pages
 {
     public class List
     {
-        public class Query : IRequest<Result<PageList<Page>>>
-        {
-            public Guid UnitId { get; set; }
-            public RequestDto RequestDto { get; set; }
-        }
+        public record Query(Guid UnitId, RequestDto RequestDto) : IRequest<Result<PageList<Page>>>;
 
         public class Handler : IRequestHandler<Query, Result<PageList<Page>>>
         {
