@@ -1,6 +1,6 @@
 export interface Notebook {
   name: string;
-  userId: string;
+  userId?: string;
   id: string;
-  createdAt: string;
+  createdAt?: string;
 }

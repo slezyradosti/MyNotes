@@ -1,30 +1,93 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Header, List } from "semantic-ui-react";
+import { Container, } from "semantic-ui-react";
 import { Notebook } from "../models/notebook";
+import NavBar from "./NavBar";
+import NotebookDashboard from "../../features/notebooks/dashboard/NotebookDashboard";
+import { v4 as uuid } from 'uuid';
+import routerAgent from "../api/routerAgent";
+import LoadingComponent from "./LoadingComponent";
 
 function App() {
   const [notebooks, setNotebooks] = useState<Notebook[]>([]);
-  const config = {
-    headers: { Authorization : 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiJkN2YwYmExOS03ZWVmLTRiYjAtMWQxNC0wOGRiYTM2MTlmMGMiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTQ5NzA0MDQsImV4cCI6MTY5NDk3MDcwNCwiaWF0IjoxNjk0OTcwNDA0fQ.zgoQEAguwWFXVMDidGkxoG0RXHvxa5E9B57vS6woJ3MB8Nx9PALAqTQm-ReH6GKFgEic9RsPsefhJTlnE_I0_w' }
-  };
+  const [selectedNotebook, setSelectedNotebook] = useState<Notebook | undefined>(undefined);
+  const [editMode, setEditMode] = useState(false);
+  const [generalLoading, setGeneralLoading] = useState(true);
+  const [ifSumbitting, setIfSubmitting] = useState(false);
 
   useEffect(() => {
-    axios
-      .get<Notebook[]>('https://localhost:7177/Notebooks', config)
-      .then((response) => {
-        setNotebooks(response.data);
-      });
+    routerAgent.Notebooks.list().then(response => {
+      let notebooks: Notebook[] = [];
+      response.forEach(notebook => {
+        notebook.createdAt = notebook.createdAt?.split('T')[0];
+        notebooks.push(notebook);
+      })
+      setNotebooks(notebooks);
+      setGeneralLoading(false);
+    });
   }, []);
+
+  function handleSelectNotebook(id: string) {
+    setSelectedNotebook(notebooks.find(x => x.id === id));
+  }
+
+  function handleCancelSelectedNotebook() {
+    setSelectedNotebook(undefined);
+  }
+
+  function handleFormOpen(id?: string) {
+    id ? handleSelectNotebook(id) : handleCancelSelectedNotebook();
+    setEditMode(true);
+  }
+
+  function handleFormClose() {
+    setEditMode(false);
+  }
+
+  function handleCreateOrEditNotebook(notebook: Notebook) {
+    setIfSubmitting(true);
+
+    if (notebook.id) {
+      routerAgent.Notebooks.update(notebook).then(() => {
+        setNotebooks([...notebooks.filter(x => x.id !== notebook.id), notebook]);
+        setSelectedNotebook(notebook);
+        setEditMode(false);
+        setIfSubmitting(false);
+      })
+    }
+    else {
+      notebook.id = uuid();
+      routerAgent.Notebooks.create(notebook).then(() => {
+        setNotebooks([...notebooks, notebook]);
+        setSelectedNotebook(notebook);
+        setEditMode(false);
+        setIfSubmitting(false);
+      })
+    }
+  }
+
+  function handleDeleteNotebook(id: string) {
+    setNotebooks([...notebooks.filter(x => x.id !== id)]);
+  }
+
+  if (generalLoading) return <LoadingComponent content='Loading app' />
 
   return (
     <>
-      <Header as="h2" icon="users" contet="MyNotes" />
-      <List>
-        {notebooks.map((notebook) => (
-          <List.Item key={notebook.id}>{notebook.name}</List.Item>
-        ))}
-      </List>
+      <NavBar openForm={handleFormOpen} />
+      <Container style={{ marginTop: '7em' }}>
+        <NotebookDashboard
+          notebooks={notebooks}
+          selectedNotebok={selectedNotebook}
+          selectNotebook={handleSelectNotebook}
+          cancelSelectedNotebook={handleCancelSelectedNotebook}
+          editMode={editMode}
+          openForm={handleFormOpen}
+          closeForm={handleFormClose}
+          createOrEdit={handleCreateOrEditNotebook}
+          deleteNotebook={handleDeleteNotebook}
+          ifSubmitting={ifSumbitting}
+        />
+      </Container>
     </>
   );
 }
