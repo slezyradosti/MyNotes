@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 function NotebookList() {
   const [target, setTarget] = useState('');
   const { notebookStore } = useStore();
-  const { openForm, selectNotebook, deleteNotebook, notebooks, loading } = notebookStore;
+  const { openForm, selectNotebook, deleteNotebook, notebooksArray, loading } = notebookStore;
 
   function handleNotebookDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
     setTarget(e.currentTarget.name);
@@ -16,7 +16,7 @@ function NotebookList() {
   return (
     <>
       <Item.Group devided>
-        {notebooks.map((notebook) => (
+        {notebooksArray.map((notebook) => (
           <Item key={notebook.id}>
             <Item.Content>
               <Item.Header>

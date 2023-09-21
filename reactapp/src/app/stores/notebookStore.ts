@@ -3,24 +3,27 @@ import { Notebook } from "../models/notebook";
 import agent from "../api/agent";
 
 class NotebookStore {
-    notebooks: Notebook[] = [];
+    notebookRegistry = new Map<string, Notebook>();
     selectedNotebook: Notebook | undefined = undefined;
     editMode = false;
     loading = false;
-    laoadingInital = false;
+    laoadingInital = true;
 
     constructor() {
         makeAutoObservable(this)
     }
 
+    get notebooksArray() {
+        return Array.from(this.notebookRegistry.values());
+    }
+
     loadNotebooks = async () => {
-        this.setLoadingInitial(true);
 
         try {
             const notebooks = await agent.Notebooks.list();
             notebooks.forEach(notebook => {
                 notebook.createdAt = notebook.createdAt?.split('T')[0];
-                this.notebooks.push(notebook);
+                this.notebookRegistry.set(notebook.id!, notebook);
             })
         } catch (error) {
             console.log(error);
@@ -34,7 +37,7 @@ class NotebookStore {
     }
 
     selectNotebook = (id: string) => {
-        this.selectedNotebook = this.notebooks.find(a => a.id === id);
+        this.selectedNotebook = this.notebookRegistry.get(id);
     }
 
     cancelSelectedNotebook = () => {
@@ -54,10 +57,14 @@ class NotebookStore {
         this.loading = true;
 
         try {
-            await agent.Notebooks.create(notebook);
+            const newNotebook = await agent.Notebooks.create(notebook);
+            const da = await agent.Notebooks.create(notebook).then(data => data.id);
             runInAction(() => {
-                this.notebooks.push(notebook);
-                this.selectedNotebook = notebook;
+                this.notebookRegistry.set(notebook.id!, notebook);
+                this.selectedNotebook = newNotebook;
+                console.log('notebook: ' + notebook.id, notebook.createdAt, notebook.name);
+                console.log('new notebook: ' + newNotebook.id, notebook.createdAt, notebook.name);
+                console.log('da: ' + da);
                 this.editMode = false;
             });
         } catch (error) {
@@ -75,7 +82,7 @@ class NotebookStore {
         try {
             await agent.Notebooks.update(notebook);
             runInAction(() => {
-                this.notebooks = [...this.notebooks.filter(n => n.id !== notebook.id), notebook];
+                this.notebookRegistry.set(notebook.id!, notebook);
                 this.selectedNotebook = notebook;
                 this.editMode = false;
             })
@@ -94,7 +101,7 @@ class NotebookStore {
         try {
             await agent.Notebooks.delete(id);
             runInAction(() => {
-                this.notebooks = [...this.notebooks.filter(n => n.id !== id)];
+                this.notebookRegistry.delete(id);
                 if (this.selectedNotebook?.id === id) this.cancelSelectedNotebook();
             })
         } catch (error) {
