@@ -1,26 +1,21 @@
 import { Button, Form } from "semantic-ui-react";
-import { Notebook } from "../../../app/models/notebook";
 import { ChangeEvent, useState } from "react";
 import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-    ifSubmitting: boolean;
-    createOrEdit: (notebook: Notebook) => void;
-}
-
-function NotebookForm({ createOrEdit, ifSubmitting }: Props) {
+function NotebookForm() {
     const { notebookStore } = useStore();
-    const { selectedNotebook, closeForm } = notebookStore;
+    const { selectedNotebook, closeForm,
+        createNotebook, updateNotebook, loading } = notebookStore;
 
     const initialState = selectedNotebook ?? {
-        id: '',
         name: '',
     };
 
     const [notebookDto, setNotebookDto] = useState(initialState);
 
     function handleSubmit() {
-        createOrEdit(notebookDto);
+        notebookDto.id ? updateNotebook(notebookDto) : createNotebook(notebookDto);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -34,13 +29,13 @@ function NotebookForm({ createOrEdit, ifSubmitting }: Props) {
             <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input palceholder='Name' value={notebookDto.name} name='name' onChange={handleInputChange} />
                 <p aria-readonly>{notebookDto.createdAt}</p>
-                <Button loading={ifSubmitting} floated='right' positive type='submit' content='Submit' />
+                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
-                <Form.TextArea hidden value={notebookDto.id} />
-                <Form.TextArea hidden value={notebookDto.userId} />
+                <Form.TextArea disabled hidden value={notebookDto.id} />
+                <Form.TextArea disabled hidden value={notebookDto.userId} />
             </Form>
         </>
     );
 }
 
-export default NotebookForm;
+export default observer(NotebookForm);

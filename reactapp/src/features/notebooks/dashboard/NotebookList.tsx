@@ -1,18 +1,12 @@
 import { Button, Item } from "semantic-ui-react";
-import { Notebook } from "../../../app/models/notebook";
 import { SyntheticEvent, useState } from "react";
 import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  notebooks: Notebook[];
-  ifSubmitting: boolean;
-  deleteNotebook: (id: string) => void;
-}
-
-function NotebookList({ notebooks, deleteNotebook, ifSubmitting }: Props) {
+function NotebookList() {
   const [target, setTarget] = useState('');
   const { notebookStore } = useStore();
-  const { openForm, selectNotebook } = notebookStore;
+  const { openForm, selectNotebook, deleteNotebook, notebooks, loading } = notebookStore;
 
   function handleNotebookDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
     setTarget(e.currentTarget.name);
@@ -26,7 +20,7 @@ function NotebookList({ notebooks, deleteNotebook, ifSubmitting }: Props) {
           <Item key={notebook.id}>
             <Item.Content>
               <Item.Header>
-                <Button onClick={() => selectNotebook(notebook.id)}
+                <Button onClick={() => selectNotebook(notebook.id!)}
                   content={notebook.name} />
               </Item.Header>
               <Item.Meta>{notebook.createdAt}</Item.Meta>
@@ -35,8 +29,8 @@ function NotebookList({ notebooks, deleteNotebook, ifSubmitting }: Props) {
                   content='Edit' />
                 <Button
                   name={notebook.id}
-                  loading={ifSubmitting && target == notebook.id}
-                  onClick={(e) => handleNotebookDelete(e, notebook.id)}
+                  loading={loading && target == notebook.id}
+                  onClick={(e) => handleNotebookDelete(e, notebook.id!)}
                   content='Delete' />
               </Item.Extra>
             </Item.Content>
@@ -47,4 +41,4 @@ function NotebookList({ notebooks, deleteNotebook, ifSubmitting }: Props) {
   );
 }
 
-export default NotebookList;
+export default observer(NotebookList);

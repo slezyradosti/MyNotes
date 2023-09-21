@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { Notebook } from "../models/notebook";
 import agent from "../api/agent";
 
@@ -48,6 +48,62 @@ class NotebookStore {
 
     closeForm = () => {
         this.editMode = false;
+    }
+
+    createNotebook = async (notebook: Notebook) => {
+        this.loading = true;
+
+        try {
+            await agent.Notebooks.create(notebook);
+            runInAction(() => {
+                this.notebooks.push(notebook);
+                this.selectedNotebook = notebook;
+                this.editMode = false;
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+
+    updateNotebook = async (notebook: Notebook) => {
+        this.loading = true;
+
+        try {
+            await agent.Notebooks.update(notebook);
+            runInAction(() => {
+                this.notebooks = [...this.notebooks.filter(n => n.id !== notebook.id), notebook];
+                this.selectedNotebook = notebook;
+                this.editMode = false;
+            })
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
+    }
+
+    deleteNotebook = async (id: string) => {
+        this.loading = true;
+
+        try {
+            await agent.Notebooks.delete(id);
+            runInAction(() => {
+                this.notebooks = [...this.notebooks.filter(n => n.id !== id)];
+                if (this.selectedNotebook?.id === id) this.cancelSelectedNotebook();
+            })
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
+        }
     }
 }
 
