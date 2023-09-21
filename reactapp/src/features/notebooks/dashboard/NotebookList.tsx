@@ -1,4 +1,4 @@
-import { Button, Item } from "semantic-ui-react";
+import { Button, Dropdown, Item, Menu } from "semantic-ui-react";
 import { SyntheticEvent, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
@@ -13,26 +13,59 @@ function NotebookList() {
     deleteNotebook(id);
   }
 
+  const [activeItem, setActiveItem] = useState('account');
+
   return (
     <>
-      <Item.Group devided>
+      <Item.Group devided >
         {notebooksArray.map((notebook) => (
           <Item key={notebook.id}>
             <Item.Content>
-              <Item.Header>
-                <Button onClick={() => selectNotebook(notebook.id!)}
-                  content={notebook.name} />
-              </Item.Header>
-              <Item.Meta>{notebook.createdAt}</Item.Meta>
-              <Item.Extra>
-                <Button onClick={() => openForm(notebook.id)}
-                  content='Edit' />
-                <Button
-                  name={notebook.id}
-                  loading={loading && target == notebook.id}
-                  onClick={(e) => handleNotebookDelete(e, notebook.id!)}
-                  content='Delete' />
-              </Item.Extra>
+              <Item.Description style={{ color: 'grey', display: 'flex' }}>
+                <a onClick={() => selectNotebook(notebook.id!)}>
+                  {notebook.name}
+                </a>
+
+                <Menu secondary vertical widths={10}>
+                  <Dropdown item text='' style={{ color: 'grey' }}>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => openForm(notebook.id)}>
+                        Edit
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        name={notebook.id}
+                        loading={loading && target == notebook.id}
+                        onClick={(e) => handleNotebookDelete(e, notebook.id!)}
+                        content='Delete'
+                      >
+                        Delete
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Menu>
+
+              </Item.Description>
+              <Item.Group style={{ color: 'grey', marginTop: '-5px' }}>
+                {notebook.createdAt}
+              </Item.Group>
+
+              {/* <Menu secondary vertical>
+                <Dropdown item text='...' style={{ color: 'grey' }}>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => openForm(notebook.id)}>
+                      Edit
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      name={notebook.id}
+                      loading={loading && target == notebook.id}
+                      onClick={(e) => handleNotebookDelete(e, notebook.id!)}
+                      content='Delete'
+                    >
+                      Delete
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Menu> */}
             </Item.Content>
           </Item>
         ))}

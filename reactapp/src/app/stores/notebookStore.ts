@@ -64,7 +64,6 @@ class NotebookStore {
             runInAction(() => {
                 this.notebookRegistry.set(notebook.id!, notebook);
                 this.selectedNotebook = notebook;
-                console.log('notebook: ' + notebook.id, notebook.createdAt, notebook.name);
                 this.editMode = false;
             });
         } catch (error) {
