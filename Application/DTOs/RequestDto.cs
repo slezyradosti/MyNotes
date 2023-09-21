@@ -13,8 +13,8 @@ namespace Application.DTOs
         [Range(1, 100)]
         public int PageSize { get; set; } = 10;
 
-        [DefaultValue("Id")]
-        public string? SortColumn { get; set; } = "Id";
+        [DefaultValue("CreatedAt")]
+        public string? SortColumn { get; set; } = "CreatedAt";
 
         [DefaultValue("ASC")]
         [RegularExpression("ASC|DESC")]
