@@ -1,17 +1,18 @@
 import { Button, Card } from "semantic-ui-react";
-import { Notebook } from "../../../app/models/notebook";
+import { useStore } from "../../../app/stores/store";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
-interface Props {
-    notebook: Notebook;
-    cancelSelectedNotebook: () => void;
-}
+function NotebookDetails() {
+    const { notebookStore } = useStore();
+    const { cancelSelectedNotebook, selectedNotebook } = notebookStore
 
-function NotebookDetails({ notebook, cancelSelectedNotebook }: Props) {
+    if (!selectedNotebook) return <LoadingComponent />;
+
     return (
         <Card>
             <Card.Content>
-                <Card.Header>{notebook.name}</Card.Header>
-                <Card.Meta>{notebook.createdAt}</Card.Meta>
+                <Card.Header>{selectedNotebook.name}</Card.Header>
+                <Card.Meta>{selectedNotebook.createdAt}</Card.Meta>
             </Card.Content>
             <Card.Content extra>
                 <Button onClick={() => cancelSelectedNotebook()} basic color='grey' content='Close' />
