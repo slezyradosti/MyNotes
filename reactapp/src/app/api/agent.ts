@@ -42,8 +42,8 @@ const Notebooks = {
     delete: (id: string) => requests.delete<void>(`/notebooks/${id}`)
 }
 
-const routerAgent = {
+const agent = {
     Notebooks
 }
 
-export default routerAgent;
+export default agent;

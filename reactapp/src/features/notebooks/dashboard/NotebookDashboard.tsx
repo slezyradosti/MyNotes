@@ -3,45 +3,37 @@ import { Notebook } from "../../../app/models/notebook";
 import NotebookList from "./NotebookList";
 import NotebookForm from "../form/NotebookForm";
 import NotebookDetails from "../details/NotebooksDetails";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
 interface Props {
     notebooks: Notebook[];
-    selectedNotebok: Notebook | undefined;
-    selectNotebook: (id: string) => void;
-    cancelSelectedNotebook: () => void;
-    editMode: boolean;
     ifSubmitting: boolean;
-    openForm: (id: string) => void;
-    closeForm: () => void;
     createOrEdit: (notebook: Notebook) => void;
     deleteNotebook: (id: string) => void;
 }
 
-function NotebookDashboard({ notebooks, selectedNotebok,
-    selectNotebook, cancelSelectedNotebook,
-    editMode, openForm, closeForm, createOrEdit,
+function NotebookDashboard({ notebooks, createOrEdit,
     deleteNotebook, ifSubmitting }: Props) {
+    const { notebookStore } = useStore();
+    const { selectedNotebook, editMode } = notebookStore;
+
     return (
         <Grid>
             <Grid.Column width='5'>
                 <NotebookList
                     notebooks={notebooks}
-                    selectNotebook={selectNotebook}
-                    openForm={openForm}
                     deleteNotebook={deleteNotebook}
+                    ifSubmitting={ifSubmitting}
                 />
             </Grid.Column>
             <Grid.Column width='7'>
-                {selectedNotebok && !editMode &&
-                    <NotebookDetails notebook={selectedNotebok}
-                        cancelSelectedNotebook={cancelSelectedNotebook}
-                    />}
+                {selectedNotebook && !editMode &&
+                    <NotebookDetails />}
             </Grid.Column>
             <Grid.Column width='4'>
                 {editMode &&
                     <NotebookForm
-                        notebook={selectedNotebok}
-                        closeForm={closeForm}
                         createOrEdit={createOrEdit}
                         ifSubmitting={ifSubmitting}
                     />}
@@ -50,4 +42,4 @@ function NotebookDashboard({ notebooks, selectedNotebok,
     );
 }
 
-export default NotebookDashboard;
+export default observer(NotebookDashboard);

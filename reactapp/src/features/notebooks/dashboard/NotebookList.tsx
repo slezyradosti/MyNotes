@@ -1,15 +1,23 @@
 import { Button, Item } from "semantic-ui-react";
 import { Notebook } from "../../../app/models/notebook";
+import { SyntheticEvent, useState } from "react";
+import { useStore } from "../../../app/stores/store";
 
 interface Props {
   notebooks: Notebook[];
-  selectNotebook: (id: string) => void;
-  openForm: (id: string) => void;
+  ifSubmitting: boolean;
   deleteNotebook: (id: string) => void;
 }
 
-function NotebookList({ notebooks, selectNotebook,
-  openForm, deleteNotebook }: Props) {
+function NotebookList({ notebooks, deleteNotebook, ifSubmitting }: Props) {
+  const [target, setTarget] = useState('');
+  const { notebookStore } = useStore();
+  const { openForm, selectNotebook } = notebookStore;
+
+  function handleNotebookDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+    setTarget(e.currentTarget.name);
+    deleteNotebook(id);
+  }
 
   return (
     <>
@@ -25,7 +33,10 @@ function NotebookList({ notebooks, selectNotebook,
               <Item.Extra>
                 <Button onClick={() => openForm(notebook.id)}
                   content='Edit' />
-                <Button onClick={() => deleteNotebook(notebook.id)}
+                <Button
+                  name={notebook.id}
+                  loading={ifSubmitting && target == notebook.id}
+                  onClick={(e) => handleNotebookDelete(e, notebook.id)}
                   content='Delete' />
               </Item.Extra>
             </Item.Content>
