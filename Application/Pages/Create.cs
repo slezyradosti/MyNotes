@@ -10,10 +10,7 @@ namespace Application.Pages
 {
     public class Create
     {
-        public class Command : IRequest<Result<MediatR.Unit>>
-        {
-            public PageDto pageDto { get; set; }
-        }
+        public record Command(PageDto pageDto) : IRequest<Result<MediatR.Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {

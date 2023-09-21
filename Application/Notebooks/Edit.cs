@@ -10,10 +10,7 @@ namespace Application.Notebooks
 {
     public class Edit
     {
-        public class Command : IRequest<Result<MediatR.Unit>>
-        {
-            public NotebookDto Notebook { get; set; }
-        }
+        public record Command(NotebookDto Notebook) : IRequest<Result<MediatR.Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<MediatR.Unit>>
         {

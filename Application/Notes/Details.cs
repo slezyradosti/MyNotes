@@ -8,10 +8,7 @@ namespace Application.Notes
 {
     public class Details
     {
-        public class Query : IRequest<Result<Note>>
-        {
-            public Guid Id { get; set; }
-        }
+        public record Query(Guid Id) : IRequest<Result<Note>>;
 
         public class Handler : IRequestHandler<Query, Result<Note>>
         {

@@ -9,10 +9,7 @@ namespace Application.Notebooks
 {
     public class List
     {
-        public class Query : IRequest<Result<PageList<Notebook>>> 
-        { 
-            public RequestDto RequestDto { get; set; }
-        }
+        public record Query(RequestDto RequestDto) : IRequest<Result<PageList<Notebook>>>;
 
         public class Handler : IRequestHandler<Query, Result<PageList<Notebook>>>
         {
