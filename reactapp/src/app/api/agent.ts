@@ -37,13 +37,13 @@ const requests = {
 const Notebooks = {
     list: () => requests.get<Notebook[]>('/notebooks'),
     details: (id: string) => requests.get<Notebook>(`/notebooks/${id}`),
-    create: (notebook: Notebook) => requests.post<void>('/notebooks', notebook),
-    update: (notebook: Notebook) => requests.put<void>(`/notebooks/${notebook.id}`, notebook),
+    create: (notebook: Notebook) => requests.post<Notebook>('/notebooks', notebook),
+    update: (notebook: Notebook) => requests.put<Notebook>(`/notebooks/${notebook.id}`, notebook),
     delete: (id: string) => requests.delete<void>(`/notebooks/${id}`)
 }
 
-const routerAgent = {
+const agent = {
     Notebooks
 }
 
-export default routerAgent;
+export default agent;

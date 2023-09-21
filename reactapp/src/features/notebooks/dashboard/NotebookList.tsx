@@ -1,31 +1,36 @@
 import { Button, Item } from "semantic-ui-react";
-import { Notebook } from "../../../app/models/notebook";
+import { SyntheticEvent, useState } from "react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Props {
-  notebooks: Notebook[];
-  selectNotebook: (id: string) => void;
-  openForm: (id: string) => void;
-  deleteNotebook: (id: string) => void;
-}
+function NotebookList() {
+  const [target, setTarget] = useState('');
+  const { notebookStore } = useStore();
+  const { openForm, selectNotebook, deleteNotebook, notebooksArray, loading } = notebookStore;
 
-function NotebookList({ notebooks, selectNotebook,
-  openForm, deleteNotebook }: Props) {
+  function handleNotebookDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+    setTarget(e.currentTarget.name);
+    deleteNotebook(id);
+  }
 
   return (
     <>
       <Item.Group devided>
-        {notebooks.map((notebook) => (
+        {notebooksArray.map((notebook) => (
           <Item key={notebook.id}>
             <Item.Content>
               <Item.Header>
-                <Button onClick={() => selectNotebook(notebook.id)}
+                <Button onClick={() => selectNotebook(notebook.id!)}
                   content={notebook.name} />
               </Item.Header>
               <Item.Meta>{notebook.createdAt}</Item.Meta>
               <Item.Extra>
                 <Button onClick={() => openForm(notebook.id)}
                   content='Edit' />
-                <Button onClick={() => deleteNotebook(notebook.id)}
+                <Button
+                  name={notebook.id}
+                  loading={loading && target == notebook.id}
+                  onClick={(e) => handleNotebookDelete(e, notebook.id!)}
                   content='Delete' />
               </Item.Extra>
             </Item.Content>
@@ -36,4 +41,4 @@ function NotebookList({ notebooks, selectNotebook,
   );
 }
 
-export default NotebookList;
+export default observer(NotebookList);
