@@ -31,7 +31,7 @@ function NotebookList() {
                         {notebook.name}
                       </a>
                     </Item.Description>
-                    <Item.Group className="notebook-info" style={{ color: 'grey', marginTop: '-5px' }}>
+                    <Item.Group className="notebook-info" style={{ color: 'grey', marginTop: '-5px', fontSize: '11x' }}>
                       {notebook.createdAt}
                     </Item.Group>
                   </Item.Content>
@@ -40,7 +40,7 @@ function NotebookList() {
               <Grid.Column width={6}>
                 {/* Content for the right column, including dropdown */}
                 <Dropdown
-                  placeholder=""
+                  placeholder=" "
                   fluid
                   selection
                   style={{ color: '#a0a0a0', backgroundColor: 'transparent', border: 'none' }}

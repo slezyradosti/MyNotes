@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Container, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import NotebookDashboard from "../../features/notebooks/dashboard/NotebookDashboard";
@@ -10,8 +10,6 @@ import SideNav from "./SideNav";
 function App() {
   const { notebookStore } = useStore();
 
-  const [ifOpenSideMenu, setIfOpenSideMenu] = useState(false);
-
   useEffect(() => {
     notebookStore.loadNotebooks();
   }, [notebookStore]);
@@ -22,16 +20,12 @@ function App() {
   function openNav() {
     document.getElementById("mySidenav")!.style.width = "225px";
     document.getElementById("main")!.style.marginLeft = "225px";
-
-    setIfOpenSideMenu(true);
   }
 
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
   function closeNav() {
     document.getElementById("mySidenav")!.style.width = "0";
     document.getElementById("main")!.style.marginLeft = "0";
-
-    setIfOpenSideMenu(false);
   }
 
   return (

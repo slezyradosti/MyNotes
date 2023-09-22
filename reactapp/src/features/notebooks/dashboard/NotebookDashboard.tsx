@@ -1,5 +1,4 @@
 import { Grid } from "semantic-ui-react";
-import NotebookList from "./NotebookList";
 import NotebookForm from "../form/NotebookForm";
 import NotebookDetails from "../details/NotebooksDetails";
 import { useStore } from "../../../app/stores/store";
@@ -11,14 +10,11 @@ function NotebookDashboard() {
 
     return (
         <Grid>
-            <Grid.Column width='5'>
-                <NotebookList />
-            </Grid.Column>
-            <Grid.Column width='7'>
+            <Grid.Column width={12}>
                 {selectedNotebook && !editMode &&
                     <NotebookDetails />}
             </Grid.Column>
-            <Grid.Column width='4'>
+            <Grid.Column width={4}>
                 {editMode &&
                     <NotebookForm />}
             </Grid.Column>
