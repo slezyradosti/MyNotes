@@ -10,7 +10,7 @@ function SideNav({ closeNav }: Props) {
     return (
         <>
             <div id="mySidenav" className="sidenav">
-                <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>x</a>
+                <a href="#" className="closebtn" onClick={closeNav}>x</a>
 
                 <NotebookList />
             </div>

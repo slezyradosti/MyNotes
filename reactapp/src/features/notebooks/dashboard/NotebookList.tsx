@@ -1,5 +1,5 @@
 import { Button, Dropdown, Item, Menu } from "semantic-ui-react";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useLayoutEffect, useRef, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 
@@ -13,8 +13,6 @@ function NotebookList() {
     deleteNotebook(id);
   }
 
-  const [activeItem, setActiveItem] = useState('account');
-
   return (
     <>
       <Item.Group devided >
@@ -26,20 +24,20 @@ function NotebookList() {
                   {notebook.name}
                 </a>
 
-                <Menu secondary vertical widths={10}>
-                  <Dropdown item text='' style={{ color: 'grey' }}>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => openForm(notebook.id)}>
+                <Menu secondary vertical inverted widths={10} >
+                  <Dropdown item text='' style={{ color: 'grey' }} >
+                    <Dropdown.Menu style={{ backgroundColor: '#111111' }}>
+                      <Dropdown.Header active onClick={() => openForm(notebook.id)} style={{ color: '#a0a0a0', cursor: 'pointer' }} >
                         Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item
+                      </Dropdown.Header>
+                      <Dropdown.Header style={{ color: '#a0a0a0', cursor: 'pointer' }}
                         name={notebook.id}
-                        loading={loading && target == notebook.id}
+                        loading={loading && (target == notebook.id)}
                         onClick={(e) => handleNotebookDelete(e, notebook.id!)}
                         content='Delete'
                       >
                         Delete
-                      </Dropdown.Item>
+                      </Dropdown.Header>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Menu>
@@ -48,28 +46,10 @@ function NotebookList() {
               <Item.Group style={{ color: 'grey', marginTop: '-5px' }}>
                 {notebook.createdAt}
               </Item.Group>
-
-              {/* <Menu secondary vertical>
-                <Dropdown item text='...' style={{ color: 'grey' }}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => openForm(notebook.id)}>
-                      Edit
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      name={notebook.id}
-                      loading={loading && target == notebook.id}
-                      onClick={(e) => handleNotebookDelete(e, notebook.id!)}
-                      content='Delete'
-                    >
-                      Delete
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Menu> */}
             </Item.Content>
           </Item>
         ))}
-      </Item.Group>
+      </Item.Group >
     </>
   );
 }

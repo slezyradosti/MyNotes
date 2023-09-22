@@ -37,10 +37,6 @@ function App() {
   return (
     <>
       <NavBar openNav={openNav} />
-
-      <div>
-
-      </div>
       <div id="main">
         <Container style={{ marginTop: '7em' }}>
           <SideNav closeNav={closeNav} />

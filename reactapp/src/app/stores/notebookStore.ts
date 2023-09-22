@@ -6,9 +6,9 @@ import agent from "../api/agent";
 class NotebookStore {
     notebookRegistry = new Map<string, Notebook>();
     selectedNotebook: Notebook | undefined = undefined;
-    editMode = false;
-    loading = false;
-    laoadingInital = true;
+    editMode: boolean = false;
+    loading: boolean = false;
+    laoadingInital: boolean = true;
 
     constructor() {
         makeAutoObservable(this)
