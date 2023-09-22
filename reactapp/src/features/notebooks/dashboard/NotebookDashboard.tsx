@@ -12,7 +12,7 @@ function NotebookDashboard() {
     return (
         <Grid>
             <Grid.Column width='5'>
-                {/* <NotebookList /> */}
+                <NotebookList />
             </Grid.Column>
             <Grid.Column width='7'>
                 {selectedNotebook && !editMode &&

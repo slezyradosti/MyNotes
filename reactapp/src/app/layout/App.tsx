@@ -20,8 +20,8 @@ function App() {
 
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   function openNav() {
-    document.getElementById("mySidenav")!.style.width = "275px";
-    document.getElementById("main")!.style.marginLeft = "275px";
+    document.getElementById("mySidenav")!.style.width = "225px";
+    document.getElementById("main")!.style.marginLeft = "225px";
 
     setIfOpenSideMenu(true);
   }
