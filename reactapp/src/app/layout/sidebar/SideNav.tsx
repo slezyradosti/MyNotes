@@ -31,6 +31,7 @@ function SideNav({ currentEntityName, closeNav }: Props) {
             case 'Unit':
                 setCurrentEntity(unitStore);
                 console.log("Changed to UNIT")
+                unitStore.loadUnits();
                 //?
                 setParentEntity(notebookStore);
                 break;

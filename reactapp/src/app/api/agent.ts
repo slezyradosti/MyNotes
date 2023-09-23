@@ -24,7 +24,8 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 //--------
 //TODO
 const config = {
-    headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiJkN2YwYmExOS03ZWVmLTRiYjAtMWQxNC0wOGRiYTM2MTlmMGMiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTUwMjY2MTEsImV4cCI6MTY5NTYzMTQxMSwiaWF0IjoxNjk1MDI2NjExfQ.Zk0cT1tkyp5-LkqUI0KgYDKJnL2Om5pJRBUhJnxvjygvcFEAVKa1CdNDX_mBCi-44gm-ICYiPnWWKm7hxhVhMA' }
+    headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiJkN2YwYmExOS03ZWVmLTRiYjAtMWQxNC0wOGRiYTM2MTlmMGMiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTUwMjY2MTEsImV4cCI6MTY5NTYzMTQxMSwiaWF0IjoxNjk1MDI2NjExfQ.Zk0cT1tkyp5-LkqUI0KgYDKJnL2Om5pJRBUhJnxvjygvcFEAVKa1CdNDX_mBCi-44gm-ICYiPnWWKm7hxhVhMA' },
+    params: { nbId: 'd8b80d57-c6fd-48d2-08ea-08dba361bf58' }
 };
 //-------
 
