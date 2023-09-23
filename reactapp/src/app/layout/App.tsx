@@ -34,7 +34,7 @@ function App() {
       <NavBar openNav={openNav} />
       <div id="main">
         <Container style={{ marginTop: '7em' }}>
-          <SideNav currentEntityName={currentEntityName} closeNav={closeNav} />
+          <SideNav currentEntityName={currentEntityName} closeNav={closeNav} setCurrentEntityName={setCurrentEntityName} />
           <NotebookDashboard setCurrentEntityName={setCurrentEntityName} />
         </Container>
       </div>

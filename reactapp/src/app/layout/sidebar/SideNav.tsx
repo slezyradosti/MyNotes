@@ -8,10 +8,11 @@ import { Divider } from 'semantic-ui-react'
 
 interface Props {
     currentEntityName: string;
+    setCurrentEntityName: (name: string) => void;
     closeNav: () => void;
 }
 
-function SideNav({ currentEntityName, closeNav }: Props) {
+function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
     const { notebookStore, unitStore } = useStore(); // provide all entitites for the sidebarlist
     //const { openForm, selectOne, deleteOne, getArray, loading } = notebookStore;
     //TODO 
@@ -51,7 +52,9 @@ function SideNav({ currentEntityName, closeNav }: Props) {
         <>
             <div id="mySidenav" className="sidenav">
                 <div>
-                    {/* <a className="createbtn" onClick={() => currentEntity.openForm()} >+</a> use to back button */}
+                    <a className="createbtn" onClick={() => setCurrentEntityName('Notebook')} >Back</a>
+                    {/* use to back button */}
+
                     <a className="closebtn" onClick={closeNav}>x</a>
 
                     <SideNavList
