@@ -1,13 +1,14 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Notebook } from "../models/notebook";
+import { v4 as uuid } from 'uuid';
 import agent from "../api/agent";
 
 class NotebookStore {
     notebookRegistry = new Map<string, Notebook>();
     selectedNotebook: Notebook | undefined = undefined;
-    editMode = false;
-    loading = false;
-    laoadingInital = true;
+    editMode: boolean = false;
+    loading: boolean = false;
+    laoadingInital: boolean = true;
 
     constructor() {
         makeAutoObservable(this)
@@ -55,16 +56,14 @@ class NotebookStore {
 
     createNotebook = async (notebook: Notebook) => {
         this.loading = true;
+        notebook.id = uuid();
 
         try {
-            const newNotebook = await agent.Notebooks.create(notebook);
-            const da = await agent.Notebooks.create(notebook).then(data => data.id);
+            await agent.Notebooks.create(notebook);
+            notebook.createdAt = 'Recently';
             runInAction(() => {
                 this.notebookRegistry.set(notebook.id!, notebook);
-                this.selectedNotebook = newNotebook;
-                console.log('notebook: ' + notebook.id, notebook.createdAt, notebook.name);
-                console.log('new notebook: ' + newNotebook.id, notebook.createdAt, notebook.name);
-                console.log('da: ' + da);
+                this.selectedNotebook = notebook;
                 this.editMode = false;
             });
         } catch (error) {

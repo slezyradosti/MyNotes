@@ -1,19 +1,24 @@
-function SideNav() {
+import { observer } from "mobx-react-lite";
+import NotebookList from "../../features/notebooks/dashboard/NotebookNavList";
+import { useStore } from "../stores/store";
 
+interface Props {
+    closeNav: () => void;
+}
+
+function SideNav({ closeNav }: Props) {
+    const { notebookStore } = useStore();
 
     return (
         <>
             <div id="mySidenav" className="sidenav">
-                <a href="javascript:void(0)" className="closebtn" onClick={closeNav}>&times;</a>
-                <a href="#">About</a>
-                <a href="#">Services</a>
-                <a href="#">Clients</a>
-                <a href="#">Contact</a>
-            </div>
+                <a className="createbtn" onClick={() => notebookStore.openForm()} > +</a>
+                <a className="closebtn" onClick={closeNav}>x</a>
 
-            <span onClick={openNav}>open</span>
+                <NotebookList />
+            </div >
         </>
     );
 }
 
-export default SideNav
+export default observer(SideNav);
