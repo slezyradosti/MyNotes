@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Notebook } from "../models/notebook";
+import { Unit } from "../models/unit";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -37,13 +38,22 @@ const requests = {
 const Notebooks = {
     list: () => requests.get<Notebook[]>('/notebooks'),
     details: (id: string) => requests.get<Notebook>(`/notebooks/${id}`),
-    create: (notebook: Notebook) => requests.post<Notebook>('/notebooks', notebook),
-    update: (notebook: Notebook) => requests.put<Notebook>(`/notebooks/${notebook.id}`, notebook),
+    create: (notebook: Notebook) => requests.post<void>('/notebooks', notebook),
+    update: (notebook: Notebook) => requests.put<void>(`/notebooks/${notebook.id}`, notebook),
     delete: (id: string) => requests.delete<void>(`/notebooks/${id}`)
 }
 
+const Units = {
+    list: () => requests.get<Unit[]>('/units'),
+    details: (id: string) => requests.get<Unit>(`/units/${id}`),
+    create: (unit: Unit) => requests.post<void>('/units', unit),
+    update: (unit: Unit) => requests.put<void>(`/unit/${unit.id}`, unit),
+    delete: (id: string) => requests.delete<void>(`/units/${id}`)
+}
+
 const agent = {
-    Notebooks
+    Notebooks,
+    Units
 }
 
 export default agent;

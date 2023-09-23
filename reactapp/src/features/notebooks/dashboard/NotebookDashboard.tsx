@@ -4,15 +4,19 @@ import NotebookDetails from "../details/NotebooksDetails";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 
-function NotebookDashboard() {
+interface Props {
+    setCurrentEntityName: (name: string) => void;
+}
+
+function NotebookDashboard({ setCurrentEntityName }: Props) {
     const { notebookStore } = useStore();
-    const { selectedNotebook, editMode } = notebookStore;
+    const { selectedElement, editMode } = notebookStore;
 
     return (
         <Grid>
             <Grid.Column width={12}>
-                {selectedNotebook && !editMode &&
-                    <NotebookDetails />}
+                {selectedElement && !editMode &&
+                    <NotebookDetails setCurrentEntityName={setCurrentEntityName} />}
             </Grid.Column>
             <Grid.Column width={4}>
                 {editMode &&

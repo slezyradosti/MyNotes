@@ -2,20 +2,26 @@ import { Button, Card } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 
-function NotebookDetails() {
-    const { notebookStore } = useStore();
-    const { cancelSelectedNotebook, selectedNotebook } = notebookStore
+interface Props {
+    setCurrentEntityName: (name: string) => void;
+}
 
-    if (!selectedNotebook) return <LoadingComponent />;
+function NotebookDetails({ setCurrentEntityName }: Props) {
+    const { notebookStore } = useStore();
+    const { cancelSelectedElement, selectedElement } = notebookStore
+
+    setCurrentEntityName("Unit");
+
+    if (!selectedElement) return <LoadingComponent />;
 
     return (
         <Card>
             <Card.Content>
-                <Card.Header>{selectedNotebook.name}</Card.Header>
-                <Card.Meta>{selectedNotebook.createdAt}</Card.Meta>
+                <Card.Header>{selectedElement.name}</Card.Header>
+                <Card.Meta>{selectedElement.createdAt}</Card.Meta>
             </Card.Content>
             <Card.Content extra>
-                <Button onClick={() => cancelSelectedNotebook()} basic color='grey' content='Close' />
+                <Button onClick={() => cancelSelectedElement()} basic color='grey' content='Close' />
             </Card.Content>
         </Card>
     );

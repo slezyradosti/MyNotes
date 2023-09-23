@@ -1,38 +1,48 @@
 import { Dropdown, Grid, Item } from "semantic-ui-react";
 import { SyntheticEvent, useState } from "react";
-import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import { Notebook } from "../../models/notebook";
+import { Unit } from "../../models/unit";
 
-function NotebookList() {
+interface Props {
+  entityArray: Notebook[] | Unit[];
+  entityLoading: boolean;
+  entityOpenForm: (id?: string | undefined) => void;
+  selectEntity: (id: string) => void;
+  deleteEntity: (id: string) => Promise<void>;
+}
+
+function SideNavList({ entityArray, entityLoading, entityOpenForm,
+  selectEntity, deleteEntity }: Props) {
   const [target, setTarget] = useState('');
-  const { notebookStore } = useStore();
-  const { openForm, selectNotebook, deleteNotebook, notebooksArray, loading } = notebookStore;
 
-  function handleNotebookDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+  function handleDeleteEntity(e: SyntheticEvent<HTMLButtonElement>, id: string) {
     setTarget(e.currentTarget.name);
-    deleteNotebook(id);
+    deleteEntity(id);
   }
+
+  console.log(entityArray);
 
   return (
     <>
       <Item.Group divided>
         <Grid>
-          {notebooksArray.map((notebook) => (
-            <Grid.Row key={notebook.id}>
+          {entityArray.map((entity) => (
+            <Grid.Row key={entity.id}>
               <Grid.Column width={10}>
-                <Item key={notebook.id}>
+                <Item key={entity.id}>
                   <Item.Content>
                     <Item.Description className="notebook-description">
                       <a
-                        onClick={() => selectNotebook(notebook.id!)}
+                        onClick={() => selectEntity(entity.id!)}
                         className="notebook-link"
                         style={{ wordWrap: 'break-word' }} // Enable text wrapping
                       >
-                        {notebook.name}
+                        {entity.name}
                       </a>
                     </Item.Description>
                     <Item.Group className="notebook-info" style={{ color: 'grey', marginTop: '-5px', fontSize: '11x' }}>
-                      {notebook.createdAt}
+                      {entity.createdAt}
                     </Item.Group>
                   </Item.Content>
                 </Item>
@@ -47,13 +57,13 @@ function NotebookList() {
                 >
 
                   <Dropdown.Menu style={{ backgroundColor: '#111111', right: 0, top: 15, border: 'none' }}>
-                    <Dropdown.Header active onClick={() => openForm(notebook.id)} style={{ color: '#a0a0a0', cursor: 'pointer' }} >
+                    <Dropdown.Header active onClick={() => entityOpenForm(entity.id)} style={{ color: '#a0a0a0', cursor: 'pointer' }} >
                       Edit
                     </Dropdown.Header>
                     <Dropdown.Header style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
-                      name={notebook.id}
-                      loading={loading && (target === notebook.id)}
-                      onClick={(e) => handleNotebookDelete(e, notebook.id!)}
+                      name={entity.id}
+                      loading={entityLoading && (target === entity.id)}
+                      onClick={(e) => handleDeleteEntity(e, entity.id!)}
                       content='Delete'
                     >
                       Delete
@@ -69,4 +79,4 @@ function NotebookList() {
   );
 }
 
-export default observer(NotebookList);
+export default observer(SideNavList);

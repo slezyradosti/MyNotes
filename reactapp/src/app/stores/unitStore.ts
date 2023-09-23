@@ -1,45 +1,37 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Notebook } from "../models/notebook";
-import { v4 as uuid } from 'uuid';
+import { Unit } from "../models/unit";
 import agent from "../api/agent";
+import { v4 as uuid } from 'uuid';
 import ISidebarListStore from "./ISidebarListStore";
 
-class NotebookStore implements ISidebarListStore {
-    notebookRegistry = new Map<string, Notebook>();
-    selectedElement: Notebook | undefined = undefined;
+class UnitStore implements ISidebarListStore {
+    unitRegistry = new Map<string, Unit>();
+    selectedElement: Unit | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
-    laoadingInital: boolean = true;
 
     constructor() {
         makeAutoObservable(this)
     }
 
     get getArray() {
-        return Array.from(this.notebookRegistry.values());
+        return Array.from(this.unitRegistry.values());
     }
 
-    loadNotebooks = async () => {
-
+    loadUnits = async () => {
         try {
-            const notebooks = await agent.Notebooks.list();
-            notebooks.forEach(notebook => {
-                notebook.createdAt = notebook.createdAt?.split('T')[0];
-                this.notebookRegistry.set(notebook.id!, notebook);
+            const units = await agent.Units.list();
+            units.forEach(unit => {
+                unit.createdAt = unit.createdAt?.split('T')[0];
+                this.unitRegistry.set(unit.id!, unit);
             })
         } catch (error) {
             console.log(error);
-        } finally {
-            this.setLoadingInitial(false);
         }
     }
 
-    setLoadingInitial = (state: boolean) => {
-        this.laoadingInital = state;
-    }
-
     selectOne = (id: string) => {
-        this.selectedElement = this.notebookRegistry.get(id);
+        this.selectedElement = this.unitRegistry.get(id);
     }
 
     cancelSelectedElement = () => {
@@ -55,16 +47,16 @@ class NotebookStore implements ISidebarListStore {
         this.editMode = false;
     }
 
-    createOne = async (notebook: Notebook) => {
+    createOne = async (unit: Unit) => {
         this.loading = true;
-        notebook.id = uuid();
+        unit.id = uuid();
 
         try {
-            await agent.Notebooks.create(notebook);
-            notebook.createdAt = 'recently';
+            await agent.Units.create(unit);
+            unit.createdAt = 'recently'
             runInAction(() => {
-                this.notebookRegistry.set(notebook.id!, notebook);
-                this.selectedElement = notebook;
+                this.unitRegistry.set(unit.id!, unit);
+                this.selectedElement = unit;
                 this.editMode = false;
             });
         } catch (error) {
@@ -76,14 +68,14 @@ class NotebookStore implements ISidebarListStore {
         }
     }
 
-    updateOne = async (notebook: Notebook) => {
+    updateOne = async (unit: Unit) => {
         this.loading = true;
 
         try {
-            await agent.Notebooks.update(notebook);
+            await agent.Units.update(unit);
             runInAction(() => {
-                this.notebookRegistry.set(notebook.id!, notebook);
-                this.selectedElement = notebook;
+                this.unitRegistry.set(unit.id!, unit);
+                this.selectedElement = unit;
                 this.editMode = false;
             })
         } catch (error) {
@@ -99,9 +91,9 @@ class NotebookStore implements ISidebarListStore {
         this.loading = true;
 
         try {
-            await agent.Notebooks.delete(id);
+            await agent.Units.delete(id);
             runInAction(() => {
-                this.notebookRegistry.delete(id);
+                this.unitRegistry.delete(id);
                 if (this.selectedElement?.id === id) this.cancelSelectedElement();
             })
         } catch (error) {
@@ -114,4 +106,4 @@ class NotebookStore implements ISidebarListStore {
     }
 }
 
-export default NotebookStore;
+export default UnitStore;

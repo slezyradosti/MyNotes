@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Container, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import NotebookDashboard from "../../features/notebooks/dashboard/NotebookDashboard";
 import LoadingComponent from "./LoadingComponent";
 import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
-import SideNav from "./SideNav";
+import SideNav from "./sidebar/SideNav";
 
 function App() {
   const { notebookStore } = useStore();
+  const [currentEntityName, setCurrentEntityName] = useState('Notebook'); //entityname. CALL WHEN DISPLAY DETAILS
 
   useEffect(() => {
     notebookStore.loadNotebooks();
@@ -33,8 +34,8 @@ function App() {
       <NavBar openNav={openNav} />
       <div id="main">
         <Container style={{ marginTop: '7em' }}>
-          <SideNav closeNav={closeNav} />
-          <NotebookDashboard />
+          <SideNav currentEntityName={currentEntityName} closeNav={closeNav} />
+          <NotebookDashboard setCurrentEntityName={setCurrentEntityName} />
         </Container>
       </div>
     </>
