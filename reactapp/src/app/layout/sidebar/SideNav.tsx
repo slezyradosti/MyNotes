@@ -22,24 +22,29 @@ function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
 
     // const [currentEntityName, setCurrentEntityName] = useState('Notebook'); //entityname. CALL WHEN DISPLAY DETAILS //transfered to App
     const [currentEntity, setCurrentEntity] = useState<NotebookStore | UnitStore>(notebookStore); //entity
-    const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore>();
+    const [parentEntityName, setParentEntityName] = useState<string>('');
+    const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore | undefined>(undefined);
 
     useEffect(() => {
         switch (currentEntityName) {
             case 'Notebook':
                 setCurrentEntity(notebookStore);
+                setParentEntityName('');
+                setParentEntity(undefined);
                 break;
             case 'Unit':
                 setCurrentEntity(unitStore);
                 console.log("Changed to UNIT")
                 unitStore.loadUnits();
                 //?
+                setParentEntityName('Notebook');
                 setParentEntity(notebookStore);
                 break;
             case 'Page':
                 //setCurrentEntity(notebookStore);
 
                 //?
+                setParentEntityName('Unit');
                 setParentEntity(unitStore);
                 break;
             default:
@@ -52,7 +57,7 @@ function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
         <>
             <div id="mySidenav" className="sidenav">
                 <div>
-                    <a className="createbtn" onClick={() => setCurrentEntityName('Notebook')} >Back</a>
+                    <a className="createbtn" onClick={() => setCurrentEntityName(parentEntityName)} >Back</a>
                     {/* use to back button */}
 
                     <a className="closebtn" onClick={closeNav}>x</a>
