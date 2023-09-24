@@ -6,14 +6,17 @@ import { Unit } from "../../models/unit";
 
 interface Props {
   entityArray: Notebook[] | Unit[];
+  entityType: string;
   entityLoading: boolean;
   entityOpenForm: (id?: string | undefined) => void;
   selectEntity: (id: string) => void;
   deleteEntity: (id: string) => Promise<void>;
+
+  setCurrentEntityName: (name: string) => void;
 }
 
 function SideNavList({ entityArray, entityLoading, entityOpenForm,
-  selectEntity, deleteEntity }: Props) {
+  selectEntity, deleteEntity, setCurrentEntityName, entityType }: Props) {
   const [target, setTarget] = useState('');
 
   function handleDeleteEntity(e: SyntheticEvent<HTMLButtonElement>, id: string) {
@@ -21,7 +24,24 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
     deleteEntity(id);
   }
 
-  console.log(entityArray);
+  function handleSelectEntity(entityId: string) {
+    switch (entityType) {
+      case 'Notebook':
+        setCurrentEntityName('Unit');
+        break;
+      case 'Unit':
+        setCurrentEntityName('Page');
+        break;
+      case 'Page':
+        setCurrentEntityName('Notebook'); //??????
+        break;
+      default:
+        console.log('Entity type doesn\'t exists: ' + entityType)
+        break;
+    }
+
+    selectEntity(entityId);
+  }
 
   return (
     <>
@@ -34,7 +54,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                   <Item.Content>
                     <Item.Description className="notebook-description">
                       <a
-                        onClick={() => selectEntity(entity.id!)}
+                        onClick={() => handleSelectEntity(entity.id!)}
                         className="notebook-link"
                         style={{ wordWrap: 'break-word' }} // Enable text wrapping
                       >

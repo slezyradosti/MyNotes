@@ -2,15 +2,9 @@ import { Button, Card } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 
-interface Props {
-    setCurrentEntityName: (name: string) => void;
-}
-
-function NotebookDetails({ setCurrentEntityName }: Props) {
+function NotebookDetails() {
     const { notebookStore } = useStore();
     const { cancelSelectedElement, selectedElement } = notebookStore
-
-    setCurrentEntityName("Unit");
 
     if (!selectedElement) return <LoadingComponent />;
 

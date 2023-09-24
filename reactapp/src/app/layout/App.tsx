@@ -9,13 +9,13 @@ import SideNav from "./sidebar/SideNav";
 
 function App() {
   const { notebookStore } = useStore();
-  const [currentEntityName, setCurrentEntityName] = useState('Notebook'); //entityname. CALL WHEN DISPLAY DETAILS
+  //const [currentEntityName, setCurrentEntityName] = useState('Notebook'); //entityname. CALL WHEN DISPLAY DETAILS
 
   useEffect(() => {
     notebookStore.loadNotebooks();
   }, [notebookStore]);
 
-  if (notebookStore.laoadingInital) return <LoadingComponent content='Loading app' />
+  if (notebookStore.laoadingInitial) return <LoadingComponent content='Loading app' />
 
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   function openNav() {
@@ -34,8 +34,8 @@ function App() {
       <NavBar openNav={openNav} />
       <div id="main">
         <Container style={{ marginTop: '7em' }}>
-          <SideNav currentEntityName={currentEntityName} closeNav={closeNav} setCurrentEntityName={setCurrentEntityName} />
-          <NotebookDashboard setCurrentEntityName={setCurrentEntityName} />
+          <SideNav closeNav={closeNav} />
+          <NotebookDashboard />
         </Container>
       </div>
     </>

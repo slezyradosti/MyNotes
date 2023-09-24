@@ -9,6 +9,7 @@ class UnitStore implements ISidebarListStore {
     selectedElement: Unit | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
+    loadingInitial: boolean = true;
 
     constructor() {
         makeAutoObservable(this)
@@ -16,6 +17,10 @@ class UnitStore implements ISidebarListStore {
 
     get getArray() {
         return Array.from(this.unitRegistry.values());
+    }
+
+    get getEntityType() {
+        return 'Unit';
     }
 
     loadUnits = async () => {
@@ -27,7 +32,13 @@ class UnitStore implements ISidebarListStore {
             })
         } catch (error) {
             console.log(error);
+        } finally {
+            this.setLoadingInitial(false);
         }
+    }
+
+    setLoadingInitial = (state: boolean) => {
+        this.loadingInitial = state;
     }
 
     selectOne = (id: string) => {

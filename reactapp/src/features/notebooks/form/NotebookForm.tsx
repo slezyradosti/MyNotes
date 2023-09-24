@@ -20,7 +20,7 @@ function NotebookForm() {
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
-        setNotebookDto({ ...notebookDto, [name]: value })
+        setNotebookDto({ ...notebookDto, [name]: value });
     }
 
     return (

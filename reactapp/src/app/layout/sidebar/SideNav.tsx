@@ -7,13 +7,12 @@ import UnitStore from "../../stores/unitStore";
 import { Divider } from 'semantic-ui-react'
 
 interface Props {
-    currentEntityName: string;
-    setCurrentEntityName: (name: string) => void;
     closeNav: () => void;
 }
 
-function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
+function SideNav({ closeNav }: Props) {
     const { notebookStore, unitStore } = useStore(); // provide all entitites for the sidebarlist
+    const [currentEntityName, setCurrentEntityName] = useState('Notebook');
     //const { openForm, selectOne, deleteOne, getArray, loading } = notebookStore;
     //TODO 
     // the function will be changed for each list (notebook, 
@@ -29,12 +28,12 @@ function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
         switch (currentEntityName) {
             case 'Notebook':
                 setCurrentEntity(notebookStore);
+
                 setParentEntityName('');
                 setParentEntity(undefined);
                 break;
             case 'Unit':
                 setCurrentEntity(unitStore);
-                console.log("Changed to UNIT")
                 unitStore.loadUnits();
                 //?
                 setParentEntityName('Notebook');
@@ -51,13 +50,13 @@ function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
                 console.log('Wrong value: ' + currentEntityName);
                 break;
         }
-    }, [currentEntityName])
+    }, [currentEntityName, notebookStore, unitStore])
 
     return (
         <>
             <div id="mySidenav" className="sidenav">
                 <div>
-                    <a className="createbtn" onClick={() => setCurrentEntityName(parentEntityName)} >Back</a>
+                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} >Back</a>
                     {/* use to back button */}
 
                     <a className="closebtn" onClick={closeNav}>x</a>
@@ -68,6 +67,8 @@ function SideNav({ currentEntityName, closeNav, setCurrentEntityName }: Props) {
                         entityOpenForm={currentEntity.openForm}
                         selectEntity={currentEntity.selectOne}
                         deleteEntity={currentEntity.deleteOne}
+                        setCurrentEntityName={setCurrentEntityName}
+                        entityType={currentEntity.getEntityType}
                     />
                 </div>
                 <Divider>

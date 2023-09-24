@@ -9,7 +9,7 @@ class NotebookStore implements ISidebarListStore {
     selectedElement: Notebook | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
-    laoadingInital: boolean = true;
+    laoadingInitial: boolean = true;
 
     constructor() {
         makeAutoObservable(this)
@@ -17,6 +17,10 @@ class NotebookStore implements ISidebarListStore {
 
     get getArray() {
         return Array.from(this.notebookRegistry.values());
+    }
+
+    get getEntityType() {
+        return 'Notebook';
     }
 
     loadNotebooks = async () => {
@@ -35,7 +39,7 @@ class NotebookStore implements ISidebarListStore {
     }
 
     setLoadingInitial = (state: boolean) => {
-        this.laoadingInital = state;
+        this.laoadingInitial = state;
     }
 
     selectOne = (id: string) => {
