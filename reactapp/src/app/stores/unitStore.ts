@@ -23,9 +23,9 @@ class UnitStore implements ISidebarListStore {
         return 'Unit';
     }
 
-    loadUnits = async () => {
+    loadUnits = async (nbId: string) => {
         try {
-            const units = await agent.Units.list();
+            const units = await agent.Units.list(nbId);
             units.forEach(unit => {
                 unit.createdAt = unit.createdAt?.split('T')[0];
                 this.unitRegistry.set(unit.id!, unit);

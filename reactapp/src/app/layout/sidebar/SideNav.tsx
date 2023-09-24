@@ -34,7 +34,7 @@ function SideNav({ closeNav }: Props) {
                 break;
             case 'Unit':
                 setCurrentEntity(unitStore);
-                unitStore.loadUnits();
+                unitStore.loadUnits(notebookStore.selectedElement!.id!);
                 //?
                 setParentEntityName('Notebook');
                 setParentEntity(notebookStore);
