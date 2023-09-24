@@ -5,24 +5,18 @@ import { useEffect, useState } from "react";
 import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
 import { Divider } from 'semantic-ui-react'
+import PageStore from "../../stores/pageStore";
 
 interface Props {
     closeNav: () => void;
 }
 
 function SideNav({ closeNav }: Props) {
-    const { notebookStore, unitStore } = useStore(); // provide all entitites for the sidebarlist
+    const { notebookStore, unitStore, pageStore } = useStore(); // provide all entitites for the sidebarlist
     const [currentEntityName, setCurrentEntityName] = useState('Notebook');
-    //const { openForm, selectOne, deleteOne, getArray, loading } = notebookStore;
-    //TODO 
-    // the function will be changed for each list (notebook, 
-    // units or pages).
-    //const [createForm, setCreateForm] = useState(() => () => notebookStore.openForm);
-
-    // const [currentEntityName, setCurrentEntityName] = useState('Notebook'); //entityname. CALL WHEN DISPLAY DETAILS //transfered to App
-    const [currentEntity, setCurrentEntity] = useState<NotebookStore | UnitStore>(notebookStore); //entity
+    const [currentEntity, setCurrentEntity] = useState<NotebookStore | UnitStore | PageStore>(notebookStore); //entity
     const [parentEntityName, setParentEntityName] = useState<string>('');
-    const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore | undefined>(undefined);
+    const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore | PageStore | undefined>(undefined);
 
     useEffect(() => {
         switch (currentEntityName) {
@@ -40,8 +34,8 @@ function SideNav({ closeNav }: Props) {
                 setParentEntity(notebookStore);
                 break;
             case 'Page':
-                //setCurrentEntity(notebookStore);
-
+                setCurrentEntity(pageStore);
+                pageStore.loadPages(unitStore.selectedElement!.id!);
                 //?
                 setParentEntityName('Unit');
                 setParentEntity(unitStore);
@@ -50,13 +44,13 @@ function SideNav({ closeNav }: Props) {
                 console.log('Wrong value: ' + currentEntityName);
                 break;
         }
-    }, [currentEntityName, notebookStore, unitStore])
+    }, [currentEntityName, notebookStore, unitStore, pageStore])
 
     return (
         <>
             <div id="mySidenav" className="sidenav">
                 <div>
-                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} >Back</a>
+                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} > ← </a>
                     {/* use to back button */}
 
                     <a className="closebtn" onClick={closeNav}>x</a>

@@ -33,7 +33,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
         setCurrentEntityName('Page');
         break;
       case 'Page':
-        setCurrentEntityName('Notebook'); //??????
+        //setCurrentEntityName('Notebook'); //??????
         break;
       default:
         console.log('Entity type doesn\'t exists: ' + entityType)
@@ -77,17 +77,18 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                 >
 
                   <Dropdown.Menu style={{ backgroundColor: '#111111', right: 0, top: 15, border: 'none' }}>
-                    <Dropdown.Header active onClick={() => entityOpenForm(entity.id)} style={{ color: '#a0a0a0', cursor: 'pointer' }} >
-                      Edit
-                    </Dropdown.Header>
-                    <Dropdown.Header style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
+                    <Dropdown.Item onClick={() => entityOpenForm(entity.id)}
+                      style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
+                      content='Edit'
+                    >
+                    </Dropdown.Item>
+                    <Dropdown.Item style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
                       name={entity.id}
                       loading={entityLoading && (target === entity.id)}
                       onClick={(e) => handleDeleteEntity(e, entity.id!)}
                       content='Delete'
                     >
-                      Delete
-                    </Dropdown.Header>
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </Grid.Column>

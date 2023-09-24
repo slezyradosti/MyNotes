@@ -3,7 +3,7 @@ body {
 }
 
 .ui.inverted.top.fixed.menu {
-  background-image: linear-gradient(135deg, rgb(46, 70, 167) 0%, rgb(48, 28, 205) 69%, rgb(36, 126, 129) 89%) !important;
+  background-image: radial-gradient(circle, rgb(110, 158, 188) 0%, rgb(85, 113, 147) 100%) !important;
 }
 
 .sidenav {
@@ -61,12 +61,10 @@ a:hover {
   margin-left: 50px;
 }
 
-.sidenav .createbtn {
-
-  top: 50px;
-  left: 0px;
+.sidenav .returnbtn {
   font-size: 25px;
   margin-left: -25px;
+  margin-top: -10px;
 }
 
 #main {

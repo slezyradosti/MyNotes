@@ -1,12 +1,12 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { Unit } from "../models/unit";
+import { Page } from "../models/page";
+import ISidebarListStore from "./ISidebarListStore";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
-import ISidebarListStore from "./ISidebarListStore";
 
-class UnitStore implements ISidebarListStore {
-    unitRegistry = new Map<string, Unit>();
-    selectedElement: Unit | undefined = undefined;
+class PageStore implements ISidebarListStore {
+    pageRegistry = new Map<string, Page>();
+    selectedElement: Page | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -16,19 +16,19 @@ class UnitStore implements ISidebarListStore {
     }
 
     get getArray() {
-        return Array.from(this.unitRegistry.values());
+        return Array.from(this.pageRegistry.values());
     }
 
     get getEntityType() {
-        return 'Unit';
+        return 'Page';
     }
 
-    loadUnits = async (nbId: string) => {
+    loadPages = async (nbId: string) => {
         try {
-            const units = await agent.Units.list(nbId);
-            units.forEach(unit => {
-                unit.createdAt = unit.createdAt?.split('T')[0];
-                this.unitRegistry.set(unit.id!, unit);
+            const pages = await agent.Pages.list(nbId);
+            pages.forEach(page => {
+                page.createdAt = page.createdAt?.split('T')[0];
+                this.pageRegistry.set(page.id!, page);
             })
         } catch (error) {
             console.log(error);
@@ -42,7 +42,7 @@ class UnitStore implements ISidebarListStore {
     }
 
     selectOne = (id: string) => {
-        this.selectedElement = this.unitRegistry.get(id);
+        this.selectedElement = this.pageRegistry.get(id);
     }
 
     cancelSelectedElement = () => {
@@ -58,16 +58,16 @@ class UnitStore implements ISidebarListStore {
         this.editMode = false;
     }
 
-    createOne = async (unit: Unit) => {
+    createOne = async (page: Page) => {
         this.loading = true;
-        unit.id = uuid();
+        page.id = uuid();
 
         try {
-            await agent.Units.create(unit);
-            unit.createdAt = 'recently'
+            await agent.Pages.create(page);
+            page.createdAt = 'recently'
             runInAction(() => {
-                this.unitRegistry.set(unit.id!, unit);
-                this.selectedElement = unit;
+                this.pageRegistry.set(page.id!, page);
+                this.selectedElement = page;
                 this.editMode = false;
             });
         } catch (error) {
@@ -79,15 +79,15 @@ class UnitStore implements ISidebarListStore {
         }
     }
 
-    updateOne = async (unit: Unit) => {
+    updateOne = async (page: Page) => {
         this.loading = true;
-        unit.createdAt = 'recently';
+        page.createdAt = 'recently';
 
         try {
-            await agent.Units.update(unit);
+            await agent.Pages.update(page);
             runInAction(() => {
-                this.unitRegistry.set(unit.id!, unit);
-                this.selectedElement = unit;
+                this.pageRegistry.set(page.id!, page);
+                this.selectedElement = page;
                 this.editMode = false;
             })
         } catch (error) {
@@ -103,9 +103,9 @@ class UnitStore implements ISidebarListStore {
         this.loading = true;
 
         try {
-            await agent.Units.delete(id);
+            await agent.Pages.delete(id);
             runInAction(() => {
-                this.unitRegistry.delete(id);
+                this.pageRegistry.delete(id);
                 if (this.selectedElement?.id === id) this.cancelSelectedElement();
             })
         } catch (error) {
@@ -118,4 +118,4 @@ class UnitStore implements ISidebarListStore {
     }
 }
 
-export default UnitStore;
+export default PageStore;

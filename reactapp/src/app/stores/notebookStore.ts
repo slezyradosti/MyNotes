@@ -82,6 +82,7 @@ class NotebookStore implements ISidebarListStore {
 
     updateOne = async (notebook: Notebook) => {
         this.loading = true;
+        notebook.createdAt = 'recently';
 
         try {
             await agent.Notebooks.update(notebook);

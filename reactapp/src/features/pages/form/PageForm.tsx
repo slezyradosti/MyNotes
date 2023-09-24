@@ -3,40 +3,40 @@ import { useStore } from "../../../app/stores/store";
 import { Button, Form } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 
-function UnitForm() {
-    const { unitStore, notebookStore } = useStore();
-    const { selectedElement, createOne, updateOne,
-        closeForm, loading } = unitStore;
+function PageForm() {
+    const { pageStore, unitStore } = useStore();
+    const { selectedElement, loading, createOne,
+        updateOne, closeForm } = pageStore;
 
     const initialState = selectedElement ?? {
         name: '',
-        notebookId: notebookStore.selectedElement?.id ?? ''
+        unitId: unitStore.selectedElement?.id ?? ''
     };
 
-    const [unitDto, setUnitDto] = useState(initialState);
+    const [pageDto, setPageDto] = useState(initialState);
 
     function handleSubmit() {
-        unitDto.id ? updateOne(unitDto) : createOne(unitDto);
+        pageDto.id ? updateOne(pageDto) : createOne(pageDto);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
-        setUnitDto({ ...unitDto, [name]: value });
+        setPageDto({ ...pageDto, [name]: value });
     }
 
     return (
         <>
             <Form onSubmit={handleSubmit} autoComplete='off'>
-                <Form.Input palceholder='Name' value={unitDto.name}
+                <Form.Input palceholder='Name' value={pageDto.name}
                     name='name' onChange={handleInputChange} />
-                <p aria-readonly>{unitDto.createdAt}</p>
+                <p aria-readonly>{pageDto.createdAt}</p>
                 <Button loading={loading} floated="right" positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
-                <Form.TextArea disabled hidden value={unitDto.id} name='id' />
-                <Form.TextArea disabled hidden value={notebookStore.selectedElement?.id} name='notebookId' />
+                <Form.TextArea disabled hidden value={pageDto.id} name='id' />
+                <Form.TextArea disabled hidden value={unitStore.selectedElement?.id} name='unitId' />
             </Form>
         </>
     );
 }
 
-export default observer(UnitForm);
+export default observer(PageForm);
