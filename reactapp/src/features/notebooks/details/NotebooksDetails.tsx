@@ -4,18 +4,18 @@ import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 function NotebookDetails() {
     const { notebookStore } = useStore();
-    const { cancelSelectedElement, selectedElement } = notebookStore
+    const { cancelSelectedNotebook, selectedNotebook } = notebookStore
 
-    if (!selectedElement) return <LoadingComponent />;
+    if (!selectedNotebook) return <LoadingComponent />;
 
     return (
         <Card>
             <Card.Content>
-                <Card.Header>{selectedElement.name}</Card.Header>
-                <Card.Meta>{selectedElement.createdAt}</Card.Meta>
+                <Card.Header>{selectedNotebook.name}</Card.Header>
+                <Card.Meta>{selectedNotebook.createdAt}</Card.Meta>
             </Card.Content>
             <Card.Content extra>
-                <Button onClick={() => cancelSelectedElement()} basic color='grey' content='Close' />
+                <Button onClick={() => cancelSelectedNotebook()} basic color='grey' content='Close' />
             </Card.Content>
         </Card>
     );

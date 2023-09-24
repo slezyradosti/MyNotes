@@ -1,26 +1,20 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Notebook } from "../models/notebook";
-import { v4 as uuid } from 'uuid';
 import agent from "../api/agent";
-import ISidebarListStore from "./ISidebarListStore";
 
-class NotebookStore implements ISidebarListStore {
+class NotebookStore {
     notebookRegistry = new Map<string, Notebook>();
-    selectedElement: Notebook | undefined = undefined;
-    editMode: boolean = false;
-    loading: boolean = false;
-    laoadingInitial: boolean = true;
+    selectedNotebook: Notebook | undefined = undefined;
+    editMode = false;
+    loading = false;
+    laoadingInital = true;
 
     constructor() {
         makeAutoObservable(this)
     }
 
-    get getArray() {
+    get notebooksArray() {
         return Array.from(this.notebookRegistry.values());
-    }
-
-    get getEntityType() {
-        return 'Notebook';
     }
 
     loadNotebooks = async () => {
@@ -39,19 +33,19 @@ class NotebookStore implements ISidebarListStore {
     }
 
     setLoadingInitial = (state: boolean) => {
-        this.laoadingInitial = state;
+        this.laoadingInital = state;
     }
 
-    selectOne = (id: string) => {
-        this.selectedElement = this.notebookRegistry.get(id);
+    selectNotebook = (id: string) => {
+        this.selectedNotebook = this.notebookRegistry.get(id);
     }
 
-    cancelSelectedElement = () => {
-        this.selectedElement = undefined;
+    cancelSelectedNotebook = () => {
+        this.selectedNotebook = undefined;
     }
 
     openForm = (id?: string) => {
-        id ? this.selectOne(id) : this.cancelSelectedElement();
+        id ? this.selectNotebook(id) : this.cancelSelectedNotebook();
         this.editMode = true;
     }
 
@@ -59,16 +53,18 @@ class NotebookStore implements ISidebarListStore {
         this.editMode = false;
     }
 
-    createOne = async (notebook: Notebook) => {
+    createNotebook = async (notebook: Notebook) => {
         this.loading = true;
-        notebook.id = uuid();
 
         try {
-            await agent.Notebooks.create(notebook);
-            notebook.createdAt = 'recently';
+            const newNotebook = await agent.Notebooks.create(notebook);
+            const da = await agent.Notebooks.create(notebook).then(data => data.id);
             runInAction(() => {
                 this.notebookRegistry.set(notebook.id!, notebook);
-                this.selectedElement = notebook;
+                this.selectedNotebook = newNotebook;
+                console.log('notebook: ' + notebook.id, notebook.createdAt, notebook.name);
+                console.log('new notebook: ' + newNotebook.id, notebook.createdAt, notebook.name);
+                console.log('da: ' + da);
                 this.editMode = false;
             });
         } catch (error) {
@@ -80,14 +76,14 @@ class NotebookStore implements ISidebarListStore {
         }
     }
 
-    updateOne = async (notebook: Notebook) => {
+    updateNotebook = async (notebook: Notebook) => {
         this.loading = true;
 
         try {
             await agent.Notebooks.update(notebook);
             runInAction(() => {
                 this.notebookRegistry.set(notebook.id!, notebook);
-                this.selectedElement = notebook;
+                this.selectedNotebook = notebook;
                 this.editMode = false;
             })
         } catch (error) {
@@ -99,14 +95,14 @@ class NotebookStore implements ISidebarListStore {
         }
     }
 
-    deleteOne = async (id: string) => {
+    deleteNotebook = async (id: string) => {
         this.loading = true;
 
         try {
             await agent.Notebooks.delete(id);
             runInAction(() => {
                 this.notebookRegistry.delete(id);
-                if (this.selectedElement?.id === id) this.cancelSelectedElement();
+                if (this.selectedNotebook?.id === id) this.cancelSelectedNotebook();
             })
         } catch (error) {
             console.log(error);

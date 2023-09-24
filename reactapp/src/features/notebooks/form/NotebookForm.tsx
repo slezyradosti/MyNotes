@@ -5,22 +5,22 @@ import { observer } from "mobx-react-lite";
 
 function NotebookForm() {
     const { notebookStore } = useStore();
-    const { selectedElement, closeForm,
-        createOne, updateOne, loading } = notebookStore;
+    const { selectedNotebook, closeForm,
+        createNotebook, updateNotebook, loading } = notebookStore;
 
-    const initialState = selectedElement ?? {
+    const initialState = selectedNotebook ?? {
         name: '',
     };
 
     const [notebookDto, setNotebookDto] = useState(initialState);
 
     function handleSubmit() {
-        notebookDto.id ? updateOne(notebookDto) : createOne(notebookDto);
+        notebookDto.id ? updateNotebook(notebookDto) : createNotebook(notebookDto);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
-        setNotebookDto({ ...notebookDto, [name]: value });
+        setNotebookDto({ ...notebookDto, [name]: value })
     }
 
     return (

@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import { Notebook } from "../models/notebook";
-import { Unit } from "../models/unit";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -24,8 +23,7 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 //--------
 //TODO
 const config = {
-    headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiJkN2YwYmExOS03ZWVmLTRiYjAtMWQxNC0wOGRiYTM2MTlmMGMiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTUwMjY2MTEsImV4cCI6MTY5NTYzMTQxMSwiaWF0IjoxNjk1MDI2NjExfQ.Zk0cT1tkyp5-LkqUI0KgYDKJnL2Om5pJRBUhJnxvjygvcFEAVKa1CdNDX_mBCi-44gm-ICYiPnWWKm7hxhVhMA' },
-    //params: { nbId: 'd8b80d57-c6fd-48d2-08ea-08dba361bf58' }
+    headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiJkN2YwYmExOS03ZWVmLTRiYjAtMWQxNC0wOGRiYTM2MTlmMGMiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTUwMjY2MTEsImV4cCI6MTY5NTYzMTQxMSwiaWF0IjoxNjk1MDI2NjExfQ.Zk0cT1tkyp5-LkqUI0KgYDKJnL2Om5pJRBUhJnxvjygvcFEAVKa1CdNDX_mBCi-44gm-ICYiPnWWKm7hxhVhMA' }
 };
 //-------
 
@@ -39,22 +37,13 @@ const requests = {
 const Notebooks = {
     list: () => requests.get<Notebook[]>('/notebooks'),
     details: (id: string) => requests.get<Notebook>(`/notebooks/${id}`),
-    create: (notebook: Notebook) => requests.post<void>('/notebooks', notebook),
-    update: (notebook: Notebook) => requests.put<void>(`/notebooks/${notebook.id}`, notebook),
+    create: (notebook: Notebook) => requests.post<Notebook>('/notebooks', notebook),
+    update: (notebook: Notebook) => requests.put<Notebook>(`/notebooks/${notebook.id}`, notebook),
     delete: (id: string) => requests.delete<void>(`/notebooks/${id}`)
 }
 
-const Units = {
-    list: (nbId: string) => requests.get<Unit[]>(`/units?nbId=${nbId}`),
-    details: (id: string) => requests.get<Unit>(`/units/${id}`),
-    create: (unit: Unit) => requests.post<void>('/units', unit),
-    update: (unit: Unit) => requests.put<void>(`/unit/${unit.id}`, unit),
-    delete: (id: string) => requests.delete<void>(`/units/${id}`)
-}
-
 const agent = {
-    Notebooks,
-    Units
+    Notebooks
 }
 
 export default agent;

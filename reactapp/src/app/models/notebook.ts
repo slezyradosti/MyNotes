@@ -1,6 +1,6 @@
-import BaseModel from "./baseModel";
-
-export interface Notebook extends BaseModel {
+export interface Notebook {
   name: string;
   userId?: string;
+  id?: string;
+  createdAt?: string;
 }
