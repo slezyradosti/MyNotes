@@ -17,20 +17,18 @@ namespace Application.Pages
             private readonly IPageRepository _pageRepository;
             private readonly IMapper _mapper;
             private readonly IUserAccessor _userAccessor;
-            private readonly IUnitRepository _unitRepository;
 
             public Handler(IPageRepository pageRepository, IMapper mapper,
-                IUserAccessor userAccessor, IUnitRepository unitRepository)
+                IUserAccessor userAccessor)
             {
                 _pageRepository = pageRepository;
                 _mapper = mapper;
                 _userAccessor = userAccessor;
-                _unitRepository = unitRepository;
             }
 
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (!await _unitRepository.IfUserHasAccessToTheUnit(request.pageDto.UnitId, _userAccessor.GetUserId()))
+                if (!await _pageRepository.IfUserHasAccessToThePages(request.pageDto.UnitId, _userAccessor.GetUserId()))
                 {
                     return Result<MediatR.Unit>.Failure("You have no access to this data");
                 }
