@@ -2,14 +2,18 @@ import { Button, Container, Menu } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
 import menu from '../../assets/menu.png'
 
-function NavBar() {
+interface Props {
+    openNav: () => void;
+}
+
+function NavBar({ openNav }: Props) {
     const { notebookStore } = useStore();
 
     return (
         <Menu inverted fixed='top'>
             <Container>
                 <Menu.Item header>
-                    <a href='notebooks'>
+                    <a className='sidenavOpen' id='sidenavOpen' onClick={openNav} >
                         <img src={menu} alt="menu" style={{ marginRight: '10px', width: '25px' }} />
                     </a>
                 </Menu.Item>
