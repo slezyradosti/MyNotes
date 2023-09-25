@@ -10,7 +10,7 @@ namespace webapi.Middleware
         private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly IHostEnvironment _hostEnvironment;
 
-        public ExceptionMiddleware(RequestDelegate requestDelegate, ILogger<ExceptionMiddleware> logger,
+        public ExceptionMiddleware(RequestDelegate requestDelegate, ILogger<ExceptionMiddleware> logger, 
             IHostEnvironment hostEnvironment)
         {
             _requestDelegate = requestDelegate;
@@ -30,8 +30,6 @@ namespace webapi.Middleware
                 //as we outside of controller
                 httpContext.Response.ContentType = "application/json";
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                Console.WriteLine(ex.InnerException?.Message);
 
                 var response = _hostEnvironment.IsDevelopment()
                     ? new AppException(httpContext.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
