@@ -61,8 +61,10 @@ function SideNav({ closeNav }: Props) {
                         entityOpenForm={currentEntity.openForm}
                         selectEntity={currentEntity.selectOne}
                         deleteEntity={currentEntity.deleteOne}
+                        updateOne={currentEntity.updateOne}
                         setCurrentEntityName={setCurrentEntityName}
                         entityType={currentEntity.getEntityType}
+                        getOne={currentEntity.getOne}
                     />
                 </div>
                 <Divider>

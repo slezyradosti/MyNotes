@@ -45,6 +45,10 @@ class PageStore implements ISidebarListStore {
         this.selectedElement = this.pageRegistry.get(id);
     }
 
+    getOne = (id: string) => {
+        return this.pageRegistry.get(id)!;
+    }
+
     cancelSelectedElement = () => {
         this.selectedElement = undefined;
     }
@@ -81,7 +85,7 @@ class PageStore implements ISidebarListStore {
 
     updateOne = async (page: Page) => {
         this.loading = true;
-        page.createdAt = 'recently';
+        page.createdAt === 'recently' ? 'recently' : page.createdAt;
 
         try {
             await agent.Pages.update(page);

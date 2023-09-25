@@ -46,6 +46,10 @@ class NotebookStore implements ISidebarListStore {
         this.selectedElement = this.notebookRegistry.get(id);
     }
 
+    getOne = (id: string) => {
+        return this.notebookRegistry.get(id)!;
+    }
+
     cancelSelectedElement = () => {
         this.selectedElement = undefined;
     }
@@ -82,7 +86,7 @@ class NotebookStore implements ISidebarListStore {
 
     updateOne = async (notebook: Notebook) => {
         this.loading = true;
-        notebook.createdAt = 'recently';
+        notebook.createdAt === 'recently' ? 'recently' : notebook.createdAt;
 
         try {
             await agent.Notebooks.update(notebook);

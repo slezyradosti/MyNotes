@@ -45,6 +45,10 @@ class UnitStore implements ISidebarListStore {
         this.selectedElement = this.unitRegistry.get(id);
     }
 
+    getOne = (id: string) => {
+        return this.unitRegistry.get(id)!;
+    }
+
     cancelSelectedElement = () => {
         this.selectedElement = undefined;
     }
@@ -81,7 +85,7 @@ class UnitStore implements ISidebarListStore {
 
     updateOne = async (unit: Unit) => {
         this.loading = true;
-        unit.createdAt = 'recently';
+        unit.createdAt === 'recently' ? 'recently' : unit.createdAt;
 
         try {
             await agent.Units.update(unit);
