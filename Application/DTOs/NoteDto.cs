@@ -10,7 +10,6 @@ namespace Application.DTOs
         [StringLength(50)]
         public string Record { get; set; }
         public string Name { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public Guid PageId { get; set; }
     }
 }
