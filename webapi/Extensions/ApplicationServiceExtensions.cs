@@ -22,15 +22,15 @@ namespace webapi.Extensions
             {
                 options.AddDefaultPolicy(cfg =>
                 {
+                    cfg.WithOrigins(configuration["AllowedOrigins"]);
                     cfg.AllowAnyHeader();
                     cfg.AllowAnyMethod();
-                    cfg.WithOrigins(configuration["AllowedOrigins"]);
                 });
                 options.AddPolicy(name: "AnyOrigin", cfg =>
                 {
+                    cfg.AllowAnyOrigin();
                     cfg.AllowAnyHeader();
                     cfg.AllowAnyMethod();
-                    cfg.AllowAnyOrigin();
                 });
             });
 

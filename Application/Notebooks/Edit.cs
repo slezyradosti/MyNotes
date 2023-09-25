@@ -32,6 +32,8 @@ namespace Application.Notebooks
 
                 if (notebook == null) return null;
 
+                request.Notebook.UserId = _userAccessor.GetUserId();
+
                 if (!await _notebookRepository.IfUserHasAccessToTheNotebook(request.Notebook.Id,
                     _userAccessor.GetUserId()))
                 {
