@@ -1,4 +1,4 @@
-import { Dropdown, Grid, Input, Item, Ref } from "semantic-ui-react";
+import { Dropdown, Grid, Input, Item } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
@@ -66,16 +66,17 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
   const handleNameEditCancel = () => {
     setEditingId(null);
     setEditedName("");
-    console.log("handleNameEditCancel");
   };
 
   const handleNameEditSave = (event: SyntheticEvent, entityId: string) => {
     event.preventDefault()
     // Here you can update the name in your data or send it to your API
-    console.log("Updated name:", editedName);
     let newEntity = getOne(entityId);
     newEntity.name = editedName;
     updateOne(newEntity);
+
+    //cleaning 
+    handleNameEditCancel();
   };
 
   return (
