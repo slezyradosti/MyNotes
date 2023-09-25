@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Container, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import NotebookDashboard from "../../features/notebooks/dashboard/NotebookDashboard";

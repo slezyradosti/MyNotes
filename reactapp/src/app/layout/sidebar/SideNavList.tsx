@@ -1,23 +1,38 @@
-import { Dropdown, Grid, Item } from "semantic-ui-react";
-import { SyntheticEvent, useState } from "react";
+import { Dropdown, Grid, Input, Item, Ref } from "semantic-ui-react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
 import { Unit } from "../../models/unit";
+import { Page } from "../../models/page";
 
 interface Props {
-  entityArray: Notebook[] | Unit[];
+  entityArray: Notebook[] | Unit[] | Page[];
   entityType: string;
   entityLoading: boolean;
   entityOpenForm: (id?: string | undefined) => void;
   selectEntity: (id: string) => void;
   deleteEntity: (id: string) => Promise<void>;
+  updateOne: ((enity: Notebook | Unit | Page) => Promise<void>);
+  getOne: (id: string) => Notebook | Unit | Page;
 
   setCurrentEntityName: (name: string) => void;
 }
 
 function SideNavList({ entityArray, entityLoading, entityOpenForm,
-  selectEntity, deleteEntity, setCurrentEntityName, entityType }: Props) {
+  selectEntity, deleteEntity, setCurrentEntityName,
+  entityType, getOne, updateOne }: Props) {
   const [target, setTarget] = useState('');
+
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editedName, setEditedName] = useState("");
+  const inputRef = useRef<Input | null>(null);
+
+  // changes focus to the editing name
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editingId]);
 
   function handleDeleteEntity(e: SyntheticEvent<HTMLButtonElement>, id: string) {
     setTarget(e.currentTarget.name);
@@ -33,7 +48,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
         setCurrentEntityName('Page');
         break;
       case 'Page':
-        setCurrentEntityName('Notebook'); //??????
+        //setCurrentEntityName('Notebook'); //??????
         break;
       default:
         console.log('Entity type doesn\'t exists: ' + entityType)
@@ -42,6 +57,26 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
 
     selectEntity(entityId);
   }
+
+  const handleNameEditStart = (entityId: string, currentName: string) => {
+    setEditingId(entityId);
+    setEditedName(currentName);
+  };
+
+  const handleNameEditCancel = () => {
+    setEditingId(null);
+    setEditedName("");
+    console.log("handleNameEditCancel");
+  };
+
+  const handleNameEditSave = (event: SyntheticEvent, entityId: string) => {
+    event.preventDefault()
+    // Here you can update the name in your data or send it to your API
+    console.log("Updated name:", editedName);
+    let newEntity = getOne(entityId);
+    newEntity.name = editedName;
+    updateOne(newEntity);
+  };
 
   return (
     <>
@@ -53,13 +88,28 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                 <Item key={entity.id}>
                   <Item.Content>
                     <Item.Description className="notebook-description">
-                      <a
-                        onClick={() => handleSelectEntity(entity.id!)}
-                        className="notebook-link"
-                        style={{ wordWrap: 'break-word' }} // Enable text wrapping
-                      >
-                        {entity.name}
-                      </a>
+                      {editingId === entity.id ? (
+                        <Input
+                          className="notebook-link"
+                          ref={(input) => (inputRef.current = input)}
+                          value={editedName}
+                          onChange={(e) => setEditedName(e.target.value)}
+                          action={{
+                            icon: "check",
+                            onMouseDown: (e) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
+                          }}
+                          onBlur={() => handleNameEditCancel()}
+                          fluid
+                        />
+                      ) : (
+                        <a
+                          className="notebook-link"
+                          onClick={() => handleSelectEntity(entity.id!)}
+                          style={{ wordWrap: 'break-word' }}
+                        >
+                          {entity.name}
+                        </a>
+                      )}
                     </Item.Description>
                     <Item.Group className="notebook-info" style={{ color: 'grey', marginTop: '-5px', fontSize: '11x' }}>
                       {entity.createdAt}
@@ -77,17 +127,20 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                 >
 
                   <Dropdown.Menu style={{ backgroundColor: '#111111', right: 0, top: 15, border: 'none' }}>
-                    <Dropdown.Header active onClick={() => entityOpenForm(entity.id)} style={{ color: '#a0a0a0', cursor: 'pointer' }} >
-                      Edit
-                    </Dropdown.Header>
-                    <Dropdown.Header style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
+                    <Dropdown.Item
+                      style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
+                      content='Edit'
+                      onClick={() => handleNameEditStart(entity.id!, entity.name)}
+                    >
+
+                    </Dropdown.Item>
+                    <Dropdown.Item style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
                       name={entity.id}
                       loading={entityLoading && (target === entity.id)}
                       onClick={(e) => handleDeleteEntity(e, entity.id!)}
                       content='Delete'
                     >
-                      Delete
-                    </Dropdown.Header>
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </Grid.Column>
