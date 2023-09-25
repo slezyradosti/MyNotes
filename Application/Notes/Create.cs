@@ -17,20 +17,19 @@ namespace Application.Notes
             private readonly INoteRepository _noteRepository;
             private readonly IMapper _mapper;
             private readonly IUserAccessor _userAccessor;
-            private readonly IPageRepository _pageRepository;
 
             public Handler(INoteRepository noteRepository, IMapper mapper,
-                IUserAccessor userAccessor, IPageRepository pageRepository)
+                IUserAccessor userAccessor)
             {
                 _noteRepository = noteRepository;
                 _mapper = mapper;
                 _userAccessor = userAccessor;
-                _pageRepository = pageRepository;
             }
 
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (!await _pageRepository.IfUserHasAccessToThePage(request.NoteDto.PageId, _userAccessor.GetUserId()))
+                //TODO : check if it works correctly with 'null' notes on the page
+                if (!await _noteRepository.IfUserHasAccessToTheNotes(request.NoteDto.PageId, _userAccessor.GetUserId()))
                 {
                     return Result<MediatR.Unit>.Failure("You have no access to this data");
                 }

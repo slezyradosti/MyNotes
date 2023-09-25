@@ -17,26 +17,24 @@ namespace Application.Units
             private readonly IUnitRepository _unitRepository;
             private readonly IMapper _mapper;
             private readonly IUserAccessor _userAccessor;
-            private readonly INotebookRepository _notebookRepository;
 
             public Handler(IUnitRepository unitRepository, IMapper mapper,
-                IUserAccessor userAccessor, INotebookRepository notebookRepository)
+                IUserAccessor userAccessor)
             {
                 _unitRepository = unitRepository;
                 _mapper = mapper;
                 _userAccessor = userAccessor;
-                _notebookRepository = notebookRepository;
             }
             public async Task<Result<MediatR.Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (!await _notebookRepository.IfUserHasAccessToTheNotebook(request.Unit.NotebookId, _userAccessor.GetUserId()))
+                if (!await _unitRepository.IfUserHasAccessToTheUnits(request.Unit.NotebookId, _userAccessor.GetUserId()))
                 {
                     return Result<MediatR.Unit>.Failure("You have no access to this data");
                 }
 
                 var Unit = new Unit();
                 _mapper.Map(request.Unit, Unit);
-
+                
                 var result = await _unitRepository.AddAsync(Unit) > 0;
 
                 if (!result) return Result<MediatR.Unit>.Failure("Faild to create Unit");
