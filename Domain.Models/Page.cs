@@ -12,7 +12,6 @@ namespace Domain.Models
         public Guid UnitId { get; set; }
         [JsonIgnore]
         public Unit Unit { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<Note> Notes { get; set; }
     }

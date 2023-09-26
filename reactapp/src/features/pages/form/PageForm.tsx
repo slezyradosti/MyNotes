@@ -8,7 +8,7 @@ function PageForm() {
     const { selectedElement, loading, createOne,
         updateOne, closeForm } = pageStore;
 
-    const initialState = selectedElement ?? {
+    const initialState = {
         name: '',
         unitId: unitStore.selectedElement?.id ?? ''
     };
@@ -16,7 +16,7 @@ function PageForm() {
     const [pageDto, setPageDto] = useState(initialState);
 
     function handleSubmit() {
-        pageDto.id ? updateOne(pageDto) : createOne(pageDto);
+        createOne(pageDto);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -27,13 +27,19 @@ function PageForm() {
     return (
         <>
             <Form onSubmit={handleSubmit} autoComplete='off'>
-                <Form.Input palceholder='Name' value={pageDto.name}
-                    name='name' onChange={handleInputChange} />
-                <p aria-readonly>{pageDto.createdAt}</p>
+                <Form.Input
+                    autoFocus
+                    palceholder='Name'
+                    value={pageDto.name}
+                    name='name'
+                    onChange={handleInputChange}
+                    //onBlur={() => closeForm()}
+                    fluid
+                />
                 <Button loading={loading} floated="right" positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
-                <Form.TextArea disabled hidden value={pageDto.id} name='id' />
-                <Form.TextArea disabled hidden value={unitStore.selectedElement?.id} name='unitId' />
+                <br />
+                <br />
             </Form>
         </>
     );

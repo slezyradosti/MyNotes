@@ -3,6 +3,7 @@ import { Unit } from "../models/unit";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import ISidebarListStore from "./ISidebarListStore";
+import moment from "moment";
 
 class UnitStore implements ISidebarListStore {
     unitRegistry = new Map<string, Unit>();
@@ -68,7 +69,7 @@ class UnitStore implements ISidebarListStore {
 
         try {
             await agent.Units.create(unit);
-            unit.createdAt = 'recently'
+            unit.createdAt = moment().format('YYYY-MM-DD');
             runInAction(() => {
                 this.unitRegistry.set(unit.id!, unit);
                 this.selectedElement = unit;
@@ -85,7 +86,6 @@ class UnitStore implements ISidebarListStore {
 
     updateOne = async (unit: Unit) => {
         this.loading = true;
-        unit.createdAt === 'recently' ? 'recently' : unit.createdAt;
 
         try {
             await agent.Units.update(unit);
