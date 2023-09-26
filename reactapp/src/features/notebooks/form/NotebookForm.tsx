@@ -31,7 +31,7 @@ function NotebookForm() {
                     value={notebookDto.name}
                     name='name'
                     onChange={handleInputChange}
-                    onBlur={() => closeForm()}
+                    //onBlur={() => closeForm()}
                     fluid
                 />
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
