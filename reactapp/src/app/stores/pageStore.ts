@@ -3,6 +3,7 @@ import { Page } from "../models/page";
 import ISidebarListStore from "./ISidebarListStore";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
+import moment from "moment";
 
 class PageStore implements ISidebarListStore {
     pageRegistry = new Map<string, Page>();
@@ -68,7 +69,7 @@ class PageStore implements ISidebarListStore {
 
         try {
             await agent.Pages.create(page);
-            page.createdAt = 'recently'
+            page.createdAt = moment().format('YYYY-MM-DD');
             runInAction(() => {
                 this.pageRegistry.set(page.id!, page);
                 this.selectedElement = page;
@@ -85,7 +86,6 @@ class PageStore implements ISidebarListStore {
 
     updateOne = async (page: Page) => {
         this.loading = true;
-        page.createdAt === 'recently' ? 'recently' : page.createdAt;
 
         try {
             await agent.Pages.update(page);

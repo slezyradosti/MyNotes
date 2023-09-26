@@ -3,6 +3,7 @@ import { Notebook } from "../models/notebook";
 import { v4 as uuid } from 'uuid';
 import agent from "../api/agent";
 import ISidebarListStore from "./ISidebarListStore";
+import moment from "moment";
 
 class NotebookStore implements ISidebarListStore {
     notebookRegistry = new Map<string, Notebook>();
@@ -73,7 +74,7 @@ class NotebookStore implements ISidebarListStore {
 
         try {
             await agent.Notebooks.create(notebook);
-            notebook.createdAt = 'recently';
+            notebook.createdAt = moment().format('YYYY-MM-DD');
             runInAction(() => {
                 this.notebookRegistry.set(notebook.id!, notebook);
                 this.selectedElement = notebook;
@@ -90,7 +91,6 @@ class NotebookStore implements ISidebarListStore {
 
     updateOne = async (notebook: Notebook) => {
         this.loading = true;
-        notebook.createdAt = 'recently';
 
         try {
             await agent.Notebooks.update(notebook);
