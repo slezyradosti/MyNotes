@@ -66,11 +66,13 @@ function SideNav({ closeNav }: Props) {
                         setCurrentEntityName={setCurrentEntityName}
                         entityType={currentEntity.getEntityType}
                         getOne={currentEntity.getOne}
+                        entityEditMode={currentEntity.editMode}
                     />
                 </div>
-                <Divider>
+
+                {/* <Divider>
                     <a onClick={() => currentEntity.openForm()} style={{ color: '#bfbfbf' }}>+ Add new</a>
-                </Divider>
+                </Divider> */}
             </div >
         </>
     );

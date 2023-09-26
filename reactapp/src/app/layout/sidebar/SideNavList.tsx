@@ -4,11 +4,15 @@ import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
 import { Unit } from "../../models/unit";
 import { Page } from "../../models/page";
+import NotebookForm from "../../../features/notebooks/form/NotebookForm";
+import UnitForm from "../../../features/units/form/UnitForm";
+import PageForm from "../../../features/pages/form/PageForm";
 
 interface Props {
   entityArray: Notebook[] | Unit[] | Page[];
   entityType: string;
   entityLoading: boolean;
+  entityEditMode: boolean;
   entityOpenForm: (id?: string | undefined) => void;
   selectEntity: (id: string) => void;
   deleteEntity: (id: string) => Promise<void>;
@@ -20,7 +24,7 @@ interface Props {
 
 function SideNavList({ entityArray, entityLoading, entityOpenForm,
   selectEntity, deleteEntity, setCurrentEntityName,
-  entityType, getOne, updateOne }: Props) {
+  entityType, getOne, updateOne, entityEditMode }: Props) {
   const [target, setTarget] = useState('');
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -149,6 +153,16 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
           ))}
         </Grid>
       </Item.Group>
+
+      {entityEditMode && entityType === 'Notebook' &&
+        <NotebookForm />}
+      {entityEditMode && entityType === 'Unit' &&
+        <UnitForm />}
+      {entityEditMode && entityType === 'Page' &&
+        <PageForm />}
+      <Divider>
+        <a onClick={() => entityOpenForm()} style={{ color: '#bfbfbf' }}>+ Add new</a>
+      </Divider>
     </>
   );
 }

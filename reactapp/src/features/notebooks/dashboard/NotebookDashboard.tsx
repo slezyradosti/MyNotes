@@ -17,12 +17,12 @@ function NotebookDashboard() {
                     <NotebookDetails />} */}
             </Grid.Column>
             <Grid.Column width={4}>
-                {editMode &&
+                {/* {editMode &&
                     <NotebookForm />}
                 {unitStore.editMode &&
                     <UnitForm />}
                 {pageStore.editMode &&
-                    <PageForm />}
+                    <PageForm />} */}
             </Grid.Column>
         </Grid>
     );

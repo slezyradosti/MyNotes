@@ -5,17 +5,16 @@ import { observer } from "mobx-react-lite";
 
 function NotebookForm() {
     const { notebookStore } = useStore();
-    const { selectedElement, closeForm,
-        createOne, updateOne, loading } = notebookStore;
+    const { closeForm, createOne, loading } = notebookStore;
 
-    const initialState = selectedElement ?? {
+    const initialState = {
         name: '',
     };
 
     const [notebookDto, setNotebookDto] = useState(initialState);
 
     function handleSubmit() {
-        notebookDto.id ? updateOne(notebookDto) : createOne(notebookDto);
+        createOne(notebookDto);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -25,14 +24,20 @@ function NotebookForm() {
 
     return (
         <>
-
             <Form onSubmit={handleSubmit} autoComplete='off'>
-                <Form.Input palceholder='Name' value={notebookDto.name} name='name' onChange={handleInputChange} />
-                <p aria-readonly>{notebookDto.createdAt}</p>
+                <Form.Input
+                    autoFocus
+                    palceholder='Name'
+                    value={notebookDto.name}
+                    name='name'
+                    onChange={handleInputChange}
+                    onBlur={() => closeForm()}
+                    fluid
+                />
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
-                <Form.TextArea disabled hidden value={notebookDto.id} />
-                <Form.TextArea disabled hidden value={notebookDto.userId} />
+                <br />
+                <br />
             </Form>
         </>
     );
