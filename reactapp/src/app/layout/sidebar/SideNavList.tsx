@@ -1,4 +1,4 @@
-import { Dropdown, Grid, Input, Item } from "semantic-ui-react";
+import { Dropdown, Grid, Input, Item, Divider } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
@@ -12,7 +12,7 @@ interface Props {
   entityOpenForm: (id?: string | undefined) => void;
   selectEntity: (id: string) => void;
   deleteEntity: (id: string) => Promise<void>;
-  updateOne: ((enity: Notebook | Unit | Page) => Promise<void>);
+  updateOne: ((notebook: Notebook) => Promise<void>) | ((unit: Unit) => Promise<void>) | ((page: Page) => Promise<void>);
   getOne: (id: string) => Notebook | Unit | Page;
 
   setCurrentEntityName: (name: string) => void;

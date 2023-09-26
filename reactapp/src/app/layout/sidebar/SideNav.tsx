@@ -50,10 +50,11 @@ function SideNav({ closeNav }: Props) {
         <>
             <div id="mySidenav" className="sidenav">
                 <div>
-                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} > ← </a>
-                    {/* use to back button */}
+                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
+                        ←
+                    </a>
 
-                    <a className="closebtn" onClick={closeNav}>x</a>
+                    <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>x</a>
 
                     <SideNavList
                         entityArray={currentEntity.getArray}
@@ -68,7 +69,7 @@ function SideNav({ closeNav }: Props) {
                     />
                 </div>
                 <Divider>
-                    <a onClick={() => currentEntity.openForm()} >+ Add new</a>
+                    <a onClick={() => currentEntity.openForm()} style={{ color: '#bfbfbf' }}>+ Add new</a>
                 </Divider>
             </div >
         </>
