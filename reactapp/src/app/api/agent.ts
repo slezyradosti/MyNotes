@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Notebook } from "../models/notebook";
 import { Unit } from "../models/unit";
 import { Page } from "../models/page";
+import Note from "../models/note";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -61,10 +62,19 @@ const Pages = {
     delete: (id: string) => requests.delete<void>(`/pages/${id}`)
 }
 
+const Notes = {
+    list: (pageId: string) => requests.get<Note[]>(`/notes?unitId=${pageId}`),
+    details: (id: string) => requests.get<Note>(`/notes/${id}`),
+    create: (note: Note) => requests.post<void>('/notes', note),
+    update: (note: Note) => requests.put<void>(`/notes/${note.id}`, note),
+    delete: (id: string) => requests.delete<void>(`/notes/${id}`)
+}
+
 const agent = {
     Notebooks,
     Units,
     Pages,
+    Notes
 }
 
 export default agent;
