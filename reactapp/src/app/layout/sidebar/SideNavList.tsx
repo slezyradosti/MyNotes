@@ -52,7 +52,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
         setCurrentEntityName('Page');
         break;
       case 'Page':
-        //setCurrentEntityName('Notebook'); //??????
+        setCurrentEntityName('Note'); //??????
         break;
       default:
         console.log('Entity type doesn\'t exists: ' + entityType)

@@ -5,16 +5,22 @@ import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import UnitForm from "../../units/form/UnitForm";
 import PageForm from "../../pages/form/PageForm";
+import NoteList from "../../notes/list/NoteList";
+import { useEffect } from "react";
 
 function NotebookDashboard() {
-    const { notebookStore, unitStore, pageStore } = useStore();
-    const { selectedElement, editMode } = notebookStore;
+    const { notebookStore, unitStore, pageStore, noteStore } = useStore();
+    const { selectedElement, editMode } = pageStore;
 
     return (
         <Grid>
             <Grid.Column width={12}>
-                {/* {selectedElement && !editMode &&
-                    <NotebookDetails />} */}
+                {selectedElement && !editMode &&
+                    <>
+                        <NoteList noteArray={noteStore.getArray} />
+                        {console.log('display notes: ' + noteStore.getArray)}
+                    </>
+                }
             </Grid.Column>
             <Grid.Column width={4}>
                 {/* {editMode &&

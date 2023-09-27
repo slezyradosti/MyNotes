@@ -63,7 +63,7 @@ const Pages = {
 }
 
 const Notes = {
-    list: (pageId: string) => requests.get<Note[]>(`/notes?unitId=${pageId}`),
+    list: (pageId: string) => requests.get<Note[]>(`/notes?pageId=${pageId}`),
     details: (id: string) => requests.get<Note>(`/notes/${id}`),
     create: (note: Note) => requests.post<void>('/notes', note),
     update: (note: Note) => requests.put<void>(`/notes/${note.id}`, note),
