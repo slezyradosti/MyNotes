@@ -13,31 +13,21 @@ function NoteList({ noteArray }: Props) {
 
 
     return (
-        <>
-            <Item.Group divided>
-                <Grid>
-                    {noteArray.map((note) => (
-                        <Grid.Row key={note.id}>
-                            <Grid.Column width={4}>
-                                <Item key={note.id}>
-                                    <Item.Content>
-                                        <Item.Header>
-                                            {note.name}
-                                        </Item.Header>
-                                        <Item.Description>
-                                            {note.record}
-                                        </Item.Description>
-                                        <Item.Meta>
-                                            {note.createdAt}
-                                        </Item.Meta>
-                                    </Item.Content>
-                                </Item>
-                            </Grid.Column>
-                        </Grid.Row>
-                    ))}
-                </Grid>
-            </Item.Group>
-        </>
+        <Item.Group divided>
+            <Grid columns={3} doubling stackable> {/* Enable doubling and stacking */}
+                {noteArray.map((note) => (
+                    <Grid.Column key={note.id}>
+                        <Item key={note.id}>
+                            <Item.Content>
+                                <Item.Header>{note.name}</Item.Header>
+                                <Item.Description>{note.record}</Item.Description>
+                                <Item.Meta>{note.createdAt}</Item.Meta>
+                            </Item.Content>
+                        </Item>
+                    </Grid.Column>
+                ))}
+            </Grid>
+        </Item.Group>
     );
 }
 
