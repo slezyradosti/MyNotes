@@ -7,8 +7,9 @@ namespace Application.DTOs
         public Guid Id { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string Record { get; set; }
+
+        [StringLength(50)]
         public string Name { get; set; }
         public Guid PageId { get; set; }
     }

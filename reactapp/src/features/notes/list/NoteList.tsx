@@ -126,21 +126,22 @@ function NoteList({ noteArray, noteLoading, noteEditMode,
                                 ) : (
                                     <div>
                                         {/* Use a label as a clickable element */}
-                                        <label
-                                            onClick={() => handleEditNoteStart(note.id!)}
-                                            style={{ cursor: "pointer" }}
-                                        >
-                                            {note.name}
-                                        </label>
-                                        <Button
-                                            loading={noteLoading && target === note.id}
-                                            onClick={(e) => handleDeleteNote(e, note.id!)}
-                                        >
-                                            x
-                                        </Button>
-                                        <br />
+                                        <div className="nameBtn">
+                                            <label
+                                                onClick={() => handleEditNoteStart(note.id!)}
+                                                style={{ cursor: "pointer" }}
+                                            >
+                                                {note.name}
+                                            </label>
+                                            <Button
+                                                loading={noteLoading && target === note.id}
+                                                onClick={(e) => handleDeleteNote(e, note.id!)}
+                                            >
+                                                x
+                                            </Button>
+                                        </div>
                                         {/* Use a div for displaying the description */}
-                                        <Item.Meta>{note.createdAt}</Item.Meta>
+                                        <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
                                         <div onClick={() => handleEditNoteCancel(note.id!)}>{note.record}</div>
                                     </div>
                                 )}
