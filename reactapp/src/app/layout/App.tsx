@@ -32,12 +32,12 @@ function App() {
   return (
     <>
       <NavBar openNav={openNav} />
-      <div id="main">
-        <Container style={{ marginTop: '7em' }}>
-          <SideNav closeNav={closeNav} />
+      <SideNav closeNav={closeNav} />
+      <Container style={{ marginTop: '7em' }} fluid>
+        <div id="main">
           <NotebookDashboard />
-        </Container>
-      </div>
+        </div>
+      </Container>
     </>
   );
 }

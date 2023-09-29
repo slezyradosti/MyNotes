@@ -21,6 +21,7 @@ function NotebookDashboard() {
                             noteArray={noteStore.getArray}
                             noteLoading={noteStore.loading}
                             noteEditMode={noteStore.editMode}
+                            noteSelectedElement={noteStore.selectedElement}
                             noteOpenForm={noteStore.openForm}
                             noteSelect={noteStore.selectOne}
                             noteUpdate={noteStore.updateOne}

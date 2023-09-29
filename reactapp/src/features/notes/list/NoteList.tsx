@@ -7,6 +7,7 @@ interface Props {
     noteArray: Note[];
     noteLoading: boolean;
     noteEditMode: boolean;
+    noteSelectedElement: Note | undefined;
     noteOpenForm: (id?: string | undefined) => void;
     noteSelect: (id: string) => void;
     noteUpdate: (note: Note) => Promise<void>;
@@ -14,7 +15,7 @@ interface Props {
     getNote: (id: string) => Note;
 }
 
-function NoteList({ noteArray, noteLoading, noteEditMode,
+function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     noteOpenForm, noteSelect, noteUpdate, noteDelete, getNote }: Props) {
     const inputRef = useRef<Input | TextArea | null>(null);
     // Local state for editing a note
@@ -75,7 +76,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode,
     const handleDeleteNote = (e: SyntheticEvent<HTMLButtonElement>, noteId: string) => {
         // Implement deleting the note, e.g., make an API call
         // Remove the note from the noteArray
-        setTarget(noteId);
+        noteSelect(noteId);
         noteDelete(noteId);
     };
 
@@ -134,7 +135,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode,
                                                 {note.name}
                                             </label>
                                             <Button
-                                                loading={noteLoading && target === note.id}
+                                                loading={noteLoading && noteSelectedElement?.id === note.id}
                                                 onClick={(e) => handleDeleteNote(e, note.id!)}
                                             >
                                                 x
