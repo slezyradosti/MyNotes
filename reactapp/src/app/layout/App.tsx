@@ -33,9 +33,14 @@ function App() {
     <>
       <NavBar openNav={openNav} />
       <SideNav closeNav={closeNav} />
-      <Container style={{ marginTop: '7em' }} fluid>
+      <Container fluid>
         <div id="main">
-          <NotebookDashboard />
+          <div style={{ marginTop: '4em' }}>
+            Create note button
+          </div>
+          <div style={{ marginTop: '7em' }}>
+            <NotebookDashboard />
+          </div>
         </div>
       </Container>
     </>
