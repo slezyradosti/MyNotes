@@ -63,14 +63,14 @@ function SideNav({ closeNav }: Props) {
                     <SideNavList
                         entityArray={currentEntity.getArray}
                         entityLoading={currentEntity.loading}
+                        entityType={currentEntity.getEntityType}
+                        entityEditMode={currentEntity.editMode}
                         entityOpenForm={currentEntity.openForm}
                         selectEntity={currentEntity.selectOne}
                         deleteEntity={currentEntity.deleteOne}
                         updateOne={currentEntity.updateOne}
                         setCurrentEntityName={setCurrentEntityName}
-                        entityType={currentEntity.getEntityType}
                         getOne={currentEntity.getOne}
-                        entityEditMode={currentEntity.editMode}
                     />
                 </div>
 

@@ -17,7 +17,16 @@ function NotebookDashboard() {
             <Grid.Column width={12}>
                 {selectedElement && !editMode &&
                     <>
-                        <NoteList noteArray={noteStore.getArray} />
+                        <NoteList
+                            noteArray={noteStore.getArray}
+                            noteLoading={noteStore.loading}
+                            noteEditMode={noteStore.editMode}
+                            noteOpenForm={noteStore.openForm}
+                            noteSelect={noteStore.selectOne}
+                            noteUpdate={noteStore.updateOne}
+                            noteDelete={noteStore.deleteOne}
+                            getNote={noteStore.getOne}
+                        />
                         {console.log('display notes: ' + noteStore.getArray)}
                     </>
                 }

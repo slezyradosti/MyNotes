@@ -39,7 +39,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
   }, [editingId]);
 
   function handleDeleteEntity(e: SyntheticEvent<HTMLButtonElement>, id: string) {
-    setTarget(e.currentTarget.name);
+    setTarget(id);
     deleteEntity(id);
   }
 
