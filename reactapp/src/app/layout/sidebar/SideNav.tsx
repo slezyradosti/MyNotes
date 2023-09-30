@@ -12,7 +12,7 @@ interface Props {
 }
 
 function SideNav({ closeNav }: Props) {
-    const { notebookStore, unitStore, pageStore } = useStore(); // provide all entitites for the sidebarlist
+    const { notebookStore, unitStore, pageStore, noteStore } = useStore(); // provide all entitites for the sidebarlist
     const [currentEntityName, setCurrentEntityName] = useState('Notebook');
     const [currentEntity, setCurrentEntity] = useState<NotebookStore | UnitStore | PageStore>(notebookStore); //entity
     const [parentEntityName, setParentEntityName] = useState<string>('');
@@ -24,6 +24,7 @@ function SideNav({ closeNav }: Props) {
                 setCurrentEntity(notebookStore);
 
                 setParentEntityName('');
+
                 setParentEntity(undefined);
                 break;
             case 'Unit':
@@ -40,8 +41,11 @@ function SideNav({ closeNav }: Props) {
                 setParentEntityName('Unit');
                 setParentEntity(unitStore);
                 break;
+            case 'Note':
+                noteStore.loadNotes(pageStore.selectedElement!.id!);
+                break;
             default:
-                console.log('Wrong value: ' + currentEntityName);
+                console.log('SideNav Wrong value: ' + currentEntityName);
                 break;
         }
     }, [currentEntityName, notebookStore, unitStore, pageStore])
@@ -59,14 +63,14 @@ function SideNav({ closeNav }: Props) {
                     <SideNavList
                         entityArray={currentEntity.getArray}
                         entityLoading={currentEntity.loading}
+                        entityType={currentEntity.getEntityType}
+                        entityEditMode={currentEntity.editMode}
                         entityOpenForm={currentEntity.openForm}
                         selectEntity={currentEntity.selectOne}
                         deleteEntity={currentEntity.deleteOne}
                         updateOne={currentEntity.updateOne}
                         setCurrentEntityName={setCurrentEntityName}
-                        entityType={currentEntity.getEntityType}
                         getOne={currentEntity.getOne}
-                        entityEditMode={currentEntity.editMode}
                     />
                 </div>
 
