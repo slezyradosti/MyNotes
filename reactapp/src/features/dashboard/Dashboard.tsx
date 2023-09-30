@@ -1,20 +1,15 @@
 import { Grid } from "semantic-ui-react";
-import NotebookForm from "../form/NotebookForm";
-import NotebookDetails from "../details/NotebooksDetails";
-import { useStore } from "../../../app/stores/store";
+import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import UnitForm from "../../units/form/UnitForm";
-import PageForm from "../../pages/form/PageForm";
-import NoteList from "../../notes/list/NoteList";
-import { useEffect } from "react";
+import NoteList from "../notes/list/NoteList";
 
-function NotebookDashboard() {
-    const { notebookStore, unitStore, pageStore, noteStore } = useStore();
+function Dashboard() {
+    const { pageStore, noteStore } = useStore();
     const { selectedElement, editMode } = pageStore;
 
     return (
         <Grid>
-            <Grid.Column width={12}>
+            <Grid.Column width={16}>
                 {selectedElement && !editMode &&
                     <>
                         <NoteList
@@ -32,16 +27,8 @@ function NotebookDashboard() {
                     </>
                 }
             </Grid.Column>
-            <Grid.Column width={4}>
-                {/* {editMode &&
-                    <NotebookForm />}
-                {unitStore.editMode &&
-                    <UnitForm />}
-                {pageStore.editMode &&
-                    <PageForm />} */}
-            </Grid.Column>
         </Grid>
     );
 }
 
-export default observer(NotebookDashboard);
+export default observer(Dashboard);

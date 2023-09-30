@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { Button, Grid, Input, Item, TextArea } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Item, TextArea } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
+import NoteForm from "../form/NoteForm";
 
 interface Props {
     noteArray: Note[];
@@ -21,7 +22,6 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     // Local state for editing a note
     const [editNoteId, setEditNoteId] = useState<string | null>(null);
     const [editedNote, setEditedNote] = useState<Note | null>(null);
-    const [target, setTarget] = useState('');
 
     // changes focus to the editing name
     useEffect(() => {
@@ -29,8 +29,6 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
             inputRef.current.focus();
         }
     }, [editNoteId]);
-
-    // ... (other functions and handlers)
 
     // Handler for editing a note
     const handleEditNoteStart = (noteId: string) => {
@@ -88,70 +86,79 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
         }
     };
 
-    // ... (other handlers for creating and deleting notes)
-
     return (
-        <Item.Group divided>
-            <Grid columns={3} doubling stackable>
-                {noteArray.map((note) => (
-                    <Grid.Column key={note.id}>
-                        <Item key={note.id}>
-                            <Item.Content>
-                                {editNoteId === note.id ? (
-                                    <div>
-                                        <Input
-                                            ref={(input) => (inputRef.current = input)}
-                                            type="text"
-                                            value={editedNote?.name}
-                                            onChange={(e) => handleEditChange(e, "name")}
-                                        />
-                                        <TextArea
-                                            ref={(input) => (inputRef.current = input)}
-                                            value={editedNote?.record}
-                                            onChange={(e) => handleEditChange(e, "record")}
-                                        />
-                                        <br />
-                                        <Button
-                                            onClick={() => handleSaveNote(note.id!)}
-                                            color='green'
-                                        >
-                                            Save
-                                        </Button>
-                                        <Button
-                                            onClick={handleEditNoteCancel}
-                                            color='red'
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        {/* Use a label as a clickable element */}
-                                        <div className="nameBtn">
-                                            <label
-                                                onClick={() => handleEditNoteStart(note.id!)}
-                                                style={{ cursor: "pointer" }}
-                                            >
-                                                {note.name}
-                                            </label>
+        <>
+            <Item.Group divided>
+                <Grid columns={2} doubling stackable>
+                    {noteArray.map((note) => (
+
+                        <Grid.Column key={note.id}>
+                            <Item key={note.id}>
+                                <Item.Content>
+                                    {editNoteId === note.id ? (
+                                        <div>
+                                            <Input
+                                                ref={(input) => (inputRef.current = input)}
+                                                type="text"
+                                                value={editedNote?.name}
+                                                onChange={(e) => handleEditChange(e, "name")}
+                                            />
+                                            <TextArea
+                                                ref={(input) => (inputRef.current = input)}
+                                                value={editedNote?.record}
+                                                onChange={(e) => handleEditChange(e, "record")}
+                                            />
+                                            <br />
                                             <Button
-                                                loading={noteLoading && noteSelectedElement?.id === note.id}
-                                                onClick={(e) => handleDeleteNote(e, note.id!)}
+                                                onClick={() => handleSaveNote(note.id!)}
+                                                color='green'
                                             >
-                                                x
+                                                Save
+                                            </Button>
+                                            <Button
+                                                onClick={handleEditNoteCancel}
+                                                color='red'
+                                            >
+                                                Cancel
                                             </Button>
                                         </div>
-                                        {/* Use a div for displaying the description */}
-                                        <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
-                                        <div onClick={() => handleEditNoteCancel(note.id!)}>{note.record}</div>
-                                    </div>
-                                )}
-                            </Item.Content>
-                        </Item>
-                    </Grid.Column>
-                ))}
-            </Grid>
-        </Item.Group>
+                                    ) : (
+                                        <div>
+                                            {/* Use a label as a clickable element */}
+                                            <div className="nameBtn">
+                                                <label
+                                                    onClick={() => handleEditNoteStart(note.id!)}
+                                                    style={{ cursor: "pointer" }}
+                                                >
+                                                    {note.name}
+                                                </label>
+                                                <Button
+                                                    loading={noteLoading && noteSelectedElement?.id === note.id}
+                                                    onClick={(e) => handleDeleteNote(e, note.id!)}
+                                                    style={{ backgroundColor: 'transparent' }}
+                                                >
+                                                    <Icon name='trash' />
+                                                </Button>
+                                            </div>
+                                            {/* Use a div for displaying the description */}
+                                            <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
+                                            <div onClick={() => handleEditNoteCancel(note.id!)}>{note.record}</div>
+                                        </div>
+                                    )}
+                                </Item.Content>
+                            </Item>
+                            <Divider />
+                        </Grid.Column>
+
+                    ))}
+                    {noteEditMode &&
+                        <Grid.Column key={'newNoteId'}>
+                            <NoteForm />
+                        </Grid.Column>
+                    }
+                </Grid>
+            </Item.Group>
+        </>
     );
 }
 
