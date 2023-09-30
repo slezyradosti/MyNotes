@@ -17,7 +17,7 @@ interface Props {
 }
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
-    noteOpenForm, noteSelect, noteUpdate, noteDelete, getNote }: Props) {
+    noteSelect, noteUpdate, noteDelete, getNote }: Props) {
     const inputRef = useRef<Input | TextArea | null>(null);
     // Local state for editing a note
     const [editNoteId, setEditNoteId] = useState<string | null>(null);
@@ -57,15 +57,6 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
 
     // Handler for canceling editing a note
     const handleEditNoteCancel = () => {
-        setEditNoteId(null);
-        setEditedNote(null);
-    };
-
-    // Handler for creating a new note
-    const handleCreateNote = () => {
-        // Implement creating a new note, e.g., make an API call
-        // Append the new note to the noteArray
-        // Clear the input fields
         setEditNoteId(null);
         setEditedNote(null);
     };
@@ -142,7 +133,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             {/* Use a div for displaying the description */}
                                             <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
-                                            <div onClick={() => handleEditNoteCancel(note.id!)}>{note.record}</div>
+                                            <div onClick={() => handleEditNoteCancel()}>{note.record}</div>
                                         </div>
                                     )}
                                 </Item.Content>
