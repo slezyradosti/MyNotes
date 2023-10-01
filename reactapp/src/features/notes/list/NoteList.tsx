@@ -89,8 +89,8 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                     {editNoteId === note.id ? (
                                         <div className="ui form">
                                             <Input
+                                                required={true}
                                                 ref={(input) => (inputRef.current = input)}
-
                                                 value={editedNote?.name}
                                                 name='name'
                                                 onChange={(e) => handleEditChange(e, "name")}
@@ -98,6 +98,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             />
                                             <br />
                                             <TextArea
+                                                required={true}
                                                 rows={rowsCount}
                                                 ref={(input) => (inputRef.current = input)}
                                                 value={editedNote?.record}

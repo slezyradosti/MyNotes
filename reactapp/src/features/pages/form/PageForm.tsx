@@ -28,6 +28,7 @@ function PageForm() {
         <>
             <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input
+                    required={true}
                     autoFocus
                     palceholder='Name'
                     value={pageDto.name}

@@ -96,6 +96,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                       <Item.Description className="notebook-description">
                         {editingId === entity.id ? (
                           <Input
+                            required={true}
                             className="notebook-link"
                             ref={(input) => (inputRef.current = input)}
                             value={editedName}
