@@ -98,6 +98,11 @@ a:hover {
   box-shadow: 0 0 0 1px rgba(34, 36, 38, .15) inset;
 }
 
+.addBtnColor {
+  color: #cccccc !important;
+  background-color: #2B2B2B !important;
+}
+
 .cancelBtnColor {
   background-color: #D8D9DA !important;
 }

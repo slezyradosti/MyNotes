@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, FormTextArea, Grid, Icon, Input, Item, Segment, TextArea, Form, Label } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Item, TextArea, Label } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
@@ -105,6 +105,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                                 onChange={(e) => handleEditChange(e, "record")}
                                                 fluid
                                             />
+                                            <br />
                                             <br />
                                             <Button
                                                 onClick={handleEditNoteCancel}
