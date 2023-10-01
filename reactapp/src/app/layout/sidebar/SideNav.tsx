@@ -75,10 +75,6 @@ function SideNav({ closeNav }: Props) {
                         getOne={currentEntity.getOne}
                     />
                 </div>
-
-                {/* <Divider>
-                    <a onClick={() => currentEntity.openForm()} style={{ color: '#bfbfbf' }}>+ Add new</a>
-                </Divider> */}
             </div >
         </>
     );

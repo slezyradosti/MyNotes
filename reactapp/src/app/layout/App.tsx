@@ -6,9 +6,10 @@ import LoadingComponent from "./LoadingComponent";
 import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 import SideNav from "./sidebar/SideNav";
+import AddNoteButton from "../../features/notes/other/AddNoteButton";
 
 function App() {
-  const { notebookStore, pageStore, noteStore } = useStore();
+  const { notebookStore, pageStore } = useStore();
 
   useEffect(() => {
     notebookStore.loadNotebooks();
@@ -36,23 +37,7 @@ function App() {
         <div id="main">
           <div style={{ marginTop: '4em' }}>
             {pageStore.selectedElement &&
-              <>
-                {/* <a onClick={() => noteStore.openForm()} >
-                  <Icon name='add' size='large' bordered backgroundColor='grey' circular className='addBtnColor' />
-                </a> */}
-
-                <Button animated='vertical' style={{ backgroundColor: 'transparent' }}>
-                  <Button.Content hidden >
-                    <Label circular size='large' className="addBtnColor" style={{ boxShadow: '0 0 0 1px rgba(34, 36, 38, .15) inset ' }}>
-                      ADD NOTE
-                    </Label>
-                  </Button.Content>
-                  <Button.Content visible>
-                    <Icon name='add' size='large' bordered backgroundColor='grey' circular className='addBtnColor' />
-                  </Button.Content>
-                </Button>
-              </>
-
+              <AddNoteButton />
             }
           </div>
           <div style={{ marginTop: '2em' }}>
