@@ -107,18 +107,21 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             />
                                             <br />
                                             <br />
-                                            <Button
-                                                onClick={handleEditNoteCancel}
-                                                className="cancelBtnColor Border"
-                                            >
-                                                Cancel
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleSaveNote(note.id!)}
-                                                className="submitBtnColor Border"
-                                            >
-                                                Save
-                                            </Button>
+                                            <div style={{ display: 'flex', justifyContent: 'end' }}>
+                                                <Button
+                                                    onClick={handleEditNoteCancel}
+
+                                                    className="cancelBtnColor Border"
+                                                    content='Cancel'
+                                                />
+                                                <Button
+                                                    onClick={() => handleSaveNote(note.id!)}
+
+                                                    className="submitBtnColor Border"
+                                                    content='Save'
+                                                />
+                                            </div>
+
                                         </div>
                                     ) : (
                                         <div>

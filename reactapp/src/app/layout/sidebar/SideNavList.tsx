@@ -164,7 +164,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
       <Divider style={{ color: 'red' }}>
         <a onClick={() => entityOpenForm()} style={{ color: '#bfbfbf' }}>
           <Icon name='add' size='large' />
-          Add new
+          Add {entityType}
         </a>
       </Divider>
     </>

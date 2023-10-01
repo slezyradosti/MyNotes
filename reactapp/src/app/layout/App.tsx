@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button, Container, Icon, } from "semantic-ui-react";
+import { Button, Container, Icon, Label, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import Dashboard from "../../features/dashboard/Dashboard";
 import LoadingComponent from "./LoadingComponent";
@@ -36,11 +36,23 @@ function App() {
         <div id="main">
           <div style={{ marginTop: '4em' }}>
             {pageStore.selectedElement &&
-              <a
-                onClick={() => noteStore.openForm()}
-              >
-                <Icon name='add' size='large' bordered backgroundColor='grey' circular className='addBtnColor' />
-              </a>
+              <>
+                {/* <a onClick={() => noteStore.openForm()} >
+                  <Icon name='add' size='large' bordered backgroundColor='grey' circular className='addBtnColor' />
+                </a> */}
+
+                <Button animated='vertical' style={{ backgroundColor: 'transparent' }}>
+                  <Button.Content hidden >
+                    <Label circular size='large' className="addBtnColor" style={{ boxShadow: '0 0 0 1px rgba(34, 36, 38, .15) inset ' }}>
+                      ADD NOTE
+                    </Label>
+                  </Button.Content>
+                  <Button.Content visible>
+                    <Icon name='add' size='large' bordered backgroundColor='grey' circular className='addBtnColor' />
+                  </Button.Content>
+                </Button>
+              </>
+
             }
           </div>
           <div style={{ marginTop: '2em' }}>
