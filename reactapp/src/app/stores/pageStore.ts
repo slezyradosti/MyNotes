@@ -92,13 +92,13 @@ class PageStore implements ISidebarListStore {
             runInAction(() => {
                 this.pageRegistry.set(page.id!, page);
                 this.selectedElement = page;
-                this.editMode = false;
             })
         } catch (error) {
             console.log(error);
         } finally {
             runInAction(() => {
                 this.loading = false;
+                this.editMode = false;
             });
         }
     }

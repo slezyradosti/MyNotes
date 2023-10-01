@@ -78,13 +78,13 @@ class NotebookStore implements ISidebarListStore {
             runInAction(() => {
                 this.notebookRegistry.set(notebook.id!, notebook);
                 this.selectedElement = notebook;
-                this.editMode = false;
             });
         } catch (error) {
             console.log(error);
         } finally {
             runInAction(() => {
                 this.loading = false;
+                this.editMode = false;
             });
         }
     }

@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import { Button, Container, } from "semantic-ui-react";
+import { Button, Container, Icon, Label, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import Dashboard from "../../features/dashboard/Dashboard";
 import LoadingComponent from "./LoadingComponent";
 import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 import SideNav from "./sidebar/SideNav";
+import AddNoteButton from "../../features/notes/other/AddNoteButton";
 
 function App() {
-  const { notebookStore, pageStore, noteStore } = useStore();
+  const { notebookStore, pageStore } = useStore();
 
   useEffect(() => {
     notebookStore.loadNotebooks();
@@ -36,11 +37,7 @@ function App() {
         <div id="main">
           <div style={{ marginTop: '4em' }}>
             {pageStore.selectedElement &&
-              <Button
-                primary
-                onClick={() => noteStore.openForm()}
-                content='Create note button'
-              />
+              <AddNoteButton />
             }
           </div>
           <div style={{ marginTop: '2em' }}>

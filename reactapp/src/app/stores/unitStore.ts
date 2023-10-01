@@ -73,13 +73,13 @@ class UnitStore implements ISidebarListStore {
             runInAction(() => {
                 this.unitRegistry.set(unit.id!, unit);
                 this.selectedElement = unit;
-                this.editMode = false;
             });
         } catch (error) {
             console.log(error);
         } finally {
             runInAction(() => {
                 this.loading = false;
+                this.editMode = false;
             });
         }
     }

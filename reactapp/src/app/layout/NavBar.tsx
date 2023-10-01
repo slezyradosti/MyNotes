@@ -1,4 +1,4 @@
-import { Container, Menu } from 'semantic-ui-react';
+import { Container, Icon, Menu } from 'semantic-ui-react';
 import menu from '../../assets/menu.png'
 
 interface Props {
@@ -10,7 +10,7 @@ function NavBar({ openNav }: Props) {
         <Menu inverted fixed='top'>
             <Menu.Item header>
                 <a className='sidenavOpen' id='sidenavOpen' onClick={openNav} >
-                    <img src={menu} alt="menu" style={{ width: '25px' }} />
+                    <Icon name='bars' size='large' />
                 </a>
             </Menu.Item>
         </Menu>

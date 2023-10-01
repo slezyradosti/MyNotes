@@ -3,7 +3,8 @@ body {
 }
 
 .ui.inverted.top.fixed.menu {
-  background-image: radial-gradient(circle, rgb(110, 158, 188) 0%, rgb(85, 113, 147) 100%) !important;
+  /* background-image: radial-gradient(circle, rgb(110, 158, 188) 0%, rgb(85, 113, 147) 100%) !important; */
+  background-color: #2B2B2B;
 }
 
 .sidenav {
@@ -13,7 +14,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #2B2B2B;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -86,4 +87,27 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.submitBtnColor {
+  background-color: #FFF6E0 !important;
+}
+
+.submitBtnColor.Border {
+  background-color: #FFF6E0 !important;
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, .15) inset;
+}
+
+.addBtnColor {
+  color: #cccccc !important;
+  background-color: #2B2B2B !important;
+}
+
+.cancelBtnColor {
+  background-color: #D8D9DA !important;
+}
+
+.cancelBtnColor.Border {
+  background-color: #D8D9DA !important;
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, .15) inset;
 }

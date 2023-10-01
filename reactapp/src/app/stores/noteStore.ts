@@ -91,13 +91,13 @@ class NoteStore {
             runInAction(() => {
                 this.noteRegistry.set(note.id!, note);
                 this.selectedElement = note;
-                this.editMode = false;
             })
         } catch (error) {
             console.log(error);
         } finally {
             runInAction(() => {
                 this.loading = false;
+                this.editMode = false;
             });
         }
     }
