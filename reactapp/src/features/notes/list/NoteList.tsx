@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, Grid, Icon, Input, Item, TextArea } from "semantic-ui-react";
+import { Button, Divider, FormTextArea, Grid, Icon, Input, Item, Segment, TextArea, Form, Label } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
@@ -22,6 +22,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     // Local state for editing a note
     const [editNoteId, setEditNoteId] = useState<string | null>(null);
     const [editedNote, setEditedNote] = useState<Note | null>(null);
+    const [rowsCount, setrowsCount] = useState<number | undefined>(5);
 
     // changes focus to the editing name
     useEffect(() => {
@@ -86,19 +87,23 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                             <Item key={note.id}>
                                 <Item.Content>
                                     {editNoteId === note.id ? (
-                                        <div>
+                                        <div className="ui form">
                                             <Input
                                                 ref={(input) => (inputRef.current = input)}
-                                                type="text"
+
                                                 value={editedNote?.name}
+                                                name='name'
                                                 onChange={(e) => handleEditChange(e, "name")}
+                                                fluid
                                             />
                                             <br />
                                             <TextArea
+                                                rows={rowsCount}
                                                 ref={(input) => (inputRef.current = input)}
-                                                type='text'
                                                 value={editedNote?.record}
+                                                name='record'
                                                 onChange={(e) => handleEditChange(e, "record")}
+                                                fluid
                                             />
                                             <br />
                                             <Button
@@ -125,7 +130,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                                     {note.name}
                                                 </label>
                                                 <Button
-                                                    loading={noteLoading && noteSelectedElement?.id === note.id}
+                                                    loading={noteLoading && noteSelectedElement?.id === note.id && !noteEditMode}
                                                     onClick={(e) => handleDeleteNote(e, note.id!)}
                                                     style={{ backgroundColor: 'transparent' }}
                                                 >
@@ -134,7 +139,11 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             {/* Use a div for displaying the description */}
                                             <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
-                                            <div onClick={() => handleEditNoteStart(note.id!)}>{note.record}</div>
+                                            <Label
+                                                style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                                                onClick={() => handleEditNoteStart(note.id!)}
+                                                content={note.record}
+                                            />
                                         </div>
                                     )}
                                 </Item.Content>
@@ -143,9 +152,14 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                         </Grid.Column>
 
                     ))}
+
                     {noteEditMode &&
                         <Grid.Column key={'newNoteId'}>
-                            <NoteForm />
+                            <Item key={'newNoteId'}>
+                                <Item.Content>
+                                    <NoteForm />
+                                </Item.Content>
+                            </Item>
                         </Grid.Column>
                     }
                 </Grid>

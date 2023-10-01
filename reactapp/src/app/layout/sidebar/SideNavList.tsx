@@ -16,7 +16,7 @@ interface Props {
   entityOpenForm: (id?: string | undefined) => void;
   selectEntity: (id: string) => void;
   deleteEntity: (id: string) => Promise<void>;
-  updateOne: ((notebook: Notebook) => Promise<void>) | ((unit: Unit) => Promise<void>) | ((page: Page) => Promise<void>);
+  updateOne: (entity: Notebook | Unit | Page) => Promise<void>;
   getOne: (id: string) => Notebook | Unit | Page;
 
   setCurrentEntityName: (name: string) => void;

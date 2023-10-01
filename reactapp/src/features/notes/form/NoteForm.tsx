@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Segment, TextArea } from "semantic-ui-react";
 import { ChangeEvent, useState } from "react";
 
 function NoteForm() {
@@ -36,14 +36,14 @@ function NoteForm() {
                     onChange={handleInputChange}
                     fluid
                 />
-                <Form.TextArea
+                <TextArea
                     required={true}
                     autoFocus
                     placeholder='Record'
                     value={noteDto.record}
                     name='record'
                     onChange={(e) => handleInputChange(e)}
-                    fluid
+
                 />
                 <Button loading={loading} floated="right" type='submit' content='Submit' className="submitBtnColor Border" />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' className="cancelBtnColor Border" />
