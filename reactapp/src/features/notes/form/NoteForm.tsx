@@ -8,8 +8,8 @@ function NoteForm() {
     const { loading, createOne, closeForm } = noteStore
 
     const initialState = {
-        name: 'new note',
-        record: 'new record',
+        name: '',
+        record: '',
         pageId: pageStore.selectedElement?.id ?? ''
     };
 
@@ -28,6 +28,7 @@ function NoteForm() {
         <>
             <Form onSubmit={handleSubmit} autoComplete="off">
                 <Form.Input
+                    required={true}
                     autoFocus
                     placeholder='Name'
                     value={noteDto.name}
@@ -36,6 +37,7 @@ function NoteForm() {
                     fluid
                 />
                 <Form.TextArea
+                    required={true}
                     autoFocus
                     placeholder='Record'
                     value={noteDto.record}
@@ -43,8 +45,8 @@ function NoteForm() {
                     onChange={(e) => handleInputChange(e)}
                     fluid
                 />
-                <Button loading={loading} floated="right" positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
+                <Button loading={loading} floated="right" type='submit' content='Submit' className="submitBtnColor Border" />
+                <Button onClick={closeForm} floated='right' type='button' content='Cancel' className="cancelBtnColor Border" />
             </Form>
         </>
     );

@@ -37,7 +37,8 @@ function App() {
           <div style={{ marginTop: '4em' }}>
             {pageStore.selectedElement &&
               <Button
-                primary
+
+                color="grey"
                 onClick={() => noteStore.openForm()}
                 content='Create note button'
               />

@@ -4,7 +4,7 @@ import { useStore } from "../../stores/store";
 import { useEffect, useState } from "react";
 import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
-import { Divider } from 'semantic-ui-react'
+import { Divider, Icon } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
 
 interface Props {
@@ -55,10 +55,12 @@ function SideNav({ closeNav }: Props) {
             <div id="mySidenav" className="sidenav">
                 <div>
                     <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
-                        ←
+                        <Icon name='arrow left' size='small' />
                     </a>
 
-                    <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>x</a>
+                    <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>
+                        <Icon name='close' size='small' />
+                    </a>
 
                     <SideNavList
                         entityArray={currentEntity.getArray}

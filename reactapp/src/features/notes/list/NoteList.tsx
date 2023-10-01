@@ -82,7 +82,6 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
             <Item.Group divided>
                 <Grid columns={2} doubling stackable>
                     {noteArray.map((note) => (
-
                         <Grid.Column key={note.id}>
                             <Item key={note.id}>
                                 <Item.Content>
@@ -94,23 +93,25 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                                 value={editedNote?.name}
                                                 onChange={(e) => handleEditChange(e, "name")}
                                             />
+                                            <br />
                                             <TextArea
                                                 ref={(input) => (inputRef.current = input)}
+                                                type='text'
                                                 value={editedNote?.record}
                                                 onChange={(e) => handleEditChange(e, "record")}
                                             />
                                             <br />
                                             <Button
-                                                onClick={() => handleSaveNote(note.id!)}
-                                                color='green'
-                                            >
-                                                Save
-                                            </Button>
-                                            <Button
                                                 onClick={handleEditNoteCancel}
-                                                color='red'
+                                                className="cancelBtnColor Border"
                                             >
                                                 Cancel
+                                            </Button>
+                                            <Button
+                                                onClick={() => handleSaveNote(note.id!)}
+                                                className="submitBtnColor Border"
+                                            >
+                                                Save
                                             </Button>
                                         </div>
                                     ) : (
@@ -133,7 +134,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             {/* Use a div for displaying the description */}
                                             <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
-                                            <div onClick={() => handleEditNoteCancel()}>{note.record}</div>
+                                            <div onClick={() => handleEditNoteStart(note.id!)}>{note.record}</div>
                                         </div>
                                     )}
                                 </Item.Content>

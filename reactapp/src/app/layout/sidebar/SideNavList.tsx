@@ -1,4 +1,4 @@
-import { Dropdown, Grid, Input, Item, Divider } from "semantic-ui-react";
+import { Dropdown, Grid, Input, Item, Divider, Icon } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
@@ -102,6 +102,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                             onChange={(e) => setEditedName(e.target.value)}
                             action={{
                               icon: "check",
+                              color: "#FFF6E0",
                               onMouseDown: (e) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
                             }}
                             onBlur={() => handleNameEditCancel()}
@@ -131,7 +132,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                     selection
                     style={{ color: '#a0a0a0', backgroundColor: 'transparent', border: 'none' }}
                   >
-                    <Dropdown.Menu style={{ backgroundColor: '#111111', right: 0, top: 15, border: 'none' }}>
+                    <Dropdown.Menu style={{ backgroundColor: 'transparent', right: 0, top: 15, border: 'none' }}>
                       <Dropdown.Item
                         style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
                         content='Edit'
@@ -161,7 +162,10 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
       {entityEditMode && entityType === 'Page' &&
         <PageForm />}
       <Divider style={{ color: 'red' }}>
-        <a onClick={() => entityOpenForm()} style={{ color: '#bfbfbf' }}>+ Add new</a>
+        <a onClick={() => entityOpenForm()} style={{ color: '#bfbfbf' }}>
+          <Icon name='add' size='large' />
+          Add new
+        </a>
       </Divider>
     </>
   );

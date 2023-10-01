@@ -36,8 +36,8 @@ function PageForm() {
                     //onBlur={() => closeForm()}
                     fluid
                 />
-                <Button loading={loading} floated="right" positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
+                <Button loading={loading} floated="right" type='submit' content='Submit' className="submitBtnColor" />
+                <Button onClick={closeForm} floated='right' type='button' content='Cancel' className="cancelBtnColor" />
                 <br />
                 <br />
             </Form>
