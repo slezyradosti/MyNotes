@@ -88,26 +88,27 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                 <Item.Content>
                                     {editNoteId === note.id ? (
                                         <div className="ui form">
-                                            <Input
-                                                required={true}
-                                                ref={(input) => (inputRef.current = input)}
-                                                value={editedNote?.name}
-                                                name='name'
-                                                onChange={(e) => handleEditChange(e, "name")}
-                                                fluid
-                                            />
-                                            <br />
-                                            <TextArea
-                                                required={true}
-                                                rows={rowsCount}
-                                                ref={(input) => (inputRef.current = input)}
-                                                value={editedNote?.record}
-                                                name='record'
-                                                onChange={(e) => handleEditChange(e, "record")}
-                                                fluid
-                                            />
-                                            <br />
-                                            <br />
+                                            <div className="field">
+                                                <Input
+                                                    required={true}
+                                                    ref={(input) => (inputRef.current = input)}
+                                                    value={editedNote?.name}
+                                                    name='name'
+                                                    onChange={(e) => handleEditChange(e, "name")}
+                                                    fluid
+                                                />
+                                            </div>
+                                            <div className="field">
+                                                <TextArea
+                                                    required={true}
+                                                    rows={rowsCount}
+                                                    ref={(input) => (inputRef.current = input)}
+                                                    value={editedNote?.record}
+                                                    name='record'
+                                                    onChange={(e) => handleEditChange(e, "record")}
+                                                    fluid
+                                                />
+                                            </div>
                                             <div style={{ display: 'flex', justifyContent: 'end' }}>
                                                 <Button
                                                     onClick={handleEditNoteCancel}

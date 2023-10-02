@@ -36,20 +36,20 @@ function NoteForm() {
                     onChange={handleInputChange}
                     fluid
                 />
-                <TextArea
-                    required={true}
-                    autoFocus
-                    placeholder='Record'
-                    value={noteDto.record}
-                    name='record'
-                    onChange={(e) => handleInputChange(e)}
+                <div className="field">
+                    <TextArea
+                        required={true}
+                        autoFocus
+                        placeholder='Record'
+                        value={noteDto.record}
+                        name='record'
+                        onChange={(e) => handleInputChange(e)}
 
-                />
-                <br />
-                <br />
+                    />
+                </div>
                 <Button loading={loading} floated="right" type='submit' content='Submit' className="submitBtnColor Border" />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' className="cancelBtnColor Border" />
-            </Form>
+            </Form >
         </>
     );
 }
