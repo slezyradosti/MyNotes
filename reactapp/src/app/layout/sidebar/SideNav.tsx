@@ -6,6 +6,7 @@ import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
 import { Divider, Icon } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
+import LoadingComponent from "../LoadingComponent";
 
 interface Props {
     closeNav: () => void;
@@ -22,6 +23,7 @@ function SideNav({ closeNav }: Props) {
         switch (currentEntityName) {
             case 'Notebook':
                 setCurrentEntity(notebookStore);
+                notebookStore.loadNotebooks();
 
                 setParentEntityName('');
 
@@ -55,25 +57,29 @@ function SideNav({ closeNav }: Props) {
             <div id="mySidenav" className="sidenav">
                 <div>
                     <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
-                        <Icon name='arrow left' size='small' />
+                        <Icon name='arrow left' size='small' title='Back' />
                     </a>
 
                     <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>
-                        <Icon name='close' size='small' />
+                        <Icon name='close' size='small' title='Close' />
                     </a>
 
-                    <SideNavList
-                        entityArray={currentEntity.getArray}
-                        entityLoading={currentEntity.loading}
-                        entityType={currentEntity.getEntityType}
-                        entityEditMode={currentEntity.editMode}
-                        entityOpenForm={currentEntity.openForm}
-                        selectEntity={currentEntity.selectOne}
-                        deleteEntity={currentEntity.deleteOne}
-                        updateOne={currentEntity.updateOne}
-                        setCurrentEntityName={setCurrentEntityName}
-                        getOne={currentEntity.getOne}
-                    />
+                    {currentEntity?.loadingInitial ?
+                        < LoadingComponent content='Loading data...' inverted={false} />
+                        : (
+                            <SideNavList
+                                entityArray={currentEntity.getArray}
+                                entityLoading={currentEntity.loading}
+                                entityType={currentEntity.getEntityType}
+                                entityEditMode={currentEntity.editMode}
+                                entityOpenForm={currentEntity.openForm}
+                                selectEntity={currentEntity.selectOne}
+                                deleteEntity={currentEntity.deleteOne}
+                                updateOne={currentEntity.updateOne}
+                                setCurrentEntityName={setCurrentEntityName}
+                                getOne={currentEntity.getOne}
+                            />
+                        )}
                 </div>
             </div >
         </>

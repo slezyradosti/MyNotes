@@ -85,7 +85,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
 
   return (
     <>
-      <Item.Group divided>
+      <Item.Group divided >
         <Grid>
           {entityArray.map((entity) => (
             <>

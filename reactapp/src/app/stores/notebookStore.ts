@@ -10,7 +10,7 @@ class NotebookStore implements ISidebarListStore {
     selectedElement: Notebook | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
-    laoadingInitial: boolean = true;
+    loadingInitial: boolean = true;
 
     constructor() {
         makeAutoObservable(this)
@@ -40,7 +40,7 @@ class NotebookStore implements ISidebarListStore {
     }
 
     setLoadingInitial = (state: boolean) => {
-        this.laoadingInitial = state;
+        this.loadingInitial = state;
     }
 
     selectOne = (id: string) => {

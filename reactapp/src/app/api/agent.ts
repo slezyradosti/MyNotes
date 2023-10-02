@@ -3,6 +3,8 @@ import { Notebook } from "../models/notebook";
 import { Unit } from "../models/unit";
 import { Page } from "../models/page";
 import Note from "../models/note";
+import { User, UserFormValues } from "../models/user";
+import { store } from "../stores/store";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -11,6 +13,12 @@ const sleep = (delay: number) => {
 }
 
 axios.defaults.baseURL = 'https://localhost:7177';
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+})
 
 axios.interceptors.response.use(response => {
     return sleep(1000).then(() => {
@@ -26,16 +34,16 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 //--------
 //TODO
 const config = {
-    headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiI4MjI0NTc4NC05NjFmLTRlNjYtNTFkMC0wOGRiYmUwNWVjMjgiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTU2NzM5MTMsImV4cCI6MTY5NjI3ODcxMywiaWF0IjoxNjk1NjczOTEzfQ.lGn_2nr3R3dEVpuD2O2Td1HOoIh4TOTZw76w2-WbbNA3WTgQTVD-QrH30hZd6XK096x8NHyJ7Wm22Gl2d7nQZQ' },
+    //headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiI4MjI0NTc4NC05NjFmLTRlNjYtNTFkMC0wOGRiYmUwNWVjMjgiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTU2NzM5MTMsImV4cCI6MTY5NjI3ODcxMywiaWF0IjoxNjk1NjczOTEzfQ.lGn_2nr3R3dEVpuD2O2Td1HOoIh4TOTZw76w2-WbbNA3WTgQTVD-QrH30hZd6XK096x8NHyJ7Wm22Gl2d7nQZQ' },
     //params: { nbId: 'd8b80d57-c6fd-48d2-08ea-08dba361bf58' }
 };
 //-------
 
 const requests = {
-    get: <T>(url: string) => axios.get<T>(url, config).then(responseBody),
-    post: <T>(url: string, body: object) => axios.post<T>(url, body, config).then(responseBody),
-    put: <T>(url: string, body: object) => axios.put<T>(url, body, config).then(responseBody),
-    delete: <T>(url: string) => axios.delete<T>(url, config).then(responseBody),
+    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
+    put: <T>(url: string, body: object) => axios.put<T>(url, body).then(responseBody),
+    delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 }
 
 const Notebooks = {
@@ -70,11 +78,18 @@ const Notes = {
     delete: (id: string) => requests.delete<void>(`/notes/${id}`)
 }
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+}
+
 const agent = {
     Notebooks,
     Units,
     Pages,
-    Notes
+    Notes,
+    Account
 }
 
 export default agent;

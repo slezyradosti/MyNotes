@@ -22,6 +22,7 @@ function Dashboard() {
                             noteUpdate={noteStore.updateOne}
                             noteDelete={noteStore.deleteOne}
                             getNote={noteStore.getOne}
+                            columnsCount={noteStore.columnsCount}
                         />
                         {console.log('display notes: ' + noteStore.getArray)}
                     </>
