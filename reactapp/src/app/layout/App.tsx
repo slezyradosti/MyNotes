@@ -7,6 +7,7 @@ import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 import SideNav from "./sidebar/SideNav";
 import AddNoteButton from "../../features/notes/other/AddNoteButton";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const { notebookStore, pageStore } = useStore();
@@ -45,6 +46,8 @@ function App() {
           </div>
         </div>
       </Container>
+
+      <Outlet />
     </>
   );
 }
