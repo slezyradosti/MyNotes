@@ -1,13 +1,13 @@
 import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { Button, Container, Input, Label } from "semantic-ui-react";
+import { Button, Container, Header, Input, Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
 function LoginForm() {
     const { userStore } = useStore();
 
     return (
-        <Container style={{ marginTop: '3em' }}>
+        <Container >
             <Formik
                 initialValues={{ email: '', password: '', error: null }}
                 onSubmit={(values, { setErrors }) => userStore.login(values).catch(() =>
@@ -19,6 +19,7 @@ function LoginForm() {
                         onSubmit={handleSubmit}
                         autoComplete='off'
                     >
+                        <Header as='h2' content='Login to My Notes' color="teal" textAlign="center" />
                         <div className="ui form field">
                             <Input
                                 required={true}

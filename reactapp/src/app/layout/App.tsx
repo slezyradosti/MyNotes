@@ -10,6 +10,7 @@ import AddNoteButton from "../../features/notes/other/AddNoteButton";
 import { Outlet, useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ColumnButton from "../../features/notes/other/ColumnButton";
+import ModalContainer from "../common/modals/ModalContainer";
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
 
   return (
     <>
+      <ModalContainer />
       {
         location.pathname === '/' ? <HomePage /> : (
           <>

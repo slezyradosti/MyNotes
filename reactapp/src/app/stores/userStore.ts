@@ -19,7 +19,8 @@ class UserStore {
         const user = await agent.Account.login(creds);
         store.commonStore.setToken(user.token);
         runInAction(() => this.user = user);
-        router.navigate('/notebooks')
+        router.navigate('/notebooks');
+        store.modalStore.closeModal();
     }
 
     logout = () => {

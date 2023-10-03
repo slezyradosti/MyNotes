@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { Button, Container, Header } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
+import LoginForm from "../users/LoginForm";
 
 function HomePage() {
-    const { userStore } = useStore();
+    const { userStore, modalStore } = useStore();
 
     return (
         <Container style={{ marginTop: '7em' }}>
@@ -19,9 +20,15 @@ function HomePage() {
                     </Button>
                 </>
             ) : (
-                <Button as={Link} to='/login' size='big' inverted>
-                    Login
-                </Button>
+                <>
+                    <Button onClick={() => modalStore.openModal(<LoginForm />)} size='big' inverted>
+                        Login
+                    </Button>
+                    <Button onClick={() => modalStore.openModal(<h1 content="register" />)} size='big' inverted>
+                        Register
+                    </Button>
+                </>
+
             )}
         </Container>
     );
