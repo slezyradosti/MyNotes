@@ -27,7 +27,7 @@ function RegisterForm() {
                         onSubmit={handleSubmit}
                         autoComplete='off'
                     >
-                        <Header as='h2' content='Sign up to My Notes' color="teal" textAlign="center" />
+                        <Header as='h2' content='Sign up to MyNotes' color="grey" textAlign="center" />
                         <div className="ui form field">
                             <Input
                                 required={true}
@@ -67,8 +67,9 @@ function RegisterForm() {
                         <Button
                             disabled={!isValid || !dirty || isSubmitting}
                             loading={isSubmitting}
-                            positive content='Register'
+                            content='Register'
                             type='submit' fluid
+                            className="submitBtnColor Border"
                         />
                     </Form>
                 )}
