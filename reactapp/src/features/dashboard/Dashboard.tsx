@@ -1,4 +1,4 @@
-import { Grid } from "semantic-ui-react";
+import { Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import NoteList from "../notes/list/NoteList";
@@ -22,8 +22,8 @@ function Dashboard() {
                             noteUpdate={noteStore.updateOne}
                             noteDelete={noteStore.deleteOne}
                             getNote={noteStore.getOne}
+                            columnsCount={noteStore.columnsCount as SemanticWIDTHS}
                         />
-                        {console.log('display notes: ' + noteStore.getArray)}
                     </>
                 }
             </Grid.Column>

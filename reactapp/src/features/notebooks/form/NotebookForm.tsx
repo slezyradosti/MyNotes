@@ -26,6 +26,7 @@ function NotebookForm() {
         <>
             <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input
+                    required={true}
                     autoFocus
                     palceholder='Name'
                     value={notebookDto.name}

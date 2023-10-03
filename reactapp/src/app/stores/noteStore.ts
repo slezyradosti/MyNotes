@@ -10,6 +10,7 @@ class NoteStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
+    columnsCount = localStorage.getItem('columnsCount') || "1";
 
     constructor() {
         makeAutoObservable(this)
@@ -21,6 +22,11 @@ class NoteStore {
 
     get getEntityType() {
         return 'Note';
+    }
+
+    changeColumnsCount() {
+        this.columnsCount === "1" ? this.columnsCount = "2" : this.columnsCount = "1";
+        localStorage.setItem('columnsCount', this.columnsCount);
     }
 
     loadNotes = async (pageId: string) => {

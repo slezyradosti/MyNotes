@@ -85,7 +85,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
 
   return (
     <>
-      <Item.Group divided>
+      <Item.Group divided >
         <Grid>
           {entityArray.map((entity) => (
             <>
@@ -96,6 +96,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                       <Item.Description className="notebook-description">
                         {editingId === entity.id ? (
                           <Input
+                            required={true}
                             className="notebook-link"
                             ref={(input) => (inputRef.current = input)}
                             value={editedName}

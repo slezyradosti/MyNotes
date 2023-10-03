@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, Grid, Icon, Input, Item, TextArea, Label } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Item, TextArea, Label, SemanticWIDTHS } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
@@ -14,10 +14,11 @@ interface Props {
     noteUpdate: (note: Note) => Promise<void>;
     noteDelete: (id: string) => Promise<void>;
     getNote: (id: string) => Note;
+    columnsCount: SemanticWIDTHS | "equal" | undefined;
 }
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
-    noteSelect, noteUpdate, noteDelete, getNote }: Props) {
+    noteSelect, noteUpdate, noteDelete, getNote, columnsCount }: Props) {
     const inputRef = useRef<Input | TextArea | null>(null);
     // Local state for editing a note
     const [editNoteId, setEditNoteId] = useState<string | null>(null);
@@ -30,7 +31,6 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
             inputRef.current.focus();
         }
     }, [editNoteId]);
-
     // Handler for editing a note
     const handleEditNoteStart = (noteId: string) => {
         const noteToEdit = noteArray.find((note) => note.id === noteId);
@@ -81,32 +81,34 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     return (
         <>
             <Item.Group divided>
-                <Grid columns={2} doubling stackable>
+                <Grid columns={columnsCount} doubling stackable>
                     {noteArray.map((note) => (
                         <Grid.Column key={note.id}>
                             <Item key={note.id}>
                                 <Item.Content>
                                     {editNoteId === note.id ? (
                                         <div className="ui form">
-                                            <Input
-                                                ref={(input) => (inputRef.current = input)}
-
-                                                value={editedNote?.name}
-                                                name='name'
-                                                onChange={(e) => handleEditChange(e, "name")}
-                                                fluid
-                                            />
-                                            <br />
-                                            <TextArea
-                                                rows={rowsCount}
-                                                ref={(input) => (inputRef.current = input)}
-                                                value={editedNote?.record}
-                                                name='record'
-                                                onChange={(e) => handleEditChange(e, "record")}
-                                                fluid
-                                            />
-                                            <br />
-                                            <br />
+                                            <div className="field">
+                                                <Input
+                                                    required={true}
+                                                    ref={(input) => (inputRef.current = input)}
+                                                    value={editedNote?.name}
+                                                    name='name'
+                                                    onChange={(e) => handleEditChange(e, "name")}
+                                                    fluid
+                                                />
+                                            </div>
+                                            <div className="field">
+                                                <TextArea
+                                                    required={true}
+                                                    rows={rowsCount}
+                                                    ref={(input) => (inputRef.current = input)}
+                                                    value={editedNote?.record}
+                                                    name='record'
+                                                    onChange={(e) => handleEditChange(e, "record")}
+                                                    fluid
+                                                />
+                                            </div>
                                             <div style={{ display: 'flex', justifyContent: 'end' }}>
                                                 <Button
                                                     onClick={handleEditNoteCancel}
