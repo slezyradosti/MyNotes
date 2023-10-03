@@ -1,7 +1,9 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import App from "../layout/App";
 import HomePage from "../../features/home/HomePage";
 import LoginForm from "../../features/users/LoginForm";
+import NotFound from "../../features/errors/NotFound";
+import ServerError from "../../features/errors/ServerError";
 
 export const routes: RouteObject[] = [
     {
@@ -13,6 +15,9 @@ export const routes: RouteObject[] = [
             { path: '', element: <HomePage /> },
             { path: 'notebooks', element: <App /> },
             { path: 'notebooks/:id', element: <App /> },
+            { path: 'not-found', element: <NotFound /> },
+            { path: 'server-error', element: <ServerError /> },
+            { path: '*', element: <Navigate replace to='/not-found' /> },
         ]
     },
     {
