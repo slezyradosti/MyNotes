@@ -2,6 +2,7 @@ import { Dropdown, Icon, Image, Menu } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import user from '../../assets/user.png'
 
 interface Props {
     openNav: () => void;
@@ -18,7 +19,7 @@ function NavBar({ openNav }: Props) {
                 </a>
             </Menu.Item>
             <Menu.Item position='right'>
-                <Image src={'/assets/user.png'} />
+                <Image avatar spaced='right' src='../../assets/user.png' width="20" height="20" />
                 <Dropdown pointing='top right' text={user?.displayName}>
                     <Dropdown.Menu>
                         <Dropdown.Item as={Link} to={`/profile/${user?.id}`} text='My Profile' icon='user' />

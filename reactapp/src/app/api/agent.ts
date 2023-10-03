@@ -63,14 +63,6 @@ axios.interceptors.response.use(async response => {
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
-//--------
-//TODO
-const config = {
-    //headers: { Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImphY2siLCJuYW1laWQiOiI4MjI0NTc4NC05NjFmLTRlNjYtNTFkMC0wOGRiYmUwNWVjMjgiLCJlbWFpbCI6ImphY2tAdGFjay5jb20iLCJuYmYiOjE2OTU2NzM5MTMsImV4cCI6MTY5NjI3ODcxMywiaWF0IjoxNjk1NjczOTEzfQ.lGn_2nr3R3dEVpuD2O2Td1HOoIh4TOTZw76w2-WbbNA3WTgQTVD-QrH30hZd6XK096x8NHyJ7Wm22Gl2d7nQZQ' },
-    //params: { nbId: 'd8b80d57-c6fd-48d2-08ea-08dba361bf58' }
-};
-//-------
-
 const requests = {
     get: <T>(url: string) => axios.get<T>(url).then(responseBody),
     post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
