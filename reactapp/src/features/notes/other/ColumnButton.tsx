@@ -1,4 +1,4 @@
-import { Grid, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 

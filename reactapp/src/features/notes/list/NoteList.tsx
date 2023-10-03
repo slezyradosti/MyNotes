@@ -14,7 +14,7 @@ interface Props {
     noteUpdate: (note: Note) => Promise<void>;
     noteDelete: (id: string) => Promise<void>;
     getNote: (id: string) => Note;
-    columnsCount: SemanticWIDTHS;
+    columnsCount: SemanticWIDTHS | "equal" | undefined;
 }
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,

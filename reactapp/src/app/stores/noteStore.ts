@@ -3,7 +3,6 @@ import Note from "../models/note";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import moment from "moment";
-import { SemanticWIDTHS } from "semantic-ui-react";
 
 class NoteStore {
     noteRegistry = new Map<string, Note>();
@@ -11,7 +10,7 @@ class NoteStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
-    columnsCount: SemanticWIDTHS = 1;
+    columnsCount = localStorage.getItem('columnsCount') || "1";
 
     constructor() {
         makeAutoObservable(this)
@@ -26,7 +25,8 @@ class NoteStore {
     }
 
     changeColumnsCount() {
-        this.columnsCount === 1 ? this.columnsCount = 2 : this.columnsCount = 1;
+        this.columnsCount === "1" ? this.columnsCount = "2" : this.columnsCount = "1";
+        localStorage.setItem('columnsCount', this.columnsCount);
     }
 
     loadNotes = async (pageId: string) => {
