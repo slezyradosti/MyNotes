@@ -4,9 +4,10 @@ import { useStore } from "../../stores/store";
 import { useEffect, useState } from "react";
 import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
-import { Divider, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
 import LoadingComponent from "../LoadingComponent";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface Props {
     closeNav: () => void;
@@ -19,38 +20,61 @@ function SideNav({ closeNav }: Props) {
     const [parentEntityName, setParentEntityName] = useState<string>('');
     const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore | PageStore | undefined>(undefined);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    //const { } = useParams();
+    const navigate = useNavigate();
+
+    // params mostly used for IRL user input
+    // doesn't fit here, makes 2x requests
+    // maybe there is a better way?
     useEffect(() => {
         switch (currentEntityName) {
             case 'Notebook':
                 setCurrentEntity(notebookStore);
                 notebookStore.loadNotebooks();
+                // redirect to notebooks/
+                navigate('notebooks');
 
                 setParentEntityName('');
-
                 setParentEntity(undefined);
                 break;
             case 'Unit':
                 setCurrentEntity(unitStore);
-                unitStore.loadUnits(notebookStore.selectedElement!.id!);
+
+                //
+                navigate('units'); // redirect to units
+                //setSearchParams({ ndId: notebookStore.selectedElement!.id! }); // add query parameter: units?ndId=123
                 //?
+                unitStore.loadUnits(notebookStore.selectedElement!.id!);
+                //
                 setParentEntityName('Notebook');
                 setParentEntity(notebookStore);
                 break;
             case 'Page':
                 setCurrentEntity(pageStore);
+
+                //
+                navigate('pages'); //redirect to pages
+                //setSearchParams({ unitId: unitStore.selectedElement!.id! }) // add query parameter: pages?unitId=123
+                //
                 pageStore.loadPages(unitStore.selectedElement!.id!);
                 //?
                 setParentEntityName('Unit');
                 setParentEntity(unitStore);
                 break;
             case 'Note':
+
+                // 
+                navigate('notes'); // redirect to notes?pageId=123
+                //setSearchParams({ pageId: pageStore.selectedElement!.id! }) // add query parameter: notes?pageId=123
+                //
                 noteStore.loadNotes(pageStore.selectedElement!.id!);
                 break;
             default:
                 console.log('SideNav Wrong value: ' + currentEntityName);
                 break;
         }
-    }, [currentEntityName, notebookStore, unitStore, pageStore])
+    }, [currentEntityName, searchParams])
 
     return (
         <>

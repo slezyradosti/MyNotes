@@ -16,6 +16,8 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = 'https://localhost:7177';
 
+const params = new URLSearchParams([])
+
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
     if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
