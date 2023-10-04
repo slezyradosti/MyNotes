@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../../app/stores/store";
 import { Button, Form, TextArea } from "semantic-ui-react";
 import { ChangeEvent, useState } from "react";
+import HelpButton from "../other/HelpButton";
 
 function NoteForm() {
     const { pageStore, noteStore } = useStore();
@@ -47,8 +48,11 @@ function NoteForm() {
 
                     />
                 </div>
-                <Button loading={loading} floated="right" type='submit' content='Submit' className="submitBtnColor Border" />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' className="cancelBtnColor Border" />
+                <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+                    <HelpButton />
+                    <Button onClick={closeForm} type='button' content='Cancel' className="cancelBtnColor Border" />
+                    <Button loading={loading} type='submit' content='Submit' className="submitBtnColor Border" />
+                </div>
             </Form >
         </>
     );

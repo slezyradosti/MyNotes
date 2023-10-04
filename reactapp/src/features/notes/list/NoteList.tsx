@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, Grid, Icon, Input, Item, TextArea, Label, SemanticWIDTHS, Header } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Item, TextArea, SemanticWIDTHS, Header } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import HelpButton from "../other/HelpButton";
 
 interface Props {
     noteArray: Note[];
@@ -80,8 +81,6 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
         }
     };
 
-    const newText = '# My new text';
-
     return (
         <>
             <Item.Group divided>
@@ -113,16 +112,15 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                                     fluid
                                                 />
                                             </div>
-                                            <div style={{ display: 'flex', justifyContent: 'end' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+                                                <HelpButton />
                                                 <Button
                                                     onClick={handleEditNoteCancel}
-
                                                     className="cancelBtnColor Border"
                                                     content='Cancel'
                                                 />
                                                 <Button
                                                     onClick={() => handleSaveNote(note.id!)}
-
                                                     className="submitBtnColor Border"
                                                     content='Save'
                                                 />
