@@ -1,8 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, Grid, Icon, Input, Item, TextArea, Label, SemanticWIDTHS } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Item, TextArea, SemanticWIDTHS, Header } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import HelpButton from "../other/HelpButton";
 
 interface Props {
     noteArray: Note[];
@@ -109,16 +112,15 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                                     fluid
                                                 />
                                             </div>
-                                            <div style={{ display: 'flex', justifyContent: 'end' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+                                                <HelpButton />
                                                 <Button
                                                     onClick={handleEditNoteCancel}
-
                                                     className="cancelBtnColor Border"
                                                     content='Cancel'
                                                 />
                                                 <Button
                                                     onClick={() => handleSaveNote(note.id!)}
-
                                                     className="submitBtnColor Border"
                                                     content='Save'
                                                 />
@@ -129,12 +131,13 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                         <div>
                                             {/* Use a label as a clickable element */}
                                             <div className="nameBtn">
-                                                <label
+                                                <Header
                                                     onClick={() => handleEditNoteStart(note.id!)}
                                                     style={{ cursor: "pointer" }}
+                                                    className="Header"
                                                 >
                                                     {note.name}
-                                                </label>
+                                                </Header>
                                                 <Button
                                                     loading={noteLoading && noteSelectedElement?.id === note.id && !noteEditMode}
                                                     onClick={(e) => handleDeleteNote(e, note.id!)}
@@ -145,11 +148,26 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             {/* Use a div for displaying the description */}
                                             <Item.Meta style={{ color: '#808080' }}>{note.createdAt}</Item.Meta>
-                                            <Label
+                                            {/* <Label
                                                 style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
                                                 onClick={() => handleEditNoteStart(note.id!)}
                                                 content={note.record}
-                                            />
+                                            /> */}
+
+                                            <label
+                                                className="markwonLabelCodeSyles"
+
+                                                onClick={() => handleEditNoteStart(note.id!)}
+                                            >
+                                                <Markdown
+                                                    remarkPlugins={[[remarkGfm, { whiteSpace: 'pre-wrap' }]]}
+                                                    disallowedElements={['pre']} // disallowedElements (Array<string>, default: []) — tag names to disallow; cannot combine w/ allowedElements
+                                                    unwrapDisallowed={true} // unwrapDisallowed (boolean, default: false) — extract (unwrap) what’s in disallowed elements; normally when say strong is not allowed, it and it’s children are dropped, with unwrapDisallowed the element itself is replaced by its children
+                                                >
+                                                    {note.record}
+                                                </Markdown>
+                                            </label>
+
                                         </div>
                                     )}
                                 </Item.Content>
@@ -169,7 +187,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                         </Grid.Column>
                     }
                 </Grid>
-            </Item.Group>
+            </Item.Group >
         </>
     );
 }

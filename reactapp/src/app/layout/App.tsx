@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button, Container, Icon, Label, } from "semantic-ui-react";
+import { Container, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import Dashboard from "../../features/dashboard/Dashboard";
 import LoadingComponent from "./LoadingComponent";
@@ -7,7 +7,7 @@ import { useStore } from "../stores/store";
 import { observer } from "mobx-react-lite";
 import SideNav from "./sidebar/SideNav";
 import AddNoteButton from "../../features/notes/other/AddNoteButton";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ColumnButton from "../../features/notes/other/ColumnButton";
 import ModalContainer from "../common/modals/ModalContainer";

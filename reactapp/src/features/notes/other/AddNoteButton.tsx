@@ -15,7 +15,7 @@ function AddNoteButton() {
                 </Label>
             </Button.Content>
             <Button.Content visible>
-                <Icon name='add' size='large' bordered backgroundColor='grey' circular className='addBtnColor' />
+                <Icon name='add' size='large' bordered backgroundcolor='grey' circular className='addBtnColor' />
             </Button.Content>
         </Button>
     );

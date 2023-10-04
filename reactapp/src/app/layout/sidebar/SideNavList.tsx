@@ -103,7 +103,6 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                             onChange={(e) => setEditedName(e.target.value)}
                             action={{
                               icon: "check",
-                              color: "#FFF6E0",
                               onMouseDown: (e) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
                             }}
                             onBlur={() => handleNameEditCancel()}
@@ -130,17 +129,19 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                   <Dropdown
                     placeholder=" "
                     fluid
-                    selection
+                    className="ui selection"
                     style={{ color: '#a0a0a0', backgroundColor: 'transparent', border: 'none' }}
                   >
                     <Dropdown.Menu style={{ backgroundColor: 'transparent', right: 0, top: 15, border: 'none' }}>
                       <Dropdown.Item
+                        key={`edit ${entity.id}`}
                         style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
                         content='Edit'
                         onClick={() => handleNameEditStart(entity.id!, entity.name)}
                       >
                       </Dropdown.Item>
                       <Dropdown.Item style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
+                        key={`delete ${entity.id}`}
                         name={entity.id}
                         loading={entityLoading && (target === entity.id)}
                         onClick={(e) => handleDeleteEntity(e, entity.id!)}
