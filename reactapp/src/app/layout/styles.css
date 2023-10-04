@@ -111,3 +111,12 @@ a:hover {
   background-color: #D8D9DA !important;
   box-shadow: 0 0 0 1px rgba(34, 36, 38, .15) inset;
 }
+
+.markwonLabelCodeSyles {
+  display: inline-block !important;
+  white-space: normal !important;
+  max-width: 100% !important;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+}
