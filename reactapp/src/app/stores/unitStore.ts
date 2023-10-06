@@ -4,6 +4,7 @@ import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import ISidebarListStore from "./ISidebarListStore";
 import moment from "moment";
+import { Pagination, PagingParams } from "../models/pagination";
 
 class UnitStore implements ISidebarListStore {
     unitRegistry = new Map<string, Unit>();
@@ -11,9 +12,22 @@ class UnitStore implements ISidebarListStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('PageIndex', this.pagingParams.paramPageIndex.toString());
+        params.append('PageSize', this.pagingParams.paramPageSize.toString());
+        return params;
     }
 
     get getArray() {
@@ -24,18 +38,23 @@ class UnitStore implements ISidebarListStore {
         return 'Unit';
     }
 
-    loadUnits = async (nbId: string) => {
+    loadData = async (nbId: string) => {
         try {
-            const units = await agent.Units.list(nbId);
-            units.forEach(unit => {
+            const result = await agent.Units.list(nbId, this.axiosParams);
+            result.data.forEach(unit => {
                 unit.createdAt = unit.createdAt?.split('T')[0];
                 this.unitRegistry.set(unit.id!, unit);
             })
+            this.setPagination(result.pagination);
         } catch (error) {
             console.log(error);
         } finally {
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     setLoadingInitial = (state: boolean) => {

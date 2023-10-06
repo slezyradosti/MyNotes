@@ -4,10 +4,12 @@ import { useStore } from "../../stores/store";
 import { useEffect, useState } from "react";
 import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
-import { Icon } from 'semantic-ui-react'
+import { Button, Divider, Icon, Loader } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
 import LoadingComponent from "../LoadingComponent";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { PagingParams } from "../../models/pagination";
+import InfiniteScroll from "react-infinite-scroller";
 
 interface Props {
     closeNav: () => void;
@@ -24,6 +26,29 @@ function SideNav({ closeNav }: Props) {
     //const { } = useParams();
     const navigate = useNavigate();
 
+    //pagination
+    const [loadingNext, setLoadingNext] = useState(false);
+    function handleGetNext() {
+        setLoadingNext(true);
+        currentEntity.setPagingParams(new PagingParams(currentEntity.pagination!.PageIndex + 1))
+        handleLoadNextData();
+    }
+
+    function handleLoadNextData() {
+        switch (currentEntityName) {
+            case 'Notebook':
+                return notebookStore.loadData().then(() => setLoadingNext(false));
+            case 'Unit':
+                return unitStore.loadData(notebookStore.selectedElement!.id!).then(() => setLoadingNext(false));
+            case 'Page':
+                return pageStore.loadData(unitStore.selectedElement!.id!).then(() => setLoadingNext(false));
+            case 'Note':
+                return noteStore.loadNotes(pageStore.selectedElement!.id!).then(() => setLoadingNext(false));
+            default:
+                break;
+        }
+    }
+
     // params mostly used for IRL user input
     // doesn't fit here, makes 2x requests
     // maybe there is a better way?
@@ -31,7 +56,7 @@ function SideNav({ closeNav }: Props) {
         switch (currentEntityName) {
             case 'Notebook':
                 setCurrentEntity(notebookStore);
-                notebookStore.loadNotebooks();
+                notebookStore.loadData();
                 // redirect to notebooks/
                 navigate('notebooks');
 
@@ -45,7 +70,7 @@ function SideNav({ closeNav }: Props) {
                 navigate('units'); // redirect to units
                 //setSearchParams({ ndId: notebookStore.selectedElement!.id! }); // add query parameter: units?ndId=123
                 //?
-                unitStore.loadUnits(notebookStore.selectedElement!.id!);
+                unitStore.loadData(notebookStore.selectedElement!.id!);
                 //
                 setParentEntityName('Notebook');
                 setParentEntity(notebookStore);
@@ -57,7 +82,7 @@ function SideNav({ closeNav }: Props) {
                 navigate('pages'); //redirect to pages
                 //setSearchParams({ unitId: unitStore.selectedElement!.id! }) // add query parameter: pages?unitId=123
                 //
-                pageStore.loadPages(unitStore.selectedElement!.id!);
+                pageStore.loadData(unitStore.selectedElement!.id!);
                 //?
                 setParentEntityName('Unit');
                 setParentEntity(unitStore);
@@ -79,32 +104,45 @@ function SideNav({ closeNav }: Props) {
     return (
         <>
             <div id="mySidenav" className="sidenav">
-                <div>
-                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
-                        <Icon name='arrow left' size='small' title='Back' />
-                    </a>
+                <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
+                    <Icon name='arrow left' size='small' title='Back' />
+                </a>
 
-                    <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>
-                        <Icon name='close' size='small' title='Close' />
-                    </a>
+                <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>
+                    <Icon name='close' size='small' title='Close' />
+                </a>
 
-                    {currentEntity?.loadingInitial ?
-                        < LoadingComponent content='Loading data...' inverted={false} />
-                        : (
-                            <SideNavList
-                                entityArray={currentEntity.getArray}
-                                entityLoading={currentEntity.loading}
-                                entityType={currentEntity.getEntityType}
-                                entityEditMode={currentEntity.editMode}
-                                entityOpenForm={currentEntity.openForm}
-                                selectEntity={currentEntity.selectOne}
-                                deleteEntity={currentEntity.deleteOne}
-                                updateOne={currentEntity.updateOne}
-                                setCurrentEntityName={setCurrentEntityName}
-                                getOne={currentEntity.getOne}
-                            />
-                        )}
-                </div>
+                {/* <Button onClick={handleGetNext} loading={loadingNext}>
+                        next
+                    </Button> */}
+
+                {currentEntity?.loadingInitial && !loadingNext ?
+                    < LoadingComponent content='Loading data...' inverted={false} />
+                    : (
+                        <div>
+                            <InfiniteScroll
+                                pageStart={0}
+                                loadMore={handleGetNext}
+                                hasMore={!loadingNext && !!currentEntity.pagination &&
+                                    currentEntity.pagination.PageIndex < currentEntity.pagination.PageCount - 1}
+                                useWindow={false}
+                            >
+                                <SideNavList
+                                    entityArray={currentEntity.getArray}
+                                    entityLoading={currentEntity.loading}
+                                    entityType={currentEntity.getEntityType}
+                                    entityEditMode={currentEntity.editMode}
+                                    entityOpenForm={currentEntity.openForm}
+                                    selectEntity={currentEntity.selectOne}
+                                    deleteEntity={currentEntity.deleteOne}
+                                    updateOne={currentEntity.updateOne}
+                                    setCurrentEntityName={setCurrentEntityName}
+                                    getOne={currentEntity.getOne}
+                                    loadingNext={loadingNext}
+                                />
+                            </InfiniteScroll>
+                        </div>
+                    )}
             </div >
         </>
     );

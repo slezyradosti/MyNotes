@@ -1,11 +1,13 @@
-import { Grid, SemanticWIDTHS } from "semantic-ui-react";
+import { Grid, Loader, SemanticWIDTHS } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import NoteList from "../notes/list/NoteList";
 import AddNoteButton from "../notes/other/AddNoteButton";
 import ColumnButton from "../notes/other/ColumnButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import { PagingParams } from "../../app/models/pagination";
+import InfiniteScroll from "react-infinite-scroller";
 
 function Dashboard() {
     const { pageStore, noteStore, commonStore, userStore } = useStore();
@@ -18,6 +20,14 @@ function Dashboard() {
             commonStore.setAppLoaded()
         }
     }, [commonStore, userStore])
+
+    //pagination
+    const [loadingNext, setLoadingNext] = useState(false);
+    function handleGetNext() {
+        setLoadingNext(true);
+        noteStore.setPagingParams(new PagingParams(noteStore.pagination!.PageIndex + 1))
+        noteStore.loadNotes(pageStore.selectedElement!.id!).then(() => setLoadingNext(false));
+    }
 
     if (!commonStore.appLoaded) return <LoadingComponent content="Loading app...." />
 
@@ -40,18 +50,28 @@ function Dashboard() {
                     <Grid.Column width={16}>
                         {selectedElement && !editMode &&
                             <>
-                                <NoteList
-                                    noteArray={noteStore.getArray}
-                                    noteLoading={noteStore.loading}
-                                    noteEditMode={noteStore.editMode}
-                                    noteSelectedElement={noteStore.selectedElement}
-                                    noteOpenForm={noteStore.openForm}
-                                    noteSelect={noteStore.selectOne}
-                                    noteUpdate={noteStore.updateOne}
-                                    noteDelete={noteStore.deleteOne}
-                                    getNote={noteStore.getOne}
-                                    columnsCount={noteStore.columnsCount as SemanticWIDTHS}
-                                />
+                                <InfiniteScroll
+                                    pageStart={0}
+                                    loadMore={handleGetNext}
+                                    hasMore={!loadingNext && !!noteStore.pagination &&
+                                        noteStore.pagination.PageIndex < noteStore.pagination.PageCount}
+                                    useWindow={false}
+                                >
+                                    <NoteList
+                                        noteArray={noteStore.getArray}
+                                        noteLoading={noteStore.loading}
+                                        noteEditMode={noteStore.editMode}
+                                        noteSelectedElement={noteStore.selectedElement}
+                                        noteOpenForm={noteStore.openForm}
+                                        noteSelect={noteStore.selectOne}
+                                        noteUpdate={noteStore.updateOne}
+                                        noteDelete={noteStore.deleteOne}
+                                        getNote={noteStore.getOne}
+                                        columnsCount={noteStore.columnsCount as SemanticWIDTHS}
+                                        loadingNext={loadingNext}
+                                    />
+                                </InfiniteScroll>
+
                             </>
                         }
                     </Grid.Column>

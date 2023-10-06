@@ -3,6 +3,7 @@ import Note from "../models/note";
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import moment from "moment";
+import { Pagination, PagingParams } from "../models/pagination";
 
 class NoteStore {
     noteRegistry = new Map<string, Note>();
@@ -11,9 +12,22 @@ class NoteStore {
     loading: boolean = false;
     loadingInitial: boolean = true;
     columnsCount = localStorage.getItem('columnsCount') || "1";
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('PageIndex', this.pagingParams.paramPageIndex.toString());
+        params.append('PageSize', this.pagingParams.paramPageSize.toString());
+        return params;
     }
 
     get getArray() {
@@ -31,16 +45,22 @@ class NoteStore {
 
     loadNotes = async (pageId: string) => {
         try {
-            const notes = await agent.Notes.list(pageId);
-            notes.forEach(note => {
+            const result = await agent.Notes.list(pageId, this.axiosParams);
+            result.data.forEach(note => {
                 note.createdAt = note.createdAt?.split('T')[0];
                 this.noteRegistry.set(note.id!, note);
             })
+            console.log('note result.pagination: ' + result.pagination.PageSize)
+            this.setPagination(result.pagination!);
         } catch (error) {
             console.log(error);
         } finally {
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     setLoadingInitial = (state: boolean) => {

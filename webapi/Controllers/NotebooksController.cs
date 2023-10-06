@@ -7,10 +7,10 @@ namespace webapi.Controllers
     public class NotebooksController : BaseApiController
     {
         [HttpGet]
-        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 600)]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 0)]
         public async Task<IActionResult> GetNotebooks([FromQuery] RequestDto request)
         {
-            return HandlePagedResult(await Mediator.Send(new List.Query (request)));
+            return HandlePagedResult(await Mediator.Send(new List.Query(request)));
         }
 
         [HttpGet("{id}")]
@@ -35,7 +35,7 @@ namespace webapi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNotebook(Guid id)
         {
-            return HandleResult(await Mediator.Send(new  Delete.Command(id)));
+            return HandleResult(await Mediator.Send(new Delete.Command(id)));
         }
     }
 }

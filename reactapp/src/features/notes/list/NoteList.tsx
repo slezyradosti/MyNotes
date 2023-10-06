@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, Grid, Icon, Input, Item, TextArea, SemanticWIDTHS, Header } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, Item, TextArea, SemanticWIDTHS, Header, Loader } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
@@ -18,10 +18,12 @@ interface Props {
     noteDelete: (id: string) => Promise<void>;
     getNote: (id: string) => Note;
     columnsCount: SemanticWIDTHS | "equal" | undefined;
+    loadingNext: boolean;
 }
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
-    noteSelect, noteUpdate, noteDelete, getNote, columnsCount }: Props) {
+    noteSelect, noteUpdate, noteDelete, getNote, columnsCount,
+    loadingNext }: Props) {
     const inputRef = useRef<Input | TextArea | null>(null);
     // Local state for editing a note
     const [editNoteId, setEditNoteId] = useState<string | null>(null);
@@ -176,6 +178,9 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                         </Grid.Column>
 
                     ))}
+                    <Grid.Column>
+                        <Loader active={loadingNext} />
+                    </Grid.Column>
 
                     {noteEditMode &&
                         <Grid.Column key={'newNoteId'}>
