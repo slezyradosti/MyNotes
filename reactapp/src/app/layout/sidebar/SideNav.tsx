@@ -4,7 +4,7 @@ import { useStore } from "../../stores/store";
 import { useEffect, useState } from "react";
 import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
-import { Button, Divider, Icon, Loader } from 'semantic-ui-react'
+import { Button, Divider, Icon, Loader, Segment } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
 import LoadingComponent from "../LoadingComponent";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -104,44 +104,54 @@ function SideNav({ closeNav }: Props) {
     return (
         <>
             <div id="mySidenav" className="sidenav">
-                <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
-                    <Icon name='arrow left' size='small' title='Back' />
-                </a>
+                <div style={{ justifyContent: 'space-between', display: 'flex' }}>
+                    <a className="returnbtn" onClick={() => setCurrentEntityName(parentEntityName)} style={{ color: '#bfbfbf' }} >
+                        <Icon name='arrow left' size='small' title='Back' />
+                    </a>
 
-                <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>
-                    <Icon name='close' size='small' title='Close' />
-                </a>
-
-                {/* <Button onClick={handleGetNext} loading={loadingNext}>
-                        next
-                    </Button> */}
+                    <a className="closebtn" onClick={closeNav} style={{ color: '#bfbfbf' }}>
+                        <Icon name='close' size='small' title='Close' />
+                    </a>
+                </div>
 
                 {currentEntity?.loadingInitial && !loadingNext ?
                     < LoadingComponent content='Loading data...' inverted={false} />
                     : (
-                        <div>
-                            <InfiniteScroll
-                                pageStart={0}
-                                loadMore={handleGetNext}
-                                hasMore={!loadingNext && !!currentEntity.pagination &&
-                                    currentEntity.pagination.PageIndex < currentEntity.pagination.PageCount - 1}
-                                useWindow={false}
-                            >
-                                <SideNavList
-                                    entityArray={currentEntity.getArray}
-                                    entityLoading={currentEntity.loading}
-                                    entityType={currentEntity.getEntityType}
-                                    entityEditMode={currentEntity.editMode}
-                                    entityOpenForm={currentEntity.openForm}
-                                    selectEntity={currentEntity.selectOne}
-                                    deleteEntity={currentEntity.deleteOne}
-                                    updateOne={currentEntity.updateOne}
-                                    setCurrentEntityName={setCurrentEntityName}
-                                    getOne={currentEntity.getOne}
-                                    loadingNext={loadingNext}
-                                />
-                            </InfiniteScroll>
-                        </div>
+                        <>
+
+                            <div>
+                                <InfiniteScroll
+                                    pageStart={0}
+                                    loadMore={handleGetNext}
+                                    hasMore={!loadingNext && !!currentEntity.pagination &&
+                                        currentEntity.pagination.PageIndex < currentEntity.pagination.PageCount - 1}
+                                    useWindow={false}
+                                >
+                                    <SideNavList
+                                        entityArray={currentEntity.getArray}
+                                        entityLoading={currentEntity.loading}
+                                        entityType={currentEntity.getEntityType}
+                                        entityEditMode={currentEntity.editMode}
+                                        entityOpenForm={currentEntity.openForm}
+                                        selectEntity={currentEntity.selectOne}
+                                        deleteEntity={currentEntity.deleteOne}
+                                        updateOne={currentEntity.updateOne}
+                                        setCurrentEntityName={setCurrentEntityName}
+                                        getOne={currentEntity.getOne}
+                                        loadingNext={loadingNext}
+                                    />
+                                </InfiniteScroll>
+
+                                <div style={{ color: '#bfbfbf', position: 'sticky', bottom: '0' }}>
+                                    <Divider style={{ color: '#bfbfbf' }} fitted />
+                                    <a onClick={() => currentEntity.openForm()} style={{ color: '#bfbfbf', backgroundColor: "#2B2B2B", textTransform: 'uppercase' }} >
+                                        <Icon name='add' size='large' />
+                                        Add {currentEntity.getEntityType}
+                                    </a>
+                                </div>
+                            </div>
+
+                        </>
                     )}
             </div >
         </>

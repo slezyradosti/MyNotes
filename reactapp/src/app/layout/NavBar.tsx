@@ -3,19 +3,28 @@ import { useStore } from '../stores/store';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import userimage from '../../assets/userimage.png'
+import { useState } from 'react';
 
 interface Props {
     openNav: () => void;
+    closeNav: () => void;
 }
 
-function NavBar({ openNav }: Props) {
+function NavBar({ openNav, closeNav }: Props) {
     const { userStore: { user, logout } } = useStore();
+    const [isSideBarOpened, setIsSideBarOpened] = useState(false);
+
+    function handleOpenOrCloseNav() {
+        if (!isSideBarOpened) openNav()
+        else closeNav();
+        setIsSideBarOpened(!isSideBarOpened);
+    }
 
     return (
         <Menu inverted fixed='top'>
             <Menu.Item header>
-                <a className='sidenavOpen' id='sidenavOpen' onClick={openNav} >
-                    <Icon name='bars' size='large' />
+                <a className='sidenavOpen' id='sidenavOpen' onClick={() => handleOpenOrCloseNav()} >
+                    <Icon name='bars' size='large' title='Open Sidebar' />
                 </a>
             </Menu.Item>
             <Menu.Item position='right'>

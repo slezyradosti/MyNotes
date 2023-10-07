@@ -173,12 +173,7 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
       {entityEditMode && entityType === 'Page' &&
         <PageForm />}
 
-      <Divider style={{ color: 'white', position: 'sticky', bottom: 0 }}>
-        <a onClick={() => entityOpenForm()} style={{ color: '#bfbfbf' }}>
-          <Icon name='add' size='large' />
-          Add {entityType}
-        </a>
-      </Divider>
+
     </>
   );
 }

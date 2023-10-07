@@ -30,7 +30,7 @@ function App() {
         location.pathname === '/' ? <HomePage />
           : (
             <>
-              <NavBar openNav={openNav} />
+              <NavBar openNav={openNav} closeNav={closeNav} />
               <SideNav closeNav={closeNav} />
               <Container fluid>
                 <Outlet />
