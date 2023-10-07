@@ -24,7 +24,7 @@ function NavBar({ openNav, closeNav }: Props) {
         <Menu inverted fixed='top'>
             <Menu.Item header>
                 <a className='sidenavOpen' id='sidenavOpen' onClick={() => handleOpenOrCloseNav()} >
-                    <Icon name='bars' size='large' title='Open Sidebar' />
+                    <Icon name='bars' size='large' title='Open/Close Sidebar' />
                 </a>
             </Menu.Item>
             <Menu.Item position='right'>

@@ -1,4 +1,4 @@
-import { Dropdown, Grid, Input, Item, Divider, Icon, Loader } from "semantic-ui-react";
+import { Grid, Input, Item, Loader } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
@@ -7,6 +7,7 @@ import { Page } from "../../models/page";
 import NotebookForm from "../../../features/notebooks/form/NotebookForm";
 import UnitForm from "../../../features/units/form/UnitForm";
 import PageForm from "../../../features/pages/form/PageForm";
+import SidenavListDropdown from "./SidenavListDropdown";
 
 interface Props {
   entityArray: Notebook[] | Unit[] | Page[];
@@ -23,7 +24,7 @@ interface Props {
   loadingNext: boolean;
 }
 
-function SideNavList({ entityArray, entityLoading, entityOpenForm,
+function SidenavList({ entityArray, entityLoading, entityOpenForm,
   selectEntity, deleteEntity, setCurrentEntityName,
   entityType, getOne, updateOne, entityEditMode,
   loadingNext }: Props) {
@@ -129,30 +130,13 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
                   </Grid.Column>
                   <Grid.Column width={6}>
                     {/* Content for the right column, including dropdown */}
-                    <Dropdown
-                      placeholder=" "
-                      fluid
-                      className="ui selection"
-                      style={{ color: '#a0a0a0', backgroundColor: 'transparent', border: 'none' }}
-                    >
-                      <Dropdown.Menu style={{ backgroundColor: 'transparent', right: 0, top: 15, border: 'none' }}>
-                        <Dropdown.Item
-                          key={`edit ${entity.id}`}
-                          style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
-                          content='Edit'
-                          onClick={() => handleNameEditStart(entity.id!, entity.name)}
-                        >
-                        </Dropdown.Item>
-                        <Dropdown.Item style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
-                          key={`delete ${entity.id}`}
-                          name={entity.id}
-                          loading={entityLoading && (target === entity.id)}
-                          onClick={(e) => handleDeleteEntity(e, entity.id!)}
-                          content='Delete'
-                        >
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    <SidenavListDropdown
+                      entity={entity}
+                      entityLoading={entityLoading}
+                      target={target}
+                      handleDeleteEntity={handleDeleteEntity}
+                      handleNameEditStart={handleNameEditStart}
+                    />
                   </Grid.Column>
                 </Grid.Row>
               </>
@@ -178,4 +162,4 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
   );
 }
 
-export default observer(SideNavList);
+export default observer(SidenavList);

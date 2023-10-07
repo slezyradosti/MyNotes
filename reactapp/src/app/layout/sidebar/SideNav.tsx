@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
-import SideNavList from "./SideNavList";
+import SidenavList from "./SideNavList";
 import { useStore } from "../../stores/store";
 import { useEffect, useState } from "react";
 import NotebookStore from "../../stores/notebookStore";
 import UnitStore from "../../stores/unitStore";
-import { Button, Divider, Icon, Loader, Segment } from 'semantic-ui-react'
+import { Divider, Icon } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
 import LoadingComponent from "../LoadingComponent";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -15,7 +15,7 @@ interface Props {
     closeNav: () => void;
 }
 
-function SideNav({ closeNav }: Props) {
+function Sidenav({ closeNav }: Props) {
     const { notebookStore, unitStore, pageStore, noteStore } = useStore(); // provide all entitites for the sidebarlist
     const [currentEntityName, setCurrentEntityName] = useState('Notebook');
     const [currentEntity, setCurrentEntity] = useState<NotebookStore | UnitStore | PageStore>(notebookStore); //entity
@@ -23,7 +23,6 @@ function SideNav({ closeNav }: Props) {
     const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore | PageStore | undefined>(undefined);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    //const { } = useParams();
     const navigate = useNavigate();
 
     //pagination
@@ -65,8 +64,6 @@ function SideNav({ closeNav }: Props) {
                 break;
             case 'Unit':
                 setCurrentEntity(unitStore);
-
-                //
                 navigate('units'); // redirect to units
                 //setSearchParams({ ndId: notebookStore.selectedElement!.id! }); // add query parameter: units?ndId=123
                 //?
@@ -77,8 +74,6 @@ function SideNav({ closeNav }: Props) {
                 break;
             case 'Page':
                 setCurrentEntity(pageStore);
-
-                //
                 navigate('pages'); //redirect to pages
                 //setSearchParams({ unitId: unitStore.selectedElement!.id! }) // add query parameter: pages?unitId=123
                 //
@@ -88,8 +83,6 @@ function SideNav({ closeNav }: Props) {
                 setParentEntity(unitStore);
                 break;
             case 'Note':
-
-                // 
                 navigate('notes'); // redirect to notes?pageId=123
                 //setSearchParams({ pageId: pageStore.selectedElement!.id! }) // add query parameter: notes?pageId=123
                 //
@@ -127,7 +120,7 @@ function SideNav({ closeNav }: Props) {
                                         currentEntity.pagination.PageIndex < currentEntity.pagination.PageCount - 1}
                                     useWindow={false}
                                 >
-                                    <SideNavList
+                                    <SidenavList
                                         entityArray={currentEntity.getArray}
                                         entityLoading={currentEntity.loading}
                                         entityType={currentEntity.getEntityType}
@@ -158,4 +151,4 @@ function SideNav({ closeNav }: Props) {
     );
 }
 
-export default observer(SideNav);
+export default observer(Sidenav);

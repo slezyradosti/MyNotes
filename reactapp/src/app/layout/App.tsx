@@ -1,7 +1,7 @@
 import { Container, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import { observer } from "mobx-react-lite";
-import SideNav from "./sidebar/SideNav";
+import SideNav from "./sidebar/Sidenav";
 import { Outlet, useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ModalContainer from "../common/modals/ModalContainer";
