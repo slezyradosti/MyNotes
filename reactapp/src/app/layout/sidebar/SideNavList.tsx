@@ -1,4 +1,4 @@
-import { Dropdown, Grid, Input, Item, Divider, Icon } from "semantic-ui-react";
+import { Grid, Input, Item, Loader } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Notebook } from "../../models/notebook";
@@ -7,6 +7,7 @@ import { Page } from "../../models/page";
 import NotebookForm from "../../../features/notebooks/form/NotebookForm";
 import UnitForm from "../../../features/units/form/UnitForm";
 import PageForm from "../../../features/pages/form/PageForm";
+import SidenavListDropdown from "./SidenavListDropdown";
 
 interface Props {
   entityArray: Notebook[] | Unit[] | Page[];
@@ -20,11 +21,13 @@ interface Props {
   getOne: (id: string) => Notebook | Unit | Page;
 
   setCurrentEntityName: (name: string) => void;
+  loadingNext: boolean;
 }
 
-function SideNavList({ entityArray, entityLoading, entityOpenForm,
+function SidenavList({ entityArray, entityLoading, entityOpenForm,
   selectEntity, deleteEntity, setCurrentEntityName,
-  entityType, getOne, updateOne, entityEditMode }: Props) {
+  entityType, getOne, updateOne, entityEditMode,
+  loadingNext }: Props) {
   const [target, setTarget] = useState('');
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -85,77 +88,67 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
 
   return (
     <>
-      <Item.Group divided >
-        <Grid>
-          {entityArray.map((entity) => (
-            <>
-              <Grid.Row key={entity.id} columns={2}>
-                <Grid.Column width={10}>
-                  <Item key={entity.id}>
-                    <Item.Content>
-                      <Item.Description className="notebook-description">
-                        {editingId === entity.id ? (
-                          <Input
-                            required={true}
-                            className="notebook-link"
-                            ref={(input) => (inputRef.current = input)}
-                            value={editedName}
-                            onChange={(e) => setEditedName(e.target.value)}
-                            action={{
-                              icon: "check",
-                              onMouseDown: (e) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
-                            }}
-                            onBlur={() => handleNameEditCancel()}
-                            fluid
-                          />
-                        ) : (
-                          <a
-                            className="notebook-link"
-                            onClick={() => handleSelectEntity(entity.id!)}
-                            style={{ wordWrap: 'break-word' }}
-                          >
-                            {entity.name}
-                          </a>
-                        )}
-                      </Item.Description>
-                      <Item.Group className="notebook-info" style={{ color: 'grey', marginTop: '-5px', fontSize: '11x' }}>
-                        {entity.createdAt}
-                      </Item.Group>
-                    </Item.Content>
-                  </Item>
-                </Grid.Column>
-                <Grid.Column width={6}>
-                  {/* Content for the right column, including dropdown */}
-                  <Dropdown
-                    placeholder=" "
-                    fluid
-                    className="ui selection"
-                    style={{ color: '#a0a0a0', backgroundColor: 'transparent', border: 'none' }}
-                  >
-                    <Dropdown.Menu style={{ backgroundColor: 'transparent', right: 0, top: 15, border: 'none' }}>
-                      <Dropdown.Item
-                        key={`edit ${entity.id}`}
-                        style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
-                        content='Edit'
-                        onClick={() => handleNameEditStart(entity.id!, entity.name)}
-                      >
-                      </Dropdown.Item>
-                      <Dropdown.Item style={{ color: '#a0a0a0', cursor: 'pointer', border: 'none' }}
-                        key={`delete ${entity.id}`}
-                        name={entity.id}
-                        loading={entityLoading && (target === entity.id)}
-                        onClick={(e) => handleDeleteEntity(e, entity.id!)}
-                        content='Delete'
-                      >
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Grid.Column>
-              </Grid.Row>
-            </>
-          ))}
-        </Grid>
-      </Item.Group>
+      <div>
+        <Item.Group divided >
+          <Grid>
+            {entityArray.map((entity) => (
+              <>
+                <Grid.Row key={entity.id} columns={2}>
+                  <Grid.Column width={10}>
+                    <Item key={entity.id}>
+                      <Item.Content>
+                        <Item.Description className="notebook-description">
+                          {editingId === entity.id ? (
+                            <Input
+                              required={true}
+                              className="notebook-link"
+                              ref={(input) => (inputRef.current = input)}
+                              value={editedName}
+                              onChange={(e) => setEditedName(e.target.value)}
+                              action={{
+                                icon: "check",
+                                onMouseDown: (e) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
+                              }}
+                              onBlur={() => handleNameEditCancel()}
+                              fluid
+                            />
+                          ) : (
+                            <a
+                              className="notebook-link"
+                              onClick={() => handleSelectEntity(entity.id!)}
+                              style={{ wordWrap: 'break-word' }}
+                            >
+                              {entity.name}
+                            </a>
+                          )}
+                        </Item.Description>
+                        <Item.Group className="notebook-info" style={{ color: 'grey', marginTop: '-5px', fontSize: '11x' }}>
+                          {entity.createdAt}
+                        </Item.Group>
+                      </Item.Content>
+                    </Item>
+                  </Grid.Column>
+                  <Grid.Column width={6}>
+                    {/* Content for the right column, including dropdown */}
+                    <SidenavListDropdown
+                      entity={entity}
+                      entityLoading={entityLoading}
+                      target={target}
+                      handleDeleteEntity={handleDeleteEntity}
+                      handleNameEditStart={handleNameEditStart}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+              </>
+            ))}
+
+            <Grid.Column>
+              <Loader active={loadingNext} />
+            </Grid.Column>
+
+          </Grid>
+        </Item.Group>
+      </div>
 
       {entityEditMode && entityType === 'Notebook' &&
         <NotebookForm />}
@@ -163,14 +156,10 @@ function SideNavList({ entityArray, entityLoading, entityOpenForm,
         <UnitForm />}
       {entityEditMode && entityType === 'Page' &&
         <PageForm />}
-      <Divider style={{ color: 'red' }}>
-        <a onClick={() => entityOpenForm()} style={{ color: '#bfbfbf' }}>
-          <Icon name='add' size='large' />
-          Add {entityType}
-        </a>
-      </Divider>
+
+
     </>
   );
 }
 
-export default observer(SideNavList);
+export default observer(SidenavList);

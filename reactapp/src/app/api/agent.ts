@@ -7,6 +7,7 @@ import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 import { router } from "../router/Routes";
 import { toast } from "react-toastify";
+import { PaginatedResult, Pagination } from "../models/pagination";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -24,6 +25,13 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(async response => {
     await sleep(1000);
+
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResult<unknown>>
+    }
+
     return response;
 }, (error: AxiosError) => {
     const { data, status, config } = error.response as AxiosResponse;
@@ -71,7 +79,8 @@ const requests = {
 }
 
 const Notebooks = {
-    list: () => requests.get<Notebook[]>('/notebooks'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Notebook[]>>('/notebooks', { params })
+        .then(responseBody),
     details: (id: string) => requests.get<Notebook>(`/notebooks/${id}`),
     create: (notebook: Notebook) => requests.post<void>('/notebooks', notebook),
     update: (notebook: Notebook) => requests.put<void>(`/notebooks/${notebook.id}`, notebook),
@@ -79,7 +88,9 @@ const Notebooks = {
 }
 
 const Units = {
-    list: (nbId: string) => requests.get<Unit[]>(`/units?nbId=${nbId}`),
+    list: (nbId: string, params: URLSearchParams) =>
+        axios.get<PaginatedResult<Unit[]>>(`/units?nbId=${nbId}`, { params })
+            .then(responseBody),
     details: (id: string) => requests.get<Unit>(`/units/${id}`),
     create: (unit: Unit) => requests.post<void>('/units', unit),
     update: (unit: Unit) => requests.put<void>(`/units/${unit.id}`, unit),
@@ -87,7 +98,9 @@ const Units = {
 }
 
 const Pages = {
-    list: (unitId: string) => requests.get<Page[]>(`/pages?unitId=${unitId}`),
+    list: (unitId: string, params: URLSearchParams) =>
+        axios.get<PaginatedResult<Page[]>>(`/pages?unitId=${unitId}`, { params })
+            .then(responseBody),
     details: (id: string) => requests.get<Page>(`/pages/${id}`),
     create: (page: Page) => requests.post<void>('/pages', page),
     update: (page: Page) => requests.put<void>(`/pages/${page.id}`, page),
@@ -95,7 +108,9 @@ const Pages = {
 }
 
 const Notes = {
-    list: (pageId: string) => requests.get<Note[]>(`/notes?pageId=${pageId}`),
+    list: (pageId: string, params: URLSearchParams) =>
+        axios.get<PaginatedResult<Note[]>>(`/notes?pageId=${pageId}`, { params })
+            .then(responseBody),
     details: (id: string) => requests.get<Note>(`/notes/${id}`),
     create: (note: Note) => requests.post<void>('/notes', note),
     update: (note: Note) => requests.put<void>(`/notes/${note.id}`, note),

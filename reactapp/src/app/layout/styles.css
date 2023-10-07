@@ -55,17 +55,17 @@ a:hover {
 }
 
 .sidenav .closebtn {
-  position: absolute;
+  position: sticky;
   top: 50px;
   right: 0px;
   font-size: 25px;
-  margin-left: 50px;
 }
 
 .sidenav .returnbtn {
+  position: sticky;
+  top: 50px;
   font-size: 25px;
   margin-left: -25px;
-  margin-top: -10px;
 }
 
 #main {
