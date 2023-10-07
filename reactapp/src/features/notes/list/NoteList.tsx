@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Divider, Grid, Input, Item, TextArea, SemanticWIDTHS, Header, Loader } from "semantic-ui-react";
+import { Button, Divider, Grid, Input, Item, TextArea, SemanticWIDTHS, Loader } from "semantic-ui-react";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
