@@ -24,8 +24,8 @@ function App() {
 
   return (
     <>
-      <ModalContainer />
       <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
+      <ModalContainer />
       {
         location.pathname === '/' ? <HomePage />
           : (

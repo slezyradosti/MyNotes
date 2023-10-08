@@ -14,6 +14,7 @@ export const routes: RouteObject[] = [
         element: <App />,
         children: [
             { path: '', element: <HomePage /> },
+            { path: 'login', element: <HomePage /> },
             { path: 'notebooks', element: <Dashboard /> },
             { path: 'notebooks/:id', element: <Dashboard /> },
             { path: 'units', element: <Dashboard /> },
@@ -27,10 +28,10 @@ export const routes: RouteObject[] = [
             { path: '*', element: <Navigate replace to='/not-found' /> },
         ]
     },
-    {
-        path: '/login',
-        element: <LoginForm />,
-    }
+    // {
+    //     path: '/login',
+    //     element: <LoginForm />,
+    // }
 ]
 
 export const router = createBrowserRouter(routes)

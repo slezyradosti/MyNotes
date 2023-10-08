@@ -7,7 +7,7 @@ function ColumnButton() {
 
     return (
         <a className="closebtn" onClick={() => noteStore.changeColumnsCount()} style={{ color: '#bfbfbf', marginRight: '1em' }}>
-            <Icon name='columns' size='big' title={`To ${noteStore.columnsCount} table(s) view`} />
+            <Icon name='columns' size='big' title={`To ${noteStore.columnsCount == '1' ? '2' : '1'} table(s) view`} />
         </a>
     );
 }

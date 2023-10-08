@@ -43,7 +43,14 @@ class NoteStore {
         localStorage.setItem('columnsCount', this.columnsCount);
     }
 
+    clearData = () => {
+        this.noteRegistry.clear();
+        this.setLoadingInitial(true);
+    }
+
     loadNotes = async (pageId: string) => {
+        if (this.noteRegistry.size > 0) this.clearData();
+
         try {
             const result = await agent.Notes.list(pageId, this.axiosParams);
             result.data.forEach(note => {
