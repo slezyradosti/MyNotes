@@ -38,9 +38,16 @@ class PageStore implements ISidebarListStore {
         return 'Page';
     }
 
-    loadData = async (nbId: string) => {
+    clearData = () => {
+        this.pageRegistry.clear();
+        this.setLoadingInitial(true);
+    }
+
+    loadData = async (unitId: string) => {
+        if (this.pageRegistry.size > 0) this.clearData();
+
         try {
-            const result = await agent.Pages.list(nbId, this.axiosParams);
+            const result = await agent.Pages.list(unitId, this.axiosParams);
             result.data.forEach(page => {
                 page.createdAt = page.createdAt?.split('T')[0];
                 this.pageRegistry.set(page.id!, page);

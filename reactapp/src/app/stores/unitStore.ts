@@ -38,7 +38,15 @@ class UnitStore implements ISidebarListStore {
         return 'Unit';
     }
 
+    clearData = () => {
+        this.unitRegistry.clear();
+        this.setLoadingInitial(true);
+    }
+
     loadData = async (nbId: string) => {
+        if (this.unitRegistry.size > 0) this.clearData();
+
+
         try {
             const result = await agent.Units.list(nbId, this.axiosParams);
             result.data.forEach(unit => {
