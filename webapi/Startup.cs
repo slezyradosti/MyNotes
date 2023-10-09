@@ -1,6 +1,7 @@
 ﻿using Domain.Repositories.EFInitial;
 using IndentityLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -28,6 +29,28 @@ namespace webapi
                 //every controller requires auth
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
+
+                //cache profiles
+                options.CacheProfiles.Add("NoCache",
+                    new CacheProfile() { NoStore = true });
+                options.CacheProfiles.Add("Any-60",
+                    new CacheProfile()
+                    {
+                        Location = ResponseCacheLocation.Any,
+                        Duration = 60
+                    });
+                options.CacheProfiles.Add("Any-180",
+                new CacheProfile()
+                {
+                    Location = ResponseCacheLocation.Any,
+                    Duration = 180
+                });
+                options.CacheProfiles.Add("Any-300",
+                    new CacheProfile()
+                    {
+                        Location = ResponseCacheLocation.Any,
+                        Duration = 300
+                    });
             })
             .AddJsonOptions(options =>
             {
