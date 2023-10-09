@@ -57,7 +57,6 @@ class NoteStore {
                 note.createdAt = note.createdAt?.split('T')[0];
                 this.noteRegistry.set(note.id!, note);
             })
-            console.log('note result.pagination: ' + result.pagination.PageSize)
             this.setPagination(result.pagination!);
         } catch (error) {
             console.log(error);
