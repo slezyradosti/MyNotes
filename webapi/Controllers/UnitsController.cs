@@ -7,7 +7,7 @@ namespace webapi.Controllers
     public class UnitsController : BaseApiController
     {
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-180")]
+        [ResponseCache(CacheProfileName = "Any-60")]
         public async Task<IActionResult> GetUnits(Guid nbId, 
             [FromQuery] RequestDto requestDto)
         {

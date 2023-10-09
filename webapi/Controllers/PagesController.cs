@@ -7,7 +7,7 @@ namespace webapi.Controllers
     public class PagesController : BaseApiController
     {
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-180")]
+        [ResponseCache(CacheProfileName = "Any-60")]
         public async Task<IActionResult> GetPages(Guid unitId,
             [FromQuery] RequestDto requestDto)
         {

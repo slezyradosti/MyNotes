@@ -33,6 +33,12 @@ namespace webapi
                 //cache profiles
                 options.CacheProfiles.Add("NoCache",
                     new CacheProfile() { NoStore = true });
+                options.CacheProfiles.Add("Any-30",
+                    new CacheProfile()
+                    {
+                        Location = ResponseCacheLocation.Any,
+                        Duration = 30
+                    });
                 options.CacheProfiles.Add("Any-60",
                     new CacheProfile()
                     {
