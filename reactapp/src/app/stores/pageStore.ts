@@ -14,6 +14,7 @@ class PageStore implements ISidebarListStore {
     loadingInitial: boolean = true;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
+    oldUnitId: string | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -43,16 +44,41 @@ class PageStore implements ISidebarListStore {
         this.setLoadingInitial(true);
     }
 
+    checkIfDataUpdated = (unitId: string, length: number): boolean => {
+        let isUpdated = false;
+
+        if (this.oldUnitId) {
+            if (this.oldUnitId !== unitId) {
+                isUpdated = true;
+                this.clearData();
+            }
+            else {
+                if (this.pageRegistry.size !== length) {
+                    isUpdated = true;
+                    this.clearData();
+                }
+            }
+        }
+        else isUpdated = true;
+
+        this.oldUnitId = unitId;
+        return isUpdated;
+    }
+
     loadData = async (unitId: string) => {
-        if (this.pageRegistry.size > 0) this.clearData();
+        //if (this.pageRegistry.size > 0) this.clearData();
+        this.setLoadingInitial(true);
 
         try {
             const result = await agent.Pages.list(unitId, this.axiosParams);
-            result.data.forEach(page => {
-                page.createdAt = page.createdAt?.split('T')[0];
-                this.pageRegistry.set(page.id!, page);
-            })
-            this.setPagination(result.pagination!);
+
+            if (this.checkIfDataUpdated(unitId, result.data.length)) {
+                result.data.forEach(page => {
+                    page.createdAt = page.createdAt?.split('T')[0];
+                    this.pageRegistry.set(page.id!, page);
+                })
+                this.setPagination(result.pagination!);
+            }
         } catch (error) {
             console.log(error);
         } finally {

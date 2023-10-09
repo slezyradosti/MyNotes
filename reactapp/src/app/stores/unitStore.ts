@@ -14,6 +14,7 @@ class UnitStore implements ISidebarListStore {
     loadingInitial: boolean = true;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
+    oldNbId: string | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -43,17 +44,42 @@ class UnitStore implements ISidebarListStore {
         this.setLoadingInitial(true);
     }
 
-    loadData = async (nbId: string) => {
-        if (this.unitRegistry.size > 0) this.clearData();
+    checkIfDataUpdated = (nbId: string, length: number): boolean => {
+        let isUpdated = false;
 
+        if (this.oldNbId) {
+            if (this.oldNbId !== nbId) {
+                isUpdated = true;
+                this.clearData();
+            }
+            else {
+                if (this.unitRegistry.size !== length) {
+                    isUpdated = true;
+                    this.clearData();
+                }
+            }
+        }
+        else isUpdated = true;
+
+        this.oldNbId = nbId;
+        return isUpdated;
+    }
+
+    loadData = async (nbId: string) => {
+        //if (this.unitRegistry.size > 0) this.clearData();
+        this.setLoadingInitial(true);
 
         try {
             const result = await agent.Units.list(nbId, this.axiosParams);
-            result.data.forEach(unit => {
-                unit.createdAt = unit.createdAt?.split('T')[0];
-                this.unitRegistry.set(unit.id!, unit);
-            })
-            this.setPagination(result.pagination);
+
+            if (this.checkIfDataUpdated(nbId, result.data.length)) {
+                result.data.forEach(unit => {
+                    unit.createdAt = unit.createdAt?.split('T')[0];
+                    this.unitRegistry.set(unit.id!, unit);
+                })
+                this.setPagination(result.pagination);
+                console.log('unit loading...');
+            }        
         } catch (error) {
             console.log(error);
         } finally {
