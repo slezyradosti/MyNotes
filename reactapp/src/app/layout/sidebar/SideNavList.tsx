@@ -47,6 +47,7 @@ function SidenavList({ entityArray, entityLoading, entityOpenForm,
   }
 
   function handleSelectEntity(entityId: string) {
+    selectEntity(entityId);
     switch (entityType) {
       case 'Notebook':
         setCurrentEntityName('Unit');
@@ -61,8 +62,6 @@ function SidenavList({ entityArray, entityLoading, entityOpenForm,
         console.log('Entity type doesn\'t exists: ' + entityType)
         break;
     }
-
-    selectEntity(entityId);
   }
 
   const handleNameEditStart = (entityId: string, currentName: string) => {

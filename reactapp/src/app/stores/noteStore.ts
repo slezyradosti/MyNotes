@@ -49,7 +49,7 @@ class NoteStore {
     }
 
     loadNotes = async (pageId: string) => {
-        if (this.noteRegistry.size > 0) this.clearData();
+        if (this.pagingParams.paramPageIndex.toString() === '0') this.clearData();
 
         try {
             const result = await agent.Notes.list(pageId, this.axiosParams);
