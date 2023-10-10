@@ -15,5 +15,7 @@ namespace Domain.Models
         public Guid PageId { get; set; }
         [JsonIgnore]
         public Page Page { get; set; }
+
+        public ICollection<Photo> Photos { get; set; }
     }
 }
