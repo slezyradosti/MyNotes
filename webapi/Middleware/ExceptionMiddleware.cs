@@ -31,7 +31,7 @@ namespace webapi.Middleware
                 httpContext.Response.ContentType = "application/json";
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                Console.WriteLine(ex.InnerException?.Message);
+                _logger.LogError(ex.InnerException?.Message);
 
                 var response = _hostEnvironment.IsDevelopment()
                     ? new AppException(httpContext.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())

@@ -10,33 +10,42 @@ namespace webapi.Controllers
         private readonly ILogin _login;
         private readonly IRegister _register;
         private readonly IUserHandler _userHandler;
+        private readonly ILogger<AccountController> _logger;
 
         public AccountController(ILogin login, IRegister register,
-            IUserHandler userHandler)
+            IUserHandler userHandler, ILogger<AccountController> logger)
         {
             _login = login;
             _register = register;
             _userHandler = userHandler;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            return HandleResult(await _login.LoginHandleAsync(loginDto));  
+            LogInfo($"User {loginDto.Email} is loginning");
+            return HandleResult(await _login.LoginHandleAsync(loginDto), _logger);  
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            return HandleResult(await _register.RegisterHandlerAsync(registerDto));
+            LogInfo($"User {registerDto.Username} {registerDto.Email} is registering");
+            return HandleResult(await _register.RegisterHandlerAsync(registerDto), _logger);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCurretUser()
         {
             return HandleResult(await _userHandler.GetCurrentUserAsync(User));
+        }
+
+        private void LogInfo(string info)
+        {
+            _logger?.LogInformation($"{DateTime.UtcNow}: {info}");
         }
     }
 }

@@ -72,6 +72,13 @@ namespace webapi
 
             services.AddApplicationServices(_configuration);
             services.AddIdentityServices(_configuration);
+
+            services.AddLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+                logging.AddDebug();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
