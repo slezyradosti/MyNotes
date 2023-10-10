@@ -45,6 +45,7 @@ namespace webapi.Extensions
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAcessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
 
             return services;
