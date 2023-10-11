@@ -74,6 +74,16 @@ namespace Domain.Repositories.Repos
             return await SaveChangesAsync();
         }
 
+        public async Task<bool> IfUserHasAcessToThePhoto(string id, Guid userId)
+        {
+            var photoAuthorId = await _photoTable
+                .Where(p => p.Id == id)
+                .Select(x => x.Note.Page.Unit.Notebook.UserId)
+                .FirstOrDefaultAsync();
+
+            return photoAuthorId == userId;
+        }
+
         internal async Task<int> SaveChangesAsync()
         {
             try

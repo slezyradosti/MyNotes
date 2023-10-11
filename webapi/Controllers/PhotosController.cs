@@ -9,7 +9,13 @@ namespace webapi.Controllers
         public async Task<IActionResult> Add([FromQuery] Guid noteId, 
             [FromForm] IFormFile file)
         {
-            return HandleResult(await Mediator.Send(new Add.Command { NoteId = noteId, File = file }));
+            return HandleResult(await Mediator.Send(new Add.Command (noteId, file )));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            return HandleResult(await Mediator.Send(new Delete.Command(id)));
         }
     }
 }

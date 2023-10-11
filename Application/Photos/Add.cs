@@ -10,11 +10,7 @@ namespace Application.Photos
 {
     public class Add
     {
-        public class Command : IRequest<Result<Photo>>
-        {
-            public Guid NoteId { get; set; }
-            public IFormFile File { get; set; }
-        }
+        public record Command(Guid NoteId, IFormFile File) : IRequest<Result<Photo>>;
 
         public class Handler : IRequestHandler<Command, Result<Photo>>
         {
