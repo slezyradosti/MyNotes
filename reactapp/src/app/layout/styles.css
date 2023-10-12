@@ -145,3 +145,7 @@ a:hover {
   word-wrap: break-word !important;
   white-space: pre-wrap !important;
 }
+
+.markdownImgBox {
+  width: min(50%, 1000px);
+}
