@@ -1,5 +1,6 @@
 ﻿using Application.Core;
 using Application.Notebooks;
+using Domain.Repositories.Photos;
 using Domain.Repositories.Repos;
 using Domain.Repositories.Repos.Interfaces;
 using IndentityLogic;
@@ -43,6 +44,9 @@ namespace webapi.Extensions
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAcessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
 
             return services;
         }

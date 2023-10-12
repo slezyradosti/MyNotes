@@ -86,7 +86,11 @@ function Sidenav({ closeNav }: Props) {
                 navigate('notes'); // redirect to notes?pageId=123
                 //setSearchParams({ pageId: pageStore.selectedElement!.id! }) // add query parameter: notes?pageId=123
                 //
+                noteStore.setPagingParams(new PagingParams(0)) // IMPORTANT. as there is no redirecting with different query string for now, we Reset pageIndex value as new Note is loading
                 noteStore.loadNotes(pageStore.selectedElement!.id!);
+                setCurrentEntityName('clearValue'); // IMPORTANT. clearing current entityname value to making able load new  
+                break;
+            case 'clearValue':
                 break;
             default:
                 console.log('SideNav Wrong value: ' + currentEntityName);

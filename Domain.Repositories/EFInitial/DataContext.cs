@@ -20,6 +20,7 @@ namespace Domain.Repositories.EFInitial
         public DbSet<Unit> Units { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +46,12 @@ namespace Domain.Repositories.EFInitial
                 .HasMany(e => e.Notes)
                 .WithOne(e => e.Page)
                 .HasForeignKey(e => e.PageId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Note>()
+                .HasMany(e => e.Photos)
+                .WithOne(e => e.Note)
+                .HasForeignKey(e => e.NoteId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);

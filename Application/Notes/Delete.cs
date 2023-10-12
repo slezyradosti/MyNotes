@@ -22,8 +22,6 @@ namespace Application.Notes
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                //TODO : when you try to delete unexisted data, you also have "false". Bug or not?)
-
                 var note = await _noteRepository.GetOneAsync(request.Id);
 
                 if (note == null) return null;
