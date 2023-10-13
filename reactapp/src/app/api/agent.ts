@@ -8,6 +8,7 @@ import { store } from "../stores/store";
 import { router } from "../router/Routes";
 import { toast } from "react-toastify";
 import { PaginatedResult, Pagination } from "../models/pagination";
+import { Photo } from "../models/photo";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -123,12 +124,25 @@ const Account = {
     register: (user: UserFormValues) => requests.post<User>('/account/register', user)
 }
 
+const Photos = {
+    upload: (file: Blob, noteId: string) => {
+        let formData = new FormData();
+        formData.append('File', file);
+        return axios.post<Photo>(`photos/?noteId=${noteId}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+    },
+    //reate: (photo: Photo) => requests.post<Photo>('/photos', photo),
+    delete: (id: string) => requests.delete<void>(`/photos/${id}`)
+}
+
 const agent = {
     Notebooks,
     Units,
     Pages,
     Notes,
-    Account
+    Account,
+    Photos
 }
 
 export default agent;
