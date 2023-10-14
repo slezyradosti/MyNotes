@@ -146,8 +146,10 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                                     className="cancelBtnColor Border"
                                                     content='Cancel'
                                                 />
+
                                                 <Button
                                                     onClick={() => handleSaveNote(note.id!)}
+                                                    loading={noteLoading}
                                                     className="submitBtnColor Border"
                                                     content='Save'
                                                 />

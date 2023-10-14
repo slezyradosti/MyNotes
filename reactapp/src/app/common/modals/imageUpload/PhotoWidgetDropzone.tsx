@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
 interface Props {
     loading: boolean;
@@ -35,7 +35,8 @@ function MyDropZone({ loading, uploadPhoto, uploadPhotoToRecord }: Props) {
                 isDragActive ?
                     <p>Drop the picture here</p> :
                     //<p>Click or drag a picture here</p>
-                    <Button loading={loading} content='Add image' />
+                    //<Button className="addImageBtn" loading={loading} content='Add image' />
+                    <Icon className="addImageIcon" name="file image" size='big' title='Add Image' color="black" inverted />
             }
         </div>
     );
