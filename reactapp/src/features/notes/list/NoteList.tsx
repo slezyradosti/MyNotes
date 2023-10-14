@@ -5,6 +5,8 @@ import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
 import HelpButton from "../other/HelpButton";
 import NoteListContent from "./NoteListContent";
+import MyDropZone from "../../../app/common/modals/imageUpload/PhotoWidgetDropzone";
+import { useStore } from "../../../app/stores/store";
 
 interface Props {
     noteArray: Note[];
@@ -16,13 +18,16 @@ interface Props {
     noteUpdate: (note: Note) => Promise<void>;
     noteDelete: (id: string) => Promise<void>;
     getNote: (id: string) => Note;
+    cancelSelectedElement: () => void;
     columnsCount: SemanticWIDTHS | "equal" | undefined;
     loadingNext: boolean;
 }
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
-    noteSelect, noteUpdate, noteDelete, getNote, columnsCount,
+    noteSelect, noteUpdate, noteDelete, getNote, cancelSelectedElement, columnsCount,
     loadingNext }: Props) {
+
+    const { photoStore } = useStore();
     const inputRef = useRef<Input | TextArea | null>(null);
     // Local state for editing a note
     const [editNoteId, setEditNoteId] = useState<string | null>(null);
@@ -41,6 +46,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
         if (noteToEdit) {
             setEditNoteId(noteId);
             setEditedNote({ ...noteToEdit });
+            noteSelect(noteId);
         }
     };
 
@@ -57,12 +63,14 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
         // Clear the edit mode
         setEditNoteId(null);
         setEditedNote(null);
+        cancelSelectedElement();
     };
 
     // Handler for canceling editing a note
     const handleEditNoteCancel = () => {
         setEditNoteId(null);
         setEditedNote(null);
+        cancelSelectedElement();
     };
 
     // Handler for deleting a note
@@ -80,6 +88,10 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
             setEditedNote({ ...editedNote, [field]: e.target.value });
         }
     };
+
+    const handleUploadPhoto = (file: Blob) => {
+        photoStore.uploadPhoto(file, noteSelectedElement!.id!);
+    }
 
     return (
         <>
@@ -114,6 +126,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                                                 <HelpButton />
+                                                <MyDropZone uploadPhoto={handleUploadPhoto} loading={photoStore.loading} />
                                                 <Button
                                                     onClick={handleEditNoteCancel}
                                                     className="cancelBtnColor Border"
