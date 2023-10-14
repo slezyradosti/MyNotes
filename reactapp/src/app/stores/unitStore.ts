@@ -78,8 +78,7 @@ class UnitStore implements ISidebarListStore {
                     this.unitRegistry.set(unit.id!, unit);
                 })
                 this.setPagination(result.pagination);
-                console.log('unit loading...');
-            }        
+            }
         } catch (error) {
             console.log(error);
         } finally {

@@ -5,12 +5,21 @@ import { Button } from "semantic-ui-react";
 interface Props {
     loading: boolean;
     uploadPhoto: (file: Blob) => void;
+    // add callback function which will trigger Note update with adding link for the new image to the record
+    uploadPhotoToRecord: () => void;
 }
 
-function MyDropZone({ loading, uploadPhoto }: Props) {
+function MyDropZone({ loading, uploadPhoto, uploadPhotoToRecord }: Props) {
+
+    // change for getting the only file
     const onDrop = useCallback((acceptedFiles: Blob[]) => {
-        acceptedFiles.forEach((file: Blob) => uploadPhoto(file));
+        acceptedFiles.forEach((file: Blob) => {
+            uploadPhoto(file)
+            uploadPhotoToRecord();
+        });
+
     }, [uploadPhoto]);
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop, accept: {
             'image/png': ['.png'],

@@ -52,6 +52,7 @@ class PhotoStore {
             const response = await agent.Photos.upload(file, noteId);
             const photo = response.data;
             this.photoRegistry.set(photo.id, photo);
+            this.selectOne(photo.id);
         } catch (error) {
             console.log(error);
         } finally {
@@ -68,6 +69,7 @@ class PhotoStore {
             toast.error('Problem deleting photo');
         } finally {
             runInAction(() => this.loading = false);
+            this.cancelSelectedElement();
         }
 
     }

@@ -18,13 +18,13 @@ interface Props {
     noteUpdate: (note: Note) => Promise<void>;
     noteDelete: (id: string) => Promise<void>;
     getNote: (id: string) => Note;
-    cancelSelectedElement: () => void;
+    cancelSelectedNote: () => void;
     columnsCount: SemanticWIDTHS | "equal" | undefined;
     loadingNext: boolean;
 }
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
-    noteSelect, noteUpdate, noteDelete, getNote, cancelSelectedElement, columnsCount,
+    noteSelect, noteUpdate, noteDelete, getNote, cancelSelectedNote, columnsCount,
     loadingNext }: Props) {
 
     const { photoStore } = useStore();
@@ -51,26 +51,26 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     };
 
     // Handler for saving an edited note
-    const handleSaveNote = (noteId: string) => {
+    const handleSaveNote = async (noteId: string) => {
         // Implement saving the edited note, e.g., make an API call
         // Update the noteArray with the edited note
         let newNote = getNote(noteId);
         newNote.name = editedNote?.name;
         newNote.record = editedNote?.record || '';
 
-        noteUpdate(newNote);
+        await noteUpdate(newNote);
 
         // Clear the edit mode
         setEditNoteId(null);
         setEditedNote(null);
-        cancelSelectedElement();
+        cancelSelectedNote();
     };
 
     // Handler for canceling editing a note
     const handleEditNoteCancel = () => {
         setEditNoteId(null);
         setEditedNote(null);
-        cancelSelectedElement();
+        cancelSelectedNote();
     };
 
     // Handler for deleting a note
@@ -90,7 +90,17 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     };
 
     const handleUploadPhoto = (file: Blob) => {
+        //save photo
         photoStore.uploadPhoto(file, noteSelectedElement!.id!);
+    }
+
+    const handleUploadPhotoToRecord = async () => {
+        //add link for the photo to the record
+        let newNote = getNote(editedNote!.id!);
+        newNote.record += `\n![Image](${photoStore.selectedElement?.url})`
+        await noteUpdate(newNote);
+
+        handleEditNoteCancel();
     }
 
     return (
@@ -126,7 +136,11 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                                                 <HelpButton />
-                                                <MyDropZone uploadPhoto={handleUploadPhoto} loading={photoStore.loading} />
+                                                <MyDropZone
+                                                    uploadPhoto={handleUploadPhoto}
+                                                    uploadPhotoToRecord={handleUploadPhotoToRecord}
+                                                    loading={photoStore.loading}
+                                                />
                                                 <Button
                                                     onClick={handleEditNoteCancel}
                                                     className="cancelBtnColor Border"
