@@ -27,19 +27,9 @@ namespace Application.Units
             }
             public async Task<Result<PageList<Unit>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                if (await _unitRepository.GetOwnedCountAsync(request.NotebookId) > 0)
+                if (!await _notebookRepository.IfUserHasAccessToTheNotebook(request.NotebookId, _userAccessor.GetUserId()))
                 {
-                    if (!await _unitRepository.IfUserHasAccessToTheUnits(request.NotebookId, _userAccessor.GetUserId()))
-                    {
-                        return Result<PageList<Unit>>.Failure("You have no access to this data");
-                    }
-                }
-                else
-                {
-                    if (!await _notebookRepository.IfUserHasAccessToTheNotebook(request.NotebookId, _userAccessor.GetUserId()))
-                    {
-                        return Result<PageList<Unit>>.Failure("You have no access to this data");
-                    }
+                    return Result<PageList<Unit>>.Failure("You have no access to this data");
                 }
 
                 int count = await _unitRepository.GetOwnedCountAsync(request.NotebookId);

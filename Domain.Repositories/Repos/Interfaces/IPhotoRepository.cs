@@ -16,5 +16,6 @@ namespace Domain.Repositories.Repos.Interfaces
         public Task<int> RemoveAsync(Photo photo);
         public Task<int> SaveAsync(Photo photo);
         public Task<bool> IfUserHasAcessToThePhoto(string id, Guid userId);
+        public Task<List<Photo>> GetAllFromSpecificNoteAsync(Guid noteId);
     }
 }

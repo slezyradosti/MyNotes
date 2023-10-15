@@ -28,19 +28,9 @@ namespace Application.Notes
 
             public async Task<Result<PageList<Note>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                if (await _noteRepository.GetOwnedCountAsync(request.PageId) > 0)
+                if (!await _pageRepository.IfUserHasAccessToThePage(request.PageId, _userAccessor.GetUserId()))
                 {
-                    if (!await _noteRepository.IfUserHasAccessToTheNotes(request.PageId, _userAccessor.GetUserId()))
-                    {
-                        return Result<PageList<Note>>.Failure("You have no access to this data");
-                    }
-                }
-                else
-                {
-                    if (!await _pageRepository.IfUserHasAccessToThePage(request.PageId, _userAccessor.GetUserId()))
-                    {
-                        return Result<PageList<Note>>.Failure("You have no access to this data");
-                    }
+                    return Result<PageList<Note>>.Failure("You have no access to this data");
                 }
 
                 int count = await _noteRepository.GetOwnedCountAsync(request.PageId);
