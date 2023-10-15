@@ -7,6 +7,7 @@ import HelpButton from "../other/HelpButton";
 import NoteListContent from "./NoteListContent";
 import MyDropZone from "../../../app/common/modals/imageUpload/PhotoWidgetDropzone";
 import { useStore } from "../../../app/stores/store";
+import ImageListButton from "../other/ImageListButton";
 
 interface Props {
     noteArray: Note[];
@@ -40,6 +41,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
             inputRef.current.focus();
         }
     }, [editNoteId]);
+
     // Handler for editing a note
     const handleEditNoteStart = (noteId: string) => {
         const noteToEdit = noteArray.find((note) => note.id === noteId);
@@ -89,15 +91,24 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
         }
     };
 
-    const handleUploadPhoto = (file: Blob) => {
+    const handleUploadPhoto = async (file: Blob) => {
         //save photo
-        photoStore.uploadPhoto(file, noteSelectedElement!.id!);
+        await photoStore.uploadPhoto(file, noteSelectedElement!.id!);
+        handleUploadPhotoToRecord();
     }
 
     const handleUploadPhotoToRecord = async () => {
         //add link for the photo to the record
         let newNote = getNote(editedNote!.id!);
         newNote.record += `\n![Image](${photoStore.selectedElement?.url})`
+        await noteUpdate(newNote);
+
+        handleEditNoteCancel();
+    }
+
+    const handleDeletePhotoFromRecord = async (noteId: string, photoUrl: string) => {
+        let newNote = getNote(noteId);
+        newNote.record = newNote.record.replace(`\n![Image](${photoUrl})`, '')
         await noteUpdate(newNote);
 
         handleEditNoteCancel();
@@ -136,9 +147,12 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                                                 <HelpButton />
+                                                <ImageListButton
+                                                    noteId={editedNote ? editedNote!.id! : note.id}
+                                                    deletePhotoFromRecord={handleDeletePhotoFromRecord}
+                                                />
                                                 <MyDropZone
                                                     uploadPhoto={handleUploadPhoto}
-                                                    uploadPhotoToRecord={handleUploadPhotoToRecord}
                                                     loading={photoStore.loading}
                                                 />
                                                 <Button

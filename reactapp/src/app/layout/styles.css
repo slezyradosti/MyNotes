@@ -158,3 +158,7 @@ a:hover {
 .addImageIcon:hover {
   cursor: pointer;
 }
+
+.modalListImage {
+  width: min(50%, 750px);
+}

@@ -19,15 +19,35 @@ class PhotoStore {
         return 'Photo';
     }
 
-    // loadPhotos = async (noteId: string) => {
-    //     try {
-    //         //something
-    //     } catch (error) {
-    //         console.log(error);
-    //     } finally {
-    //         this.setLoadingInitial(false);
-    //     }
-    // }
+    get getArray() {
+        return Array.from(this.photoRegistry.values());
+    }
+
+    clearData = () => {
+        this.photoRegistry.clear();
+        this.setLoadingInitial(true);
+    }
+
+    loadPhotos = async (noteId: string) => {
+        this.clearData();
+
+        try {
+            try {
+                const photos = await agent.Photos.list(noteId);
+                photos.forEach(photo => {
+                    this.photoRegistry.set(photo.id!, photo);
+                });
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.setLoadingInitial(false);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            this.setLoadingInitial(false);
+        }
+    }
 
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
@@ -65,6 +85,10 @@ class PhotoStore {
 
         try {
             await agent.Photos.delete(id);
+            runInAction(() => {
+                this.photoRegistry.delete(id);
+                if (this.selectedElement?.id === id) this.cancelSelectedElement();
+            })
         } catch (error) {
             toast.error('Problem deleting photo');
         } finally {
