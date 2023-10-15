@@ -28,14 +28,16 @@ namespace Application.Pages
 
             public async Task<Result<PageList<Page>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                if (await _pageRepository.GetOwnedCountAsync(request.UnitId) > 0)
-                {
-                    if (!await _pageRepository.IfUserHasAccessToThePages(request.UnitId, _userAccessor.GetUserId()))
-                    {
-                        return Result<PageList<Page>>.Failure("You have no access to this data");
-                    }
-                }
-                else
+                
+
+                //if (count > 0)
+                //{
+                //    if (!await _pageRepository.IfUserHasAccessToThePages(request.UnitId, _userAccessor.GetUserId()))
+                //    {
+                //        return Result<PageList<Page>>.Failure("You have no access to this data");
+                //    }
+                //}
+                //else
                 {
                     if (!await _unitRepository.IfUserHasAccessToTheUnit(request.UnitId, _userAccessor.GetUserId()))
                     {
