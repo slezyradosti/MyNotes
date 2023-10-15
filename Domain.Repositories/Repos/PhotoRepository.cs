@@ -84,6 +84,10 @@ namespace Domain.Repositories.Repos
             return photoAuthorId == userId;
         }
 
+        public async Task<List<Photo>> GetAllFromSpecificNoteAsync(Guid noteId)
+            => await _photoTable.Where(p => p.NoteId == noteId)
+            .ToListAsync();
+
         internal async Task<int> SaveChangesAsync()
         {
             try
