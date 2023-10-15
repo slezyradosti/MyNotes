@@ -43,6 +43,8 @@ function NoteListContent({ note, noteLoading, noteEditMode,
                 onClick={() => handleEditNoteStart(note.id!)}
             >
                 <Markdown
+                    components={{ img: ({ node, ...props }) => <img className='markdownImgBox' {...props} /> }}
+
                     remarkPlugins={[[remarkGfm, { whiteSpace: 'pre-wrap' }]]}
                     disallowedElements={['pre']} // disallowedElements (Array<string>, default: []) — tag names to disallow; cannot combine w/ allowedElements
                     unwrapDisallowed={true} // unwrapDisallowed (boolean, default: false) — extract (unwrap) what’s in disallowed elements; normally when say strong is not allowed, it and it’s children are dropped, with unwrapDisallowed the element itself is replaced by its children

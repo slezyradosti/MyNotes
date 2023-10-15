@@ -69,6 +69,7 @@ function Dashboard() {
                                         getNote={noteStore.getOne}
                                         columnsCount={noteStore.columnsCount as SemanticWIDTHS}
                                         loadingNext={loadingNext}
+                                        cancelSelectedNote={noteStore.cancelSelectedElement}
                                     />
                                 </InfiniteScroll>
 

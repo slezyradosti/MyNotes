@@ -145,3 +145,16 @@ a:hover {
   word-wrap: break-word !important;
   white-space: pre-wrap !important;
 }
+
+.markdownImgBox {
+  width: min(50%, 1000px);
+}
+
+.addImageBtn {
+  background-color: #e2f4b2 !important;
+  box-shadow: 0 0 0 1px rgba(34, 36, 38, .15) inset;
+}
+
+.addImageIcon:hover {
+  cursor: pointer;
+}

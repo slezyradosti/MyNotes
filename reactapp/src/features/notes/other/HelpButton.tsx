@@ -8,7 +8,7 @@ function HelpButton() {
 
     return (
         <a className="closebtn" onClick={() => modalStore.openModal(<HelpInfo />)} >
-            <Icon name="help" size='large' title='How to style' color='grey' />
+            <Icon name="help" size='large' title='How to style' color='black' inverted />
         </a>
     );
 }
