@@ -10,7 +10,7 @@ interface Props {
 
 function ImageList({ noteId, deletePhotoFromRecord }: Props) {
     const { photoStore } = useStore();
-    const { getArray, loading, deletePhoto, getOne } = photoStore;
+    const { getArray, loading, deletePhoto, getOne, selectedElement } = photoStore;
 
     useEffect(() => {
         photoStore.loadPhotos(noteId);
@@ -24,14 +24,16 @@ function ImageList({ noteId, deletePhotoFromRecord }: Props) {
 
     return (
         <>
-            <Item.Content>
-                <Item.Header>
-                    The list contains photo you uploaded
-                </Item.Header>
-                <Item.Description>
-                    You can delete photos by clicking a trash icon or just remove a full link inside the note.
-                </Item.Description>
-            </Item.Content>
+            <Item.Group>
+                <Item.Content>
+                    <Item.Header>
+                        <Header> The list contains photo you uploaded</Header>
+                    </Item.Header>
+                    <Item.Description>
+                        You can delete photos by clicking a trash icon or just remove a full link inside the note.
+                    </Item.Description>
+                </Item.Content>
+            </Item.Group>
             <Grid columns={2}>
                 {getArray.map((photo) => (
                     <Grid.Row key={photo.id}>
@@ -41,9 +43,10 @@ function ImageList({ noteId, deletePhotoFromRecord }: Props) {
                         <Grid.Column>
                             <div>
                                 <Button
+                                    key={photo.id}
                                     style={{ backgroundColor: 'transparent' }}
                                     floated="right"
-                                    loading={loading}
+                                    loading={loading && selectedElement?.id === photo.id}
                                     onClick={() => handleDeletePhoto(photo.id)}
                                 >
                                     <Icon name='trash' title='Delete Image' />

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Button, Divider, Grid, Input, Item, TextArea, SemanticWIDTHS, Loader } from "semantic-ui-react";
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useEffect, useRef } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
 import HelpButton from "../other/HelpButton";
@@ -28,12 +28,10 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     noteSelect, noteUpdate, noteDelete, getNote, cancelSelectedNote, columnsCount,
     loadingNext }: Props) {
 
-    const { photoStore } = useStore();
+    const { photoStore, noteExtensionStore } = useStore();
+    const { editNoteId, editedNote, rowsCount, setEditNoteId,
+        setEditedNote, setRowsCount, uploadPhoto, deletePhotoFromRecord } = noteExtensionStore
     const inputRef = useRef<Input | TextArea | null>(null);
-    // Local state for editing a note
-    const [editNoteId, setEditNoteId] = useState<string | null>(null);
-    const [editedNote, setEditedNote] = useState<Note | null>(null);
-    const [rowsCount, setrowsCount] = useState<number | undefined>(5);
 
     // changes focus to the editing name
     useEffect(() => {
@@ -92,25 +90,12 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     };
 
     const handleUploadPhoto = async (file: Blob) => {
-        //save photo
-        await photoStore.uploadPhoto(file, noteSelectedElement!.id!);
-        handleUploadPhotoToRecord();
-    }
-
-    const handleUploadPhotoToRecord = async () => {
-        //add link for the photo to the record
-        let newNote = getNote(editedNote!.id!);
-        newNote.record += `\n![Image](${photoStore.selectedElement?.url})`
-        await noteUpdate(newNote);
-
+        await uploadPhoto(file);
         handleEditNoteCancel();
     }
 
     const handleDeletePhotoFromRecord = async (noteId: string, photoUrl: string) => {
-        let newNote = getNote(noteId);
-        newNote.record = newNote.record.replace(`\n![Image](${photoUrl})`, '')
-        await noteUpdate(newNote);
-
+        await deletePhotoFromRecord(noteId, photoUrl);
         handleEditNoteCancel();
     }
 

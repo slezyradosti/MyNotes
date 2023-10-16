@@ -95,7 +95,6 @@ class PhotoStore {
             await agent.Photos.delete(id);
             runInAction(() => {
                 this.photoRegistry.delete(id);
-                if (this.selectedElement?.id === id) this.cancelSelectedElement();
             })
         } catch (error) {
             toast.error('Problem deleting photo');
@@ -105,21 +104,21 @@ class PhotoStore {
         }
     }
 
-    checkIfPhotoWasDeleted = async (noteId: string, record: string) => {
+    checkIfPhotosWereDeleted = async (noteId: string, record: string) => {
         try {
             await this.tempLoadPhotos(noteId);
-            this.checkRecordData(Array.from(this.tempPhotoRegistry.values()), record);
+            this.findAndDeleteRemovedPhotos(Array.from(this.tempPhotoRegistry.values()), record);
         } catch (error) {
             console.log(error);
         }
     }
 
-    private checkRecordData = async (photoArray: Photo[], record: string) => {
+    private findAndDeleteRemovedPhotos = async (photoArray: Photo[], record: string) => {
         try {
             photoArray.forEach(photo => {
                 if (!record.includes(photo.url)) {
+                    this.selectOne(photo.id);
                     this.deletePhoto(photo.id);
-                    //this.tempPhotoRegistry.delete(photo.id);
                 }
             })
         } catch (error) {

@@ -7,6 +7,7 @@ import UserStore from "./userStore";
 import CommonStore from "./commonStore";
 import ModalStore from "./modalStore";
 import PhotoStore from "./photoStore";
+import NoteExtensionSotre from "./noteExtensionStore";
 
 interface Store {
     notebookStore: NotebookStore
@@ -17,6 +18,7 @@ interface Store {
     commonStore: CommonStore
     modalStore: ModalStore
     photoStore: PhotoStore
+    noteExtensionStore: NoteExtensionSotre
 }
 
 export const store: Store = {
@@ -27,7 +29,8 @@ export const store: Store = {
     userStore: new UserStore(),
     commonStore: new CommonStore(),
     modalStore: new ModalStore(),
-    photoStore: new PhotoStore()
+    photoStore: new PhotoStore(),
+    noteExtensionStore: new NoteExtensionSotre()
 }
 
 export const StoreContext = createContext(store);

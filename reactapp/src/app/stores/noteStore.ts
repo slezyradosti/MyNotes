@@ -74,6 +74,10 @@ class NoteStore {
         this.loadingInitial = state;
     }
 
+    setLoading = (state: boolean) => {
+        this.loading = state;
+    }
+
     selectOne = (id: string) => {
         this.selectedElement = this.noteRegistry.get(id);
     }
@@ -132,7 +136,7 @@ class NoteStore {
                 this.loading = false;
                 this.editMode = false;
             });
-            this.checkIfPhotosWereDeleted(note.id!, note.record);
+            store.photoStore.checkIfPhotosWereDeleted(note.id!, note.record);
         }
     }
 
@@ -151,14 +155,6 @@ class NoteStore {
             runInAction(() => {
                 this.loading = false;
             });
-        }
-    }
-
-    checkIfPhotosWereDeleted = async (noteId: string, record: string) => {
-        try {
-            store.photoStore.checkIfPhotoWasDeleted(noteId, record);
-        } catch (error) {
-            console.log(error);
         }
     }
 }
