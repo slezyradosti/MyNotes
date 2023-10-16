@@ -1,4 +1,4 @@
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Grid, Header, Icon, Item } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../app/stores/store";
 import { useEffect } from "react";
@@ -23,27 +23,37 @@ function ImageList({ noteId, deletePhotoFromRecord }: Props) {
     }
 
     return (
-        <Grid columns={2}>
-            {getArray.map((photo) => (
-                <Grid.Row key={photo.id}>
-                    <Grid.Column>
-                        <img src={photo.url} className="modalListImage"></img>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <div>
-                            <Button
-                                style={{ backgroundColor: 'transparent' }}
-                                floated="right"
-                                loading={loading}
-                                onClick={() => handleDeletePhoto(photo.id)}
-                            >
-                                <Icon name='trash' title='Delete Image' />
-                            </Button>
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
-            ))}
-        </Grid>
+        <>
+            <Item.Content>
+                <Item.Header>
+                    The list contains photo you uploaded
+                </Item.Header>
+                <Item.Description>
+                    You can delete photos by clicking a trash icon or just remove a full link inside the note.
+                </Item.Description>
+            </Item.Content>
+            <Grid columns={2}>
+                {getArray.map((photo) => (
+                    <Grid.Row key={photo.id}>
+                        <Grid.Column>
+                            <img src={photo.url} className="modalListImage"></img>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <div>
+                                <Button
+                                    style={{ backgroundColor: 'transparent' }}
+                                    floated="right"
+                                    loading={loading}
+                                    onClick={() => handleDeletePhoto(photo.id)}
+                                >
+                                    <Icon name='trash' title='Delete Image' />
+                                </Button>
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                ))}
+            </Grid>
+        </>
     );
 }
 

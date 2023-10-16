@@ -21,7 +21,7 @@ function ImageListButton({ noteId, deletePhotoFromRecord }: Props) {
             className="closebtn"
             onClick={() => openPhotoListHandler()}
         >
-            <Icon name="images" size='large' title='How to style' color='black' inverted />
+            <Icon name="images" size='large' title='Uploaded images' color='black' inverted />
         </a>
     );
 }

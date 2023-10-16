@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 class PhotoStore {
     photoRegistry = new Map<string, Photo>();
+    tempPhotoRegistry = new Map<string, Photo>();
     selectedElement: Photo | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
@@ -32,20 +33,27 @@ class PhotoStore {
         this.clearData();
 
         try {
-            try {
-                const photos = await agent.Photos.list(noteId);
-                photos.forEach(photo => {
-                    this.photoRegistry.set(photo.id!, photo);
-                });
-            } catch (error) {
-                console.log(error);
-            } finally {
-                this.setLoadingInitial(false);
-            }
+            const photos = await agent.Photos.list(noteId);
+            photos.forEach(photo => {
+                this.photoRegistry.set(photo.id!, photo);
+            });
         } catch (error) {
             console.log(error);
         } finally {
             this.setLoadingInitial(false);
+        }
+    }
+
+    private tempLoadPhotos = async (noteId: string) => {
+        this.tempPhotoRegistry.clear();
+
+        try {
+            const photos = await agent.Photos.list(noteId);
+            photos.forEach(photo => {
+                this.tempPhotoRegistry.set(photo.id!, photo);
+            });
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -95,7 +103,28 @@ class PhotoStore {
             runInAction(() => this.loading = false);
             this.cancelSelectedElement();
         }
+    }
 
+    checkIfPhotoWasDeleted = async (noteId: string, record: string) => {
+        try {
+            await this.tempLoadPhotos(noteId);
+            this.checkRecordData(Array.from(this.tempPhotoRegistry.values()), record);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    private checkRecordData = async (photoArray: Photo[], record: string) => {
+        try {
+            photoArray.forEach(photo => {
+                if (!record.includes(photo.url)) {
+                    this.deletePhoto(photo.id);
+                    //this.tempPhotoRegistry.delete(photo.id);
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
