@@ -1,12 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { Button, Divider, Grid, Input, Item, TextArea, SemanticWIDTHS, Loader } from "semantic-ui-react";
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useEffect, useRef } from "react";
 import Note from "../../../app/models/note";
 import NoteForm from "../form/NoteForm";
 import HelpButton from "../other/HelpButton";
 import NoteListContent from "./NoteListContent";
 import MyDropZone from "../../../app/common/modals/imageUpload/PhotoWidgetDropzone";
 import { useStore } from "../../../app/stores/store";
+import ImageListButton from "../other/ImageListButton";
 
 interface Props {
     noteArray: Note[];
@@ -27,12 +28,10 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     noteSelect, noteUpdate, noteDelete, getNote, cancelSelectedNote, columnsCount,
     loadingNext }: Props) {
 
-    const { photoStore } = useStore();
+    const { photoStore, noteExtensionStore } = useStore();
+    const { editNoteId, editedNote, rowsCount, setEditNoteId,
+        setEditedNote, setRowsCount, uploadPhoto, deletePhotoFromRecord } = noteExtensionStore
     const inputRef = useRef<Input | TextArea | null>(null);
-    // Local state for editing a note
-    const [editNoteId, setEditNoteId] = useState<string | null>(null);
-    const [editedNote, setEditedNote] = useState<Note | null>(null);
-    const [rowsCount, setrowsCount] = useState<number | undefined>(5);
 
     // changes focus to the editing name
     useEffect(() => {
@@ -40,6 +39,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
             inputRef.current.focus();
         }
     }, [editNoteId]);
+
     // Handler for editing a note
     const handleEditNoteStart = (noteId: string) => {
         const noteToEdit = noteArray.find((note) => note.id === noteId);
@@ -89,17 +89,13 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
         }
     };
 
-    const handleUploadPhoto = (file: Blob) => {
-        //save photo
-        photoStore.uploadPhoto(file, noteSelectedElement!.id!);
+    const handleUploadPhoto = async (file: Blob) => {
+        await uploadPhoto(file);
+        handleEditNoteCancel();
     }
 
-    const handleUploadPhotoToRecord = async () => {
-        //add link for the photo to the record
-        let newNote = getNote(editedNote!.id!);
-        newNote.record += `\n![Image](${photoStore.selectedElement?.url})`
-        await noteUpdate(newNote);
-
+    const handleDeletePhotoFromRecord = async (noteId: string, photoUrl: string) => {
+        await deletePhotoFromRecord(noteId, photoUrl);
         handleEditNoteCancel();
     }
 
@@ -136,9 +132,12 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                                                 <HelpButton />
+                                                <ImageListButton
+                                                    noteId={editedNote ? editedNote!.id! : note.id}
+                                                    deletePhotoFromRecord={handleDeletePhotoFromRecord}
+                                                />
                                                 <MyDropZone
                                                     uploadPhoto={handleUploadPhoto}
-                                                    uploadPhotoToRecord={handleUploadPhotoToRecord}
                                                     loading={photoStore.loading}
                                                 />
                                                 <Button

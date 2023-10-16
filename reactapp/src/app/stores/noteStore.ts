@@ -4,6 +4,7 @@ import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
 import moment from "moment";
 import { Pagination, PagingParams } from "../models/pagination";
+import { store } from "./store";
 
 class NoteStore {
     noteRegistry = new Map<string, Note>();
@@ -73,6 +74,10 @@ class NoteStore {
         this.loadingInitial = state;
     }
 
+    setLoading = (state: boolean) => {
+        this.loading = state;
+    }
+
     selectOne = (id: string) => {
         this.selectedElement = this.noteRegistry.get(id);
     }
@@ -131,6 +136,7 @@ class NoteStore {
                 this.loading = false;
                 this.editMode = false;
             });
+            store.photoStore.checkIfPhotosWereDeleted(note.id!, note.record);
         }
     }
 

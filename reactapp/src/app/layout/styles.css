@@ -158,3 +158,28 @@ a:hover {
 .addImageIcon:hover {
   cursor: pointer;
 }
+
+.modalListImage {
+  width: min(50%, 750px);
+}
+
+.nameTitle {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.nameTitle:hover {
+  cursor: pointer;
+}
+
+.homeTitle {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 10em;
+}

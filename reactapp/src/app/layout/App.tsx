@@ -1,14 +1,19 @@
 import { Container, } from "semantic-ui-react";
 import NavBar from "./NavBar";
 import { observer } from "mobx-react-lite";
-import SideNav from "./sidebar/Sidenav";
+import SideNav from "./sidebar/SideNav";
 import { Outlet, useLocation } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ModalContainer from "../common/modals/ModalContainer";
 import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 function App() {
   const location = useLocation();
+
+  useEffect(() => {
+
+  }, []);
 
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   function openNav() {

@@ -10,10 +10,13 @@ function HomePage() {
 
     return (
         <Segment inverted textAlign='center' vertical className='masthead' >
-            <Container text style={{ marginTop: '7em' }}>
-                <Header style={{ color: 'white' }}>
+            <Container text style={{ margin: '0 auto' }}>
+                <label className='homeTitle' style={{ color: 'white' }}>
                     MyNotes
-                </Header>
+                </label>
+                <br />
+                <br />
+
                 {userStore.isLoggedIn ? (
                     <>
                         <Header as='h2' inverted content='Welcome to My Notes' />

@@ -125,6 +125,7 @@ const Account = {
 }
 
 const Photos = {
+    list: (noteId: string) => requests.get<Photo[]>(`/photos?noteId=${noteId}`),
     upload: (file: Blob, noteId: string) => {
         let formData = new FormData();
         formData.append('File', file);

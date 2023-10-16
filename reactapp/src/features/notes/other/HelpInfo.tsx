@@ -1,9 +1,11 @@
 import { observer } from 'mobx-react-lite';
-import { Grid, Header } from 'semantic-ui-react';
+import { Grid, Header, Label } from 'semantic-ui-react';
 
 function HelpInfo() {
     return (
         <>
+            <Header style={{ textAlign: 'center' }}>Uploading images</Header>
+            <Label>You can upload your own images only in Edit mode</Label>
             <Header style={{ textAlign: 'center' }}>How to style my record</Header>
             <Grid columns={2} celled>
                 <Grid.Row>
