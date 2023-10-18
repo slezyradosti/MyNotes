@@ -1,10 +1,13 @@
 ﻿using Application.DTOs;
+using Application.Models;
 using AutoMapper;
 using Domain.Models;
+using IndentityLogic.Models;
+using Profile = Application.Models.Profile;
 
 namespace Application.Core
 {
-    public class MappingProfiles : Profile
+    public class MappingProfiles : AutoMapper.Profile
     {
         public MappingProfiles()
         {
@@ -34,6 +37,8 @@ namespace Application.Core
                 .ForMember(x => x.Page, y => y.Ignore())
                 .ForMember(x => x.Timestamp, y => y.Ignore())
                 .ForMember(x => x.CreatedAt, y => y.Ignore());
+
+            CreateMap<ApplicationUser, Profile>();
         }
     }
 }
