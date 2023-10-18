@@ -3,10 +3,12 @@ import { useStore } from "../../../app/stores/store";
 import { Button, Form, TextArea } from "semantic-ui-react";
 import { ChangeEvent, useState } from "react";
 import HelpButton from "../other/HelpButton";
+import MyDropZone from "../../../app/common/modals/imageUpload/PhotoWidgetDropzone";
 
 function NoteForm() {
-    const { pageStore, noteStore } = useStore();
-    const { loading, createOne, closeForm } = noteStore
+    const { pageStore, noteStore, photoStore, noteExtensionStore } = useStore();
+    const { loading, createOne, closeForm } = noteStore;
+    const { uploadPhoto, setEditedNote } = noteExtensionStore;
 
     const initialState = {
         name: '',
@@ -23,6 +25,17 @@ function NoteForm() {
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = event.target;
         setNoteDto({ ...noteDto, [name]: value });
+    }
+
+    const handleUploadPhoto = async (file: Blob) => {
+        //firstly, upload note
+        await createOne(noteDto);
+        setEditedNote(noteStore.selectedElement!);
+
+        //upload photo
+        await uploadPhoto(file);
+        setEditedNote(null);
+        closeForm();
     }
 
     return (
@@ -50,6 +63,10 @@ function NoteForm() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                     <HelpButton />
+                    <MyDropZone
+                        uploadPhoto={handleUploadPhoto}
+                        loading={photoStore.loading}
+                    />
                     <Button onClick={closeForm} type='button' content='Cancel' className="cancelBtnColor Border" />
                     <Button loading={loading} type='submit' content='Submit' className="submitBtnColor Border" />
                 </div>
