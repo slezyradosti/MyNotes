@@ -25,12 +25,7 @@ namespace IndentityLogic
 
             if (user != null)
             {
-                var userDto = new UserDto
-                {
-                    DisplayName = user.DisplayName,
-                    Username = user.UserName,
-                    Token = _tokenService.CreateToken(user)
-                };
+                var userDto = await AddUserDto(user);
 
                 return new AccountResult<UserDto, string>(userDto, true);
             }
@@ -48,6 +43,17 @@ namespace IndentityLogic
             {
                 await _userManager.AddClaimAsync(user, new Claim("UserId", user.Id.ToString().ToLower()));
             }
+        }
+
+        public async Task<UserDto> AddUserDto(ApplicationUser user)
+        {
+            return new UserDto
+            {
+                Id = user.Id,
+                DisplayName = user.DisplayName,
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user)
+            };
         }
     }
 }

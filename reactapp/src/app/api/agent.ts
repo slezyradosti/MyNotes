@@ -9,6 +9,7 @@ import { router } from "../router/Routes";
 import { toast } from "react-toastify";
 import { PaginatedResult, Pagination } from "../models/pagination";
 import { Photo } from "../models/photo";
+import { Profile } from "../models/profile";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -137,13 +138,18 @@ const Photos = {
     delete: (id: string) => requests.delete<void>(`/photos/${id}`)
 }
 
+const Profiles = {
+    get: (id: string) => requests.get<Profile>(`/profiles/${id}`),
+}
+
 const agent = {
     Notebooks,
     Units,
     Pages,
     Notes,
     Account,
-    Photos
+    Photos,
+    Profiles
 }
 
 export default agent;

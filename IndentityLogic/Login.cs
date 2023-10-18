@@ -14,7 +14,7 @@ namespace IndentityLogic
         private readonly TokenService _tokenService;
         private readonly IUserHandler _userHandler;
 
-        public Login(UserManager<ApplicationUser> userManager, 
+        public Login(UserManager<ApplicationUser> userManager,
             TokenService tokenService, IUserHandler userHandler)
         {
             _userManager = userManager;
@@ -36,12 +36,7 @@ namespace IndentityLogic
                 //addign claim to user for easier access to his Id
                 await _userHandler.AddIdClaimToUserAsync(user.Email);
 
-                var userDto = new UserDto
-                {
-                    DisplayName = user.DisplayName,
-                    Token = _tokenService.CreateToken(user),
-                    Username = user.UserName
-                };
+                var userDto = await _userHandler.AddUserDto(user);
 
                 return new AccountResult<UserDto, string>(userDto, true);
             }

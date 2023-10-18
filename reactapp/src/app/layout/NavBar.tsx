@@ -41,7 +41,7 @@ function NavBar({ openNav, closeNav }: Props) {
                         <Image avatar spaced='right' src={userimage} width="20" height="20" />
                         <Dropdown pointing='top right' text={user?.displayName}>
                             <Dropdown.Menu>
-                                <Dropdown.Item onClick={closeNav} as={Link} to={`/profile/${user?.id}`} text='My Profile' icon='user' />
+                                <Dropdown.Item onClick={closeNav} as={Link} to={`/profiles/${user?.id}`} text='My Profile' icon='user' />
                                 <Dropdown.Item onClick={logout} text='Logout' icon='power' />
                             </Dropdown.Menu>
                         </Dropdown>
