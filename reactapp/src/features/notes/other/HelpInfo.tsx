@@ -5,7 +5,7 @@ function HelpInfo() {
     return (
         <>
             <Header style={{ textAlign: 'center' }}>Uploading images</Header>
-            <Label>You can upload your own images only in Edit mode</Label>
+            <Label>You can upload your own images in Add and Edit modes</Label>
             <Header style={{ textAlign: 'center' }}>How to style my record</Header>
             <Grid columns={2} celled>
                 <Grid.Row>
