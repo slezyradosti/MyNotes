@@ -2,17 +2,17 @@ import { User } from "./user";
 
 export interface IProfile {
     username: string;
-    displaName: string;
+    displayName: string;
     bio?: string;
 }
 
 export class Profile implements IProfile {
     constructor(user: User) {
         this.username = user.username;
-        this.displaName = user.displayName;
+        this.displayName = user.displayName;
     }
-    a
+
     username: string;
-    displaName: string;
+    displayName: string;
     bio?: string | undefined;
 }

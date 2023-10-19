@@ -13,10 +13,11 @@ class ProfileStore {
     loadProfile = async (id: string) => {
         this.loadingProfile = true;
         try {
-            const profile = await agent.Profiles.get(id);
+            const profile = await agent.Profiles.details(id);
+            console.log('profile ' + profile);
             runInAction(() => {
                 this.profile = profile;
-            })
+            });
         } catch (error) {
             console.log(error);
         } finally {

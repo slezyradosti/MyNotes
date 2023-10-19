@@ -93,8 +93,8 @@ function SidenavList({ entityArray, entityLoading, entityOpenForm,
             {entityArray.map((entity) => (
               <>
                 <Grid.Row key={entity.id} columns={2}>
-                  <Grid.Column width={10}>
-                    <Item key={entity.id}>
+                  <Grid.Column width={10} >
+                    <Item key={entity.id} >
                       <Item.Content>
                         <Item.Description className="notebook-description">
                           {editingId === entity.id ? (
