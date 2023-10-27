@@ -14,6 +14,7 @@ function ProfilePage() {
 
     useEffect(() => {
         if (id) {
+            console.log('id ' + id);
             loadProfile(id);
         }
     }, [loadProfile, id])

@@ -8,12 +8,14 @@ import NoteListContent from "./NoteListContent";
 import MyDropZone from "../../../app/common/modals/imageUpload/PhotoWidgetDropzone";
 import { useStore } from "../../../app/stores/store";
 import ImageListButton from "../other/ImageListButton";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 interface Props {
     noteArray: Note[];
     noteLoading: boolean;
     noteEditMode: boolean;
     noteSelectedElement: Note | undefined;
+    noteLoadingInitial: boolean;
     noteOpenForm: (id?: string | undefined) => void;
     noteSelect: (id: string) => void;
     noteUpdate: (note: Note) => Promise<void>;
@@ -26,7 +28,7 @@ interface Props {
 
 function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
     noteSelect, noteUpdate, noteDelete, getNote, cancelSelectedNote, columnsCount,
-    loadingNext }: Props) {
+    loadingNext, noteLoadingInitial }: Props) {
 
     const { photoStore, noteExtensionStore } = useStore();
     const { editNoteId, editedNote, rowsCount, setEditNoteId,
@@ -101,90 +103,96 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
 
     return (
         <>
-            <Item.Group divided>
-                <Grid columns={columnsCount} doubling stackable>
-                    {noteArray.map((note) => (
-                        <Grid.Column key={note.id}>
-                            <Item key={note.id}>
-                                <Item.Content>
-                                    {editNoteId === note.id ? (
-                                        <div className="ui form">
-                                            <div className="field">
-                                                <Input
-                                                    required={true}
-                                                    ref={(input) => (inputRef.current = input)}
-                                                    value={editedNote?.name}
-                                                    name='name'
-                                                    onChange={(e) => handleEditChange(e, "name")}
-                                                    fluid
-                                                />
-                                            </div>
-                                            <div className="field">
-                                                <TextArea
-                                                    required={true}
-                                                    rows={rowsCount}
-                                                    ref={(input) => (inputRef.current = input)}
-                                                    value={editedNote?.record}
-                                                    name='record'
-                                                    onChange={(e) => handleEditChange(e, "record")}
-                                                    fluid
-                                                />
-                                            </div>
-                                            <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
-                                                <HelpButton />
-                                                <ImageListButton
-                                                    noteId={editedNote ? editedNote!.id! : note.id}
-                                                    deletePhotoFromRecord={handleDeletePhotoFromRecord}
-                                                />
-                                                <MyDropZone
-                                                    uploadPhoto={handleUploadPhoto}
-                                                    loading={photoStore.loading}
-                                                />
-                                                <Button
-                                                    onClick={handleEditNoteCancel}
-                                                    className="cancelBtnColor Border"
-                                                    content='Cancel'
-                                                />
+            {noteLoadingInitial && !loadingNext ?
+                < LoadingComponent content='Loading data...' />
+                : (
+                    <>
+                        <Item.Group divided>
+                            <Grid columns={columnsCount} doubling stackable>
+                                {noteArray.map((note) => (
+                                    <Grid.Column key={note.id}>
+                                        <Item key={note.id}>
+                                            <Item.Content>
+                                                {editNoteId === note.id ? (
+                                                    <div className="ui form">
+                                                        <div className="field">
+                                                            <Input
+                                                                required={true}
+                                                                ref={(input) => (inputRef.current = input)}
+                                                                value={editedNote?.name}
+                                                                name='name'
+                                                                onChange={(e) => handleEditChange(e, "name")}
+                                                                fluid
+                                                            />
+                                                        </div>
+                                                        <div className="field">
+                                                            <TextArea
+                                                                required={true}
+                                                                rows={rowsCount}
+                                                                ref={(input) => (inputRef.current = input)}
+                                                                value={editedNote?.record}
+                                                                name='record'
+                                                                onChange={(e) => handleEditChange(e, "record")}
+                                                                fluid
+                                                            />
+                                                        </div>
+                                                        <div style={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+                                                            <HelpButton />
+                                                            <ImageListButton
+                                                                noteId={editedNote ? editedNote!.id! : note.id}
+                                                                deletePhotoFromRecord={handleDeletePhotoFromRecord}
+                                                            />
+                                                            <MyDropZone
+                                                                uploadPhoto={handleUploadPhoto}
+                                                                loading={photoStore.loading}
+                                                            />
+                                                            <Button
+                                                                onClick={handleEditNoteCancel}
+                                                                className="cancelBtnColor Border"
+                                                                content='Cancel'
+                                                            />
 
-                                                <Button
-                                                    onClick={() => handleSaveNote(note.id!)}
-                                                    loading={noteLoading}
-                                                    className="submitBtnColor Border"
-                                                    content='Save'
-                                                />
-                                            </div>
+                                                            <Button
+                                                                onClick={() => handleSaveNote(note.id!)}
+                                                                loading={noteLoading}
+                                                                className="submitBtnColor Border"
+                                                                content='Save'
+                                                            />
+                                                        </div>
 
-                                        </div>
-                                    ) : (
-                                        <NoteListContent
-                                            note={note}
-                                            noteLoading={noteLoading}
-                                            noteSelectedElement={noteSelectedElement}
-                                            noteEditMode={noteEditMode}
-                                            handleEditNoteStart={handleEditNoteStart}
-                                            handleDeleteNote={handleDeleteNote}
-                                        />
-                                    )}
-                                </Item.Content>
-                            </Item>
-                            <Divider />
-                        </Grid.Column>
-                    ))}
-                    <Grid.Column>
-                        <Loader active={loadingNext} />
-                    </Grid.Column>
+                                                    </div>
+                                                ) : (
+                                                    <NoteListContent
+                                                        note={note}
+                                                        noteLoading={noteLoading}
+                                                        noteSelectedElement={noteSelectedElement}
+                                                        noteEditMode={noteEditMode}
+                                                        handleEditNoteStart={handleEditNoteStart}
+                                                        handleDeleteNote={handleDeleteNote}
+                                                    />
+                                                )}
+                                            </Item.Content>
+                                        </Item>
+                                        <Divider />
+                                    </Grid.Column>
+                                ))}
+                                <Grid.Column>
+                                    <Loader active={loadingNext} />
+                                </Grid.Column>
 
-                    {noteEditMode &&
-                        <Grid.Column key={'newNoteId'}>
-                            <Item key={'newNoteId'}>
-                                <Item.Content>
-                                    <NoteForm />
-                                </Item.Content>
-                            </Item>
-                        </Grid.Column>
-                    }
-                </Grid>
-            </Item.Group >
+                                {noteEditMode &&
+                                    <Grid.Column key={'newNoteId'}>
+                                        <Item key={'newNoteId'}>
+                                            <Item.Content>
+                                                <NoteForm />
+                                            </Item.Content>
+                                        </Item>
+                                    </Grid.Column>
+                                }
+                            </Grid>
+                        </Item.Group >
+                    </>
+                )}
         </>
     );
 }

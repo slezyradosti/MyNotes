@@ -62,6 +62,7 @@ function Dashboard() {
                                         noteLoading={noteStore.loading}
                                         noteEditMode={noteStore.editMode}
                                         noteSelectedElement={noteStore.selectedElement}
+                                        noteLoadingInitial={noteStore.loadingInitial}
                                         noteOpenForm={noteStore.openForm}
                                         noteSelect={noteStore.selectOne}
                                         noteUpdate={noteStore.updateOne}

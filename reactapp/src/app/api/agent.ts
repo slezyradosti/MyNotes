@@ -134,12 +134,11 @@ const Photos = {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
     },
-    //reate: (photo: Photo) => requests.post<Photo>('/photos', photo),
     delete: (id: string) => requests.delete<void>(`/photos/${id}`)
 }
 
 const Profiles = {
-    get: (id: string) => requests.get<Profile>(`/profiles/${id}`),
+    details: (id: string) => requests.get<Profile>(`/profiles/${id}`),
 }
 
 const agent = {
