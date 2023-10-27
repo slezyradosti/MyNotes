@@ -16,7 +16,7 @@ function ProfileHeader({ profile }: Props) {
                         <Item>
                             <Item.Image avatar size='small' src={userimage} />
                             <Item.Content verticalAlign='middle'>
-                                <Header as='h1' content={profile.displaName} />
+                                <Header as='h1' content={profile.displayName} />
                             </Item.Content>
                         </Item>
                     </Item.Group>
