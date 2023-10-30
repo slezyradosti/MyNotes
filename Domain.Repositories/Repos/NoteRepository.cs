@@ -82,5 +82,16 @@ namespace Domain.Repositories.Repos
                 .Where(note => note.PageId == pageId)
                 .CountAsync();
         }
+
+        public async Task<List<GraphStatistic>> GetUserCreatedNotesCount(Guid userId)
+            => await (from notes in Context.Notes
+                      where notes.Page.Unit.Notebook.UserId == userId
+                      group notes by notes.CreatedAt.Date into groupedData
+                      select new GraphStatistic
+                      {
+                          Count = groupedData.Count(),
+                          Date = groupedData.Select(x => x.CreatedAt.Date).FirstOrDefault()
+                      })
+                      .ToListAsync();
     }
 }

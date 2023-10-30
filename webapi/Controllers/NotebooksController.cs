@@ -50,6 +50,15 @@ namespace webapi.Controllers
             return HandleResult(await Mediator.Send(new Delete.Command(id)), _logger);
         }
 
+        [HttpGet]
+        [Route("UserActionsStat")]
+        public async Task<IActionResult> GetUserCreatActionsStat()
+        {
+            LogInfo("GetUserCreatActionsStat action executed");
+            return HandleResult(await Mediator.Send(new UserCreateActionStatistic.Query()), _logger);
+        }
+
+
         private void LogInfo(string info)
         {
             _logger?.LogInformation($"{DateTime.UtcNow}: {info }");

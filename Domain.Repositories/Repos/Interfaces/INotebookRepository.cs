@@ -9,5 +9,6 @@ namespace Domain.Repositories.Repos.Interfaces
         public Task<List<Notebook>> GetUsersAllFilteredAsync(Guid authorId, IFilter filter);
         public Task<bool> IfUserHasAccessToTheNotebook(Guid notebookId, Guid authorId);
         public Task<int> GetOwnedCountAsync(Guid authorId);
+        public Task<List<GraphStatistic>> GetUserCreatedNotebooksCount(Guid userId);
     }
 }
