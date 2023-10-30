@@ -3,6 +3,7 @@ using Domain.Repositories.EFInitial;
 using Domain.Repositories.Repos.DTOs;
 using Domain.Repositories.Repos.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace Domain.Repositories.Repos
@@ -16,10 +17,10 @@ namespace Domain.Repositories.Repos
             .Include(notebook => notebook.Units)
             .FirstAsync();
 
-        public async Task<List<Notebook>> GetUsersAllFilteredAsync(Guid authorId, IFilter filter)
+        public async Task<List<Notebook>> GetUsersAllFilteredAsync(Guid userId, IFilter filter)
         {
             var query = Context.Notebooks.AsQueryable()
-                .Where(x => x.UserId == authorId)
+                .Where(x => x.UserId == userId)
                 .OrderBy($"{filter.SortColumn} {filter.SortOrder}")
                 .Skip(filter.PageIndex * filter.PageSize)
                 .Take(filter.PageSize);
@@ -32,21 +33,30 @@ namespace Domain.Repositories.Repos
             return await query.ToListAsync();
         }
 
-        public async Task<bool> IfUserHasAccessToTheNotebook(Guid notebookId, Guid authorId)
+        public async Task<bool> IfUserHasAccessToTheNotebook(Guid notebookId, Guid userId)
         {
             var notebookUserId = await Context.Notebooks
                 .Where(x => x.Id == notebookId)
                 .Select(x => x.UserId)
                 .FirstOrDefaultAsync();
 
-            return notebookUserId == authorId;
+            return notebookUserId == userId;
         }
 
-        public async Task<int> GetOwnedCountAsync(Guid authorId)
-        {
-            return await Context.Notebooks
-                .Where(x => x.UserId == authorId)
+        public async Task<int> GetOwnedCountAsync(Guid userId)
+            => await Context.Notebooks
+                .Where(x => x.UserId == userId)
                 .CountAsync();
-        }
+
+        public async Task<List<GraphStatistic>> GetUserCreatedNotebooksCount(Guid userId)
+            => await (from notebooks in Context.Notebooks
+                      where notebooks.UserId == userId
+                      group notebooks by notebooks.CreatedAt.Date into groupedData
+                      select new GraphStatistic
+                      {
+                          Count = groupedData.Count(),
+                          Date = groupedData.Select(x => x.CreatedAt.Date).FirstOrDefault()
+                      })
+                      .ToListAsync();
     }
 }
