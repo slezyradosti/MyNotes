@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import moment from "moment";
 import { Pagination, PagingParams } from "../models/pagination";
 import { store } from "./store";
+import GraphCreationStatistic from "../models/graphCreationStatistic";
 
 class NoteStore {
     noteRegistry = new Map<string, Note>();
@@ -15,6 +16,8 @@ class NoteStore {
     columnsCount = localStorage.getItem('columnsCount') || "1";
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
+    loadingStatistic = true;
+    creationStatisticArray: Array<GraphCreationStatistic> = [];
 
     constructor() {
         makeAutoObservable(this)
@@ -155,6 +158,20 @@ class NoteStore {
             runInAction(() => {
                 this.loading = false;
             });
+        }
+    }
+
+    loadStatistic = async () => {
+        try {
+            const result = await agent.Notebooks.creationStatistic();
+            result.forEach(item => {
+                item.date = item.date?.split('T')[0];
+                this.creationStatisticArray.push(item);
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => this.loadingStatistic = false);
         }
     }
 }

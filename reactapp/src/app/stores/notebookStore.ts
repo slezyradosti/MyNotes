@@ -5,6 +5,7 @@ import agent from "../api/agent";
 import ISidebarListStore from "./ISidebarListStore";
 import moment from "moment";
 import { Pagination, PagingParams } from "../models/pagination";
+import GraphCreationStatistic from "../models/graphCreationStatistic";
 
 class NotebookStore implements ISidebarListStore {
     notebookRegistry = new Map<string, Notebook>();
@@ -14,6 +15,8 @@ class NotebookStore implements ISidebarListStore {
     loadingInitial: boolean = true;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
+    loadingStatistic = true;
+    creationStatisticArray: Array<GraphCreationStatistic> = [];
 
 
     constructor() {
@@ -143,6 +146,20 @@ class NotebookStore implements ISidebarListStore {
             runInAction(() => {
                 this.loading = false;
             });
+        }
+    }
+
+    loadStatistic = async () => {
+        try {
+            const result = await agent.Notebooks.creationStatistic();
+            result.forEach(item => {
+                item.date = item.date?.split('T')[0];
+                this.creationStatisticArray.push(item);
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => this.loadingStatistic = false);
         }
     }
 }
