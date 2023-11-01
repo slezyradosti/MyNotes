@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { PaginatedResult, Pagination } from "../models/pagination";
 import { Photo } from "../models/photo";
 import { Profile } from "../models/profile";
+import GraphCreationStatistic from "../models/graphCreationStatistic";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -86,7 +87,8 @@ const Notebooks = {
     details: (id: string) => requests.get<Notebook>(`/notebooks/${id}`),
     create: (notebook: Notebook) => requests.post<void>('/notebooks', notebook),
     update: (notebook: Notebook) => requests.put<void>(`/notebooks/${notebook.id}`, notebook),
-    delete: (id: string) => requests.delete<void>(`/notebooks/${id}`)
+    delete: (id: string) => requests.delete<void>(`/notebooks/${id}`),
+    creationStatistic: () => requests.get<GraphCreationStatistic[]>(`/Notebooks/UserActionsStat`)
 }
 
 const Units = {
@@ -116,7 +118,8 @@ const Notes = {
     details: (id: string) => requests.get<Note>(`/notes/${id}`),
     create: (note: Note) => requests.post<void>('/notes', note),
     update: (note: Note) => requests.put<void>(`/notes/${note.id}`, note),
-    delete: (id: string) => requests.delete<void>(`/notes/${id}`)
+    delete: (id: string) => requests.delete<void>(`/notes/${id}`),
+    creationStatistic: () => requests.get<GraphCreationStatistic[]>(`/Notes/UserActionsStat`)
 }
 
 const Account = {

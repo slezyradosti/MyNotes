@@ -1,9 +1,11 @@
 import { Tab } from "semantic-ui-react";
+import ProfileNotebookStatistic from "./ProfileNotebookStatistic";
+import ProfileNoteStatistic from "./ProfileNoteStatistic";
 
 function ProfileContent() {
     const panes = [
-        { menuItem: 'About', render: () => <Tab.Pane>Abount Content</Tab.Pane> },
-        { menuItem: 'Statistic', render: () => <Tab.Pane>Statistic Content</Tab.Pane> }
+        { menuItem: 'Notebooks Statistic', render: () => <Tab.Pane> <ProfileNotebookStatistic /> </Tab.Pane> },
+        { menuItem: 'Notes Statistic', render: () => <Tab.Pane> <ProfileNoteStatistic /> </Tab.Pane> }
     ]
 
     return (
