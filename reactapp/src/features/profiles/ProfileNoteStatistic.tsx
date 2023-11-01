@@ -3,11 +3,11 @@ import { useStore } from "../../app/stores/store";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { observer } from "mobx-react-lite";
 import StatisticLineChart from "./StatisticLineChart";
-import { Header, Item, Label } from "semantic-ui-react";
+import { Header, Item } from "semantic-ui-react";
 
-function ProfileNotebookStatistic() {
-    const { notebookStore } = useStore();
-    const { loadingStatistic, creationStatisticArray, loadStatistic } = notebookStore
+function ProfileNoteStatistic() {
+    const { noteStore } = useStore();
+    const { loadingStatistic, creationStatisticArray, loadStatistic } = noteStore
 
     useEffect(() => {
         loadStatistic();
@@ -20,8 +20,8 @@ function ProfileNotebookStatistic() {
                 (
                     <>
                         <div style={{ textAlign: "center" }}>
-                            <Header content="Notebook Statistic" />
-                            <Item.Content> How many notebooks were created per day </Item.Content>
+                            <Header content="Note Statistic" />
+                            <Item.Content> How many notes were created per day </Item.Content>
                         </div>
 
                         <StatisticLineChart data={creationStatisticArray} />
@@ -32,4 +32,4 @@ function ProfileNotebookStatistic() {
     );
 }
 
-export default observer(ProfileNotebookStatistic);
+export default observer(ProfileNoteStatistic);

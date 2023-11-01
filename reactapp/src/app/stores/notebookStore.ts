@@ -16,7 +16,7 @@ class NotebookStore implements ISidebarListStore {
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
     loadingStatistic = true;
-    creationStatisticArray: Array<GraphCreationStatistic> = [];
+    creationStatisticArray: GraphCreationStatistic[] = [];
 
 
     constructor() {
@@ -150,6 +150,9 @@ class NotebookStore implements ISidebarListStore {
     }
 
     loadStatistic = async () => {
+        this.loadingStatistic = true;
+        this.creationStatisticArray = [];
+
         try {
             const result = await agent.Notebooks.creationStatistic();
             result.forEach(item => {

@@ -1,4 +1,4 @@
-import { Divider, Grid, Header, Item, Reveal, Segment, Statistic } from "semantic-ui-react";
+import { Grid, Header, Item, Segment } from "semantic-ui-react";
 import userimage from '../../assets/userimage.png'
 import { Profile } from "../../app/models/profile";
 import { observer } from "mobx-react-lite";
@@ -22,7 +22,7 @@ function ProfileHeader({ profile }: Props) {
                     </Item.Group>
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <Statistic.Group widths={2}>
+                    {/* <Statistic.Group widths={2}>
                         <Statistic label='Created notebooks' value='7' />
                         <Statistic label='Created notes' value='77' />
                     </Statistic.Group>
@@ -31,7 +31,7 @@ function ProfileHeader({ profile }: Props) {
                         <Reveal.Content visible style={{ width: '100%' }}>
                             this was for following
                         </Reveal.Content>
-                    </Reveal>
+                    </Reveal> */}
                 </Grid.Column>
             </Grid>
         </Segment>

@@ -162,8 +162,11 @@ class NoteStore {
     }
 
     loadStatistic = async () => {
+        this.loadingStatistic = true;
+        this.creationStatisticArray = [];
+
         try {
-            const result = await agent.Notebooks.creationStatistic();
+            const result = await agent.Notes.creationStatistic();
             result.forEach(item => {
                 item.date = item.date?.split('T')[0];
                 this.creationStatisticArray.push(item);
