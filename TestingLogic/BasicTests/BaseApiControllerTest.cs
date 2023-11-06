@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using webapi.Controllers;
 
-namespace TestingLogic
+namespace TestingLogic.ControllerTests
 {
     public class BaseApiControllerTest : BaseApiController
     {
@@ -14,7 +14,7 @@ namespace TestingLogic
 
             Assert.IsType<NotFoundResult>(actual);
         }
-        
+
         [Fact]
         public void FailRequestTest()
         {
