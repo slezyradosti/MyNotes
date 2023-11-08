@@ -45,6 +45,12 @@ namespace webapi
                         Location = ResponseCacheLocation.Any,
                         Duration = 60
                     });
+                options.CacheProfiles.Add("Any-120",
+                    new CacheProfile()
+                    {
+                        Location = ResponseCacheLocation.Any,
+                        Duration = 120
+                    });
                 options.CacheProfiles.Add("Any-180",
                 new CacheProfile()
                 {

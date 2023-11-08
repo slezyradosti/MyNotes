@@ -14,7 +14,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-180")]
+        [ResponseCache(CacheProfileName = "Any-120")]
         public async Task<IActionResult> GetNotebooks([FromQuery] RequestDto request)
         {
             LogInfo("GetNotebooks action executed");
