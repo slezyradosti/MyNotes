@@ -5,13 +5,13 @@ using webapi;
 
 namespace TestingLogic.WebAppFactoryTest.GetActionsTest
 {
-    public class PageControllerTest : IClassFixture<WebApplicationFactory<Startup>>
+    public class PageControllerGetTest : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _fixture;
         private const string _unitId = "fd26b26d-5455-4504-898f-08dbbe05ec6b";
         private const string _pageId = "5c401221-c080-4cba-95f9-08dbbe05ec6e";
 
-        public PageControllerTest(WebApplicationFactory<Startup> fixture)
+        public PageControllerGetTest(WebApplicationFactory<Startup> fixture)
         {
             _fixture = fixture;
         }

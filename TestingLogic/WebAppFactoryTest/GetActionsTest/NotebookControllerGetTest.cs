@@ -10,13 +10,13 @@ using Xunit.Abstractions;
 
 namespace TestingLogic.WebAppFactoryTest.GetActionsTest
 {
-    public class NotebookControllerTest : IClassFixture<CustomWebApplicatiionFactory>
+    public class NotebookControllerGetTest : IClassFixture<CustomWebApplicatiionFactory>
     {
         private readonly CustomWebApplicatiionFactory _fixture;
         private readonly ITestOutputHelper _testOutputHelper;
         private const string _notebookId = "d5beb573-64ce-4d54-23d7-08dbbe05ec67";
 
-        public NotebookControllerTest(CustomWebApplicatiionFactory fixture,
+        public NotebookControllerGetTest(CustomWebApplicatiionFactory fixture,
             ITestOutputHelper testOutputHelper)
         {
             _fixture = fixture;
