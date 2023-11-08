@@ -8,7 +8,7 @@ namespace Domain.Models.Base
         public Guid Id { get; set; }
 
         [Timestamp]
-        public byte[] Timestamp { get; set; }
+        public byte[]? Timestamp { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
