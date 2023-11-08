@@ -2,7 +2,7 @@
 using System.Net;
 using webapi;
 
-namespace TestingLogic.WebAppFactoryTest
+namespace TestingLogic.WebAppFactoryTest.GetActionsTest
 {
     public class NoteContollerTest : IClassFixture<WebApplicationFactory<Startup>>
     {

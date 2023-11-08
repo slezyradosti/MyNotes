@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using webapi;
 
-namespace TestingLogic.WebAppFactoryTest
+namespace TestingLogic.WebAppFactoryTest.GetActionsTest
 {
-    public class UnitControllerTest : IClassFixture<WebApplicationFactory<Startup>>
+    public class PageControllerTest : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _fixture;
-        private const string _notebookId = "d5beb573-64ce-4d54-23d7-08dbbe05ec67";
         private const string _unitId = "fd26b26d-5455-4504-898f-08dbbe05ec6b";
+        private const string _pageId = "5c401221-c080-4cba-95f9-08dbbe05ec6e";
 
-        public UnitControllerTest(WebApplicationFactory<Startup> fixture)
+        public PageControllerTest(WebApplicationFactory<Startup> fixture)
         {
             _fixture = fixture;
         }
@@ -21,8 +22,8 @@ namespace TestingLogic.WebAppFactoryTest
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
 
-            var reponse = await client.GetAsync($"{Settings.BaseAddress}/units?nbId={_notebookId}");
-            Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+            var response = await client.GetAsync($"{Settings.BaseAddress}/pages?unitId={_unitId}");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
@@ -31,7 +32,7 @@ namespace TestingLogic.WebAppFactoryTest
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", Settings.RonToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units?nbId={_notebookId}");
+            var response = await client.GetAsync($"{Settings.BaseAddress}/pages?unitId={_unitId}");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
@@ -41,9 +42,8 @@ namespace TestingLogic.WebAppFactoryTest
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units?nbId={_notebookId}");
+            var response = await client.GetAsync($"{Settings.BaseAddress}/pages?unitId={_unitId}");
             var content = await response.Content.ReadAsStringAsync();
-
             Assert.NotEmpty(content);
         }
 
@@ -53,17 +53,17 @@ namespace TestingLogic.WebAppFactoryTest
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units/{_unitId}");
+            var response = await client.GetAsync($"{Settings.BaseAddress}/pages/{_pageId}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        [Fact] 
+        [Fact]
         public async Task GetOneNoAccessTest()
         {
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", Settings.RonToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units/{_unitId}");
+            var response = await client.GetAsync($"{Settings.BaseAddress}/pages/{_pageId}");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
@@ -73,7 +73,7 @@ namespace TestingLogic.WebAppFactoryTest
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units/{_unitId}");
+            var response = await client.GetAsync($"{Settings.BaseAddress}/pages/{_pageId}");
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotEmpty(content);
         }
