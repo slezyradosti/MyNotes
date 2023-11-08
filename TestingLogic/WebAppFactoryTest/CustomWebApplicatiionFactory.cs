@@ -16,14 +16,14 @@ namespace TestingLogic.WebAppFactoryTest
     public class CustomWebApplicatiionFactory : WebApplicationFactory<Startup>
     {
         public UserManager<ApplicationUser> UserManager { get; set; }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureTestServices(services =>
             {
                 var connection = new SqliteConnection("Data Source=:memory:");
-
                 connection.Open(); // ! important
-               
+
                 // Remove the app's DataContext registration
                 services.RemoveAll(typeof(DbContextOptions<DataContext>));
 
