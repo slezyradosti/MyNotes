@@ -9,6 +9,7 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         private readonly WebApplicationFactory<Startup> _fixture;
         private const string _notebookId = "d5beb573-64ce-4d54-23d7-08dbbe05ec67";
         private const string _unitId = "fd26b26d-5455-4504-898f-08dbbe05ec6b";
+        private readonly Settings _settings = new Settings();
 
         public UnitControllerGetTest(WebApplicationFactory<Startup> fixture)
         {
@@ -19,9 +20,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetAllOkTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var reponse = await client.GetAsync($"{Settings.BaseAddress}/units?nbId={_notebookId}");
+            var reponse = await client.GetAsync($"{_settings.BaseAddress}/units?nbId={_notebookId}");
             Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
         }
 
@@ -29,9 +30,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetAllNoAccessTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.RonToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.RonToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units?nbId={_notebookId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/units?nbId={_notebookId}");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
@@ -39,9 +40,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetAllDataTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units?nbId={_notebookId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/units?nbId={_notebookId}");
             var content = await response.Content.ReadAsStringAsync();
 
             Assert.NotEmpty(content);
@@ -51,9 +52,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetOneOkTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units/{_unitId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/units/{_unitId}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -61,9 +62,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetOneNoAccessTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.RonToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.RonToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units/{_unitId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/units/{_unitId}");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
@@ -71,9 +72,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetOneDataTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/units/{_unitId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/units/{_unitId}");
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotEmpty(content);
         }

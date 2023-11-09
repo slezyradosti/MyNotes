@@ -12,6 +12,7 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         private readonly WebApplicationFactory<Startup> _fixture;
         private readonly ITestOutputHelper _testOutputHelper;
         private const string _notebookId = "d5beb573-64ce-4d54-23d7-08dbbe05ec67";
+        private readonly Settings _settings = new Settings();
 
         public NotebookControllerGetTest(WebApplicationFactory<Startup> fixture,
             ITestOutputHelper testOutputHelper)
@@ -24,9 +25,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetAllOkTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/notebooks");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/notebooks");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -34,9 +35,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetAllDataTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/notebooks");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/notebooks");
             var content = await response.Content.ReadAsStringAsync();
 
             _testOutputHelper.WriteLine(content);
@@ -48,9 +49,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetOneOkTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/notebooks/{_notebookId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/notebooks/{_notebookId}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -58,9 +59,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetOneNoAccessTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.RonToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.RonToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/notebooks/{_notebookId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/notebooks/{_notebookId}");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
@@ -68,9 +69,9 @@ namespace TestingLogic.WebAppFactoryTest.GetActionsTest
         public async Task GetOneDataTest()
         {
             HttpClient client = _fixture.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", Settings.JackToken);
+            client.DefaultRequestHeaders.Add("Authorization", _settings.JackToken);
 
-            var response = await client.GetAsync($"{Settings.BaseAddress}/notebooks/{_notebookId}");
+            var response = await client.GetAsync($"{_settings.BaseAddress}/notebooks/{_notebookId}");
             var content = await response.Content.ReadAsStringAsync();
 
             Assert.NotEmpty(content);

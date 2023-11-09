@@ -1,19 +1,18 @@
 ﻿using Application.DTOs;
 using IndentityLogic.DTOs;
-using System.Net;
 using System.Net.Http.Json;
+using System.Net;
 using System.Text;
 using System.Text.Json;
-using Xunit.Abstractions;
 
 namespace TestingLogic.WebAppFactoryTest.PostActionsTest
 {
-    public class NotebookControllerPostTest : IClassFixture<CustomWebApplicatiionFactory>
+    public class PageControllerPostTest : IClassFixture<CustomWebApplicatiionFactory>
     {
         private readonly CustomWebApplicatiionFactory _fixture;
         private readonly Settings _settings = new Settings();
 
-        public NotebookControllerPostTest(CustomWebApplicatiionFactory fixture)
+        public PageControllerPostTest(CustomWebApplicatiionFactory fixture)
         {
             _fixture = fixture;
         }
@@ -22,9 +21,11 @@ namespace TestingLogic.WebAppFactoryTest.PostActionsTest
         public async Task CallOrderedTests()
         {
             await RegisterTest();
-            await PostNotebookTest();
-            await PutNotebookTest();
-            await DeleteNotebookTest();
+            await PostNotebook();
+            await PostUnit();
+            await PostPageTest();
+            await PutPageTest();
+            await DeletePageTest();
         }
 
         /// <summary>
@@ -53,7 +54,8 @@ namespace TestingLogic.WebAppFactoryTest.PostActionsTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task PostNotebookTest()
+        // as unit cannot exist without notebook, we need to create notebook first
+        private async Task PostNotebook()
         {
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _settings.userDto.Token);
@@ -73,11 +75,9 @@ namespace TestingLogic.WebAppFactoryTest.PostActionsTest
             using var response2 = await client.GetAsync($"{_settings.BaseAddress}/Notebooks");
             var content = await response2.Content.ReadFromJsonAsync<List<NotebookDto>>();
             _settings.NotebookDto = content.FirstOrDefault();
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task PutNotebookTest()
+        private async Task PostUnit()
         {
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _settings.userDto.Token);
@@ -85,22 +85,69 @@ namespace TestingLogic.WebAppFactoryTest.PostActionsTest
             using StringContent jsonContent = new(
                 JsonSerializer.Serialize(new
                 {
-                    name = "TestUnitTest1updated"
+                    name = "TestUnitTest1",
+                    NotebookId = _settings.NotebookDto.Id.ToString(),
                 }),
                 Encoding.UTF8,
                 "application/json");
 
-            using var response = await client.PutAsync($"{_settings.BaseAddress}/Notebooks/{_settings.NotebookDto.Id}", jsonContent);
+            using var response = await client.PostAsync($"{_settings.BaseAddress}/Units/", jsonContent);
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            //save created notebook for the following actions
+            using var response2 = await client.GetAsync($"{_settings.BaseAddress}/Units?nbId={_settings.NotebookDto.Id}");
+            var content = await response2.Content.ReadFromJsonAsync<List<UnitDto>>();
+            _settings.UnitDto = content.FirstOrDefault();
         }
 
-        private async Task DeleteNotebookTest()
+        private async Task PostPageTest()
         {
             HttpClient client = _fixture.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _settings.userDto.Token);
 
-            using var response = await client.DeleteAsync($"{_settings.BaseAddress}/Notebooks/{_settings.NotebookDto.Id}");
+            using StringContent jsonContent = new(
+                JsonSerializer.Serialize(new
+                {
+                    name = "TestPage1",
+                    UnitId = _settings.UnitDto.Id.ToString()
+                }),
+                Encoding.UTF8,
+                "application/json");
+
+            using var response = await client.PostAsync($"{_settings.BaseAddress}/Pages/", jsonContent);
+
+            //save created notebook for the following actions
+            using var response2 = await client.GetAsync($"{_settings.BaseAddress}/Pages?unitId={_settings.UnitDto.Id}");
+            var content = await response2.Content.ReadFromJsonAsync<List<PageDto>>();
+            _settings.PageDto = content.FirstOrDefault();
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        private async Task PutPageTest()
+        {
+            HttpClient client = _fixture.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _settings.userDto.Token);
+
+            using StringContent jsonContent = new(
+                JsonSerializer.Serialize(new
+                {
+                    name = "TestUnitTest1updated",
+                    UnitId = _settings.UnitDto.Id.ToString()
+                }),
+                Encoding.UTF8,
+                "application/json");
+
+            using var response = await client.PutAsync($"{_settings.BaseAddress}/Pages/{_settings.PageDto.Id}", jsonContent);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        private async Task DeletePageTest()
+        {
+            HttpClient client = _fixture.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _settings.userDto.Token);
+
+            using var response = await client.DeleteAsync($"{_settings.BaseAddress}/Pages/{_settings.PageDto.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
