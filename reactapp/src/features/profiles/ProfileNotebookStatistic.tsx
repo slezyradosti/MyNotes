@@ -3,7 +3,7 @@ import { useStore } from "../../app/stores/store";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { observer } from "mobx-react-lite";
 import StatisticLineChart from "./StatisticLineChart";
-import { Header, Item, Label } from "semantic-ui-react";
+import { Header, Item } from "semantic-ui-react";
 
 function ProfileNotebookStatistic() {
     const { notebookStore } = useStore();

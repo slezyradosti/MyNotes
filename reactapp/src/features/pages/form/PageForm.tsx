@@ -5,8 +5,7 @@ import { observer } from "mobx-react-lite";
 
 function PageForm() {
     const { pageStore, unitStore } = useStore();
-    const { selectedElement, loading, createOne,
-        updateOne, closeForm } = pageStore;
+    const { loading, createOne, closeForm } = pageStore;
 
     const initialState = {
         name: '',

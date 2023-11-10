@@ -61,6 +61,9 @@ function Sidenav({ closeNav }: Props) {
 
                 setParentEntityName('');
                 setParentEntity(undefined);
+
+                //when user returns back
+                unitStore.cancelSelectedElement();
                 break;
             case 'Unit':
                 setCurrentEntity(unitStore);
@@ -71,6 +74,9 @@ function Sidenav({ closeNav }: Props) {
                 //
                 setParentEntityName('Notebook');
                 setParentEntity(notebookStore);
+
+                //when user returns back
+                pageStore.cancelSelectedElement();
                 break;
             case 'Page':
                 setCurrentEntity(pageStore);
@@ -81,6 +87,9 @@ function Sidenav({ closeNav }: Props) {
                 //?
                 setParentEntityName('Unit');
                 setParentEntity(unitStore);
+
+                //when user returns back
+                noteStore.cancelSelectedElement();
                 break;
             case 'Note':
                 navigate('notes'); // redirect to notes?pageId=123
