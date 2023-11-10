@@ -124,7 +124,7 @@ class PageStore implements ISidebarListStore {
             page.createdAt = moment().format('YYYY-MM-DD');
             runInAction(() => {
                 this.pageRegistry.set(page.id!, page);
-                this.selectedElement = page;
+                //this.selectedElement = page;
                 this.editMode = false;
             });
         } catch (error) {
