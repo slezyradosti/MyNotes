@@ -48,9 +48,6 @@ function Sidenav({ closeNav }: Props) {
         }
     }
 
-    // params mostly used for IRL user input
-    // doesn't fit here, makes 2x requests
-    // maybe there is a better way?
     useEffect(() => {
         switch (currentEntityName) {
             case 'Notebook':
