@@ -14,7 +14,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-120")]
+        [ResponseCache(CacheProfileName = "Any-60")]
         public async Task<IActionResult> GetNotebooks([FromQuery] RequestDto request)
         {
             LogInfo("GetNotebooks action executed");
@@ -46,7 +46,7 @@ namespace webapi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNotebook(Guid id)
         {
-            LogInfo("DeleteNotebook action executed");            
+            LogInfo("DeleteNotebook action executed");
             return HandleResult(await Mediator.Send(new Delete.Command(id)), _logger);
         }
 
@@ -61,7 +61,7 @@ namespace webapi.Controllers
 
         private void LogInfo(string info)
         {
-            _logger?.LogInformation($"{DateTime.UtcNow}: {info }");
+            _logger?.LogInformation($"{DateTime.UtcNow}: {info}");
         }
     }
 }

@@ -14,8 +14,8 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-60")]
-        public async Task<IActionResult> GetUnits(Guid nbId, 
+        [ResponseCache(CacheProfileName = "Any-30")]
+        public async Task<IActionResult> GetUnits(Guid nbId,
             [FromQuery] RequestDto requestDto)
         {
             LogInfo("GetUnits action executed");

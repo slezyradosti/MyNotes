@@ -14,7 +14,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-60")]
+        [ResponseCache(CacheProfileName = "Any-30")]
         public async Task<IActionResult> GetPages(Guid unitId,
             [FromQuery] RequestDto requestDto)
         {
