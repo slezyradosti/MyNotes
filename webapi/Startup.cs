@@ -114,6 +114,9 @@ namespace webapi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.Use((context, next) =>
             {
                 context.Response.GetTypedHeaders().CacheControl =
@@ -129,6 +132,7 @@ namespace webapi
             {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapFallbackToController("Index", "Fallback"); // to use React routing
             });
         }
     }
