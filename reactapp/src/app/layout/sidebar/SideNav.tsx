@@ -13,7 +13,6 @@ import InfiniteScroll from "react-infinite-scroller";
 import { Notebook } from "../../models/notebook";
 import { Unit } from "../../models/unit";
 import { Page } from "../../models/page";
-import Note from "../../models/note";
 
 interface Props {
     closeNav: () => void;

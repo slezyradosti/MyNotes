@@ -18,7 +18,7 @@ const sleep = (delay: number) => {
     });
 }
 
-axios.defaults.baseURL = "https://localhost:7177"///import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
