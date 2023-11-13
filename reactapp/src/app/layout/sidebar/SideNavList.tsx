@@ -19,13 +19,11 @@ interface Props {
   deleteEntity: (id: string) => Promise<void>;
   updateOne: (entity: Notebook | Unit | Page) => Promise<void>;
   getOne: (id: string) => Notebook | Unit | Page;
-
   setCurrentEntityName: (name: string) => void;
   loadingNext: boolean;
 }
 
-function SidenavList({ entityArray, entityLoading, entityOpenForm,
-  selectEntity, deleteEntity, setCurrentEntityName,
+function SidenavList({ entityArray, entityLoading, selectEntity, deleteEntity, setCurrentEntityName,
   entityType, getOne, updateOne, entityEditMode,
   loadingNext }: Props) {
   const [target, setTarget] = useState('');
@@ -41,7 +39,9 @@ function SidenavList({ entityArray, entityLoading, entityOpenForm,
     }
   }, [editingId]);
 
-  function handleDeleteEntity(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+  function handleDeleteEntity(e: SyntheticEvent<HTMLDivElement, MouseEvent>, id: string) {
+    e.type;
+
     setTarget(id);
     deleteEntity(id);
   }
@@ -106,7 +106,7 @@ function SidenavList({ entityArray, entityLoading, entityOpenForm,
                               onChange={(e) => setEditedName(e.target.value)}
                               action={{
                                 icon: "check",
-                                onMouseDown: (e) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
+                                onMouseDown: (e: SyntheticEvent) => handleNameEditSave(e, entity.id!), //onMouseDown will cause before onBlur (als because of event.preventDefault)
                               }}
                               onBlur={() => handleNameEditCancel()}
                               fluid

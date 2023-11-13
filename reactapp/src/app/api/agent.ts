@@ -7,7 +7,7 @@ import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 import { router } from "../router/Routes";
 import { toast } from "react-toastify";
-import { PaginatedResult, Pagination } from "../models/pagination";
+import { PaginatedResult } from "../models/pagination";
 import { Photo } from "../models/photo";
 import { Profile } from "../models/profile";
 import GraphCreationStatistic from "../models/graphCreationStatistic";
@@ -18,7 +18,7 @@ const sleep = (delay: number) => {
     });
 }
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = "https://localhost:7177"///import.meta.env.VITE_API_URL;
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;

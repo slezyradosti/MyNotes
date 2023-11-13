@@ -7,9 +7,13 @@ import UnitStore from "../../stores/unitStore";
 import { Divider, Icon } from 'semantic-ui-react'
 import PageStore from "../../stores/pageStore";
 import LoadingComponent from "../LoadingComponent";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PagingParams } from "../../models/pagination";
 import InfiniteScroll from "react-infinite-scroller";
+import { Notebook } from "../../models/notebook";
+import { Unit } from "../../models/unit";
+import { Page } from "../../models/page";
+import Note from "../../models/note";
 
 interface Props {
     closeNav: () => void;
@@ -20,9 +24,6 @@ function Sidenav({ closeNav }: Props) {
     const [currentEntityName, setCurrentEntityName] = useState('Notebook');
     const [currentEntity, setCurrentEntity] = useState<NotebookStore | UnitStore | PageStore>(notebookStore); //entity
     const [parentEntityName, setParentEntityName] = useState<string>('');
-    const [parentEntity, setParentEntity] = useState<NotebookStore | UnitStore | PageStore | undefined>(undefined);
-
-    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
     //pagination
@@ -53,11 +54,12 @@ function Sidenav({ closeNav }: Props) {
             case 'Notebook':
                 setCurrentEntity(notebookStore);
                 notebookStore.loadData();
+
                 // redirect to notebooks/
                 navigate('notebooks');
 
                 setParentEntityName('');
-                setParentEntity(undefined);
+                //setParentEntity(undefined);
 
                 //when user returns back
                 unitStore.cancelSelectedElement();
@@ -66,11 +68,9 @@ function Sidenav({ closeNav }: Props) {
                 setCurrentEntity(unitStore);
                 navigate('units'); // redirect to units
                 //setSearchParams({ ndId: notebookStore.selectedElement!.id! }); // add query parameter: units?ndId=123
-                //?
                 unitStore.loadData(notebookStore.selectedElement!.id!);
-                //
                 setParentEntityName('Notebook');
-                setParentEntity(notebookStore);
+                // setParentEntity(notebookStore);
 
                 //when user returns back
                 pageStore.cancelSelectedElement();
@@ -79,11 +79,10 @@ function Sidenav({ closeNav }: Props) {
                 setCurrentEntity(pageStore);
                 navigate('pages'); //redirect to pages
                 //setSearchParams({ unitId: unitStore.selectedElement!.id! }) // add query parameter: pages?unitId=123
-                //
+
                 pageStore.loadData(unitStore.selectedElement!.id!);
-                //?
                 setParentEntityName('Unit');
-                setParentEntity(unitStore);
+                // setParentEntity(unitStore);
 
                 //when user returns back
                 noteStore.cancelSelectedElement();
@@ -102,7 +101,14 @@ function Sidenav({ closeNav }: Props) {
                 console.log('SideNav Wrong value: ' + currentEntityName);
                 break;
         }
-    }, [currentEntityName, searchParams])
+    }, [currentEntityName])
+
+
+    const handleUpdateOne = (entity: Notebook | Unit | Page): Promise<void> => {
+        if (currentEntityName == 'Notebook') return notebookStore.updateOne(entity);
+        else if (currentEntityName == 'Unit') return unitStore.updateOne(entity as Unit);
+        else return pageStore.updateOne(entity as Page);
+    };
 
     return (
         <>
@@ -138,7 +144,7 @@ function Sidenav({ closeNav }: Props) {
                                         entityOpenForm={currentEntity.openForm}
                                         selectEntity={currentEntity.selectOne}
                                         deleteEntity={currentEntity.deleteOne}
-                                        updateOne={currentEntity.updateOne}
+                                        updateOne={handleUpdateOne}
                                         setCurrentEntityName={setCurrentEntityName}
                                         getOne={currentEntity.getOne}
                                         loadingNext={loadingNext}
