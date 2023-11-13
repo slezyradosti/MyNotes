@@ -32,7 +32,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
 
     const { photoStore, noteExtensionStore } = useStore();
     const { editNoteId, editedNote, rowsCount, setEditNoteId,
-        setEditedNote, setRowsCount, uploadPhoto, deletePhotoFromRecord } = noteExtensionStore
+        setEditedNote, uploadPhoto, deletePhotoFromRecord } = noteExtensionStore
     const inputRef = useRef<Input | TextArea | null>(null);
 
     // changes focus to the editing name
@@ -77,6 +77,7 @@ function NoteList({ noteArray, noteLoading, noteEditMode, noteSelectedElement,
 
     // Handler for deleting a note
     const handleDeleteNote = (e: SyntheticEvent<HTMLButtonElement>, noteId: string) => {
+        e.type;
         // Implement deleting the note, e.g., make an API call
         // Remove the note from the noteArray
         noteSelect(noteId);

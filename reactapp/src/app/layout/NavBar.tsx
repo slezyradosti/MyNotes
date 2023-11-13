@@ -1,4 +1,4 @@
-import { Dropdown, Icon, Image, Label, Menu } from 'semantic-ui-react';
+import { Dropdown, Icon, Image, Menu } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';

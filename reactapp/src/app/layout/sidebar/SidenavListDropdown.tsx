@@ -9,7 +9,7 @@ interface Props {
     entityLoading: boolean;
     target: string;
 
-    handleDeleteEntity(e: SyntheticEvent<HTMLButtonElement>, id: string): void;
+    handleDeleteEntity(e: SyntheticEvent<HTMLDivElement, MouseEvent>, id: string): void;
     handleNameEditStart: (entityId: string, currentName: string) => void;
 }
 

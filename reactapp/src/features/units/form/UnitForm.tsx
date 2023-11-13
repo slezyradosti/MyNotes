@@ -5,8 +5,7 @@ import { observer } from "mobx-react-lite";
 
 function UnitForm() {
     const { unitStore, notebookStore } = useStore();
-    const { selectedElement, createOne, updateOne,
-        closeForm, loading } = unitStore;
+    const { createOne, closeForm, loading } = unitStore;
 
     const initialState = {
         name: '',
@@ -34,7 +33,6 @@ function UnitForm() {
                     value={unitDto.name}
                     name='name'
                     onChange={handleInputChange}
-                    //onBlur={() => closeForm()}
                     fluid
                 />
                 <Button loading={loading} floated="right" type='submit' content='Submit' className="submitBtnColor" />
