@@ -1,6 +1,6 @@
 import { Dropdown, Icon, Image, Menu } from 'semantic-ui-react';
 import { useStore } from '../stores/store';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import userimage from '../../assets/userimage.png'
 import { useState } from 'react';
@@ -13,6 +13,7 @@ interface Props {
 function NavBar({ openNav, closeNav }: Props) {
     const { userStore: { user, logout } } = useStore();
     const [isSideBarOpened, setIsSideBarOpened] = useState(false);
+    const navigate = useNavigate();
 
     function handleOpenOrCloseNav() {
         if (!isSideBarOpened) openNav()
@@ -31,7 +32,7 @@ function NavBar({ openNav, closeNav }: Props) {
                     </a>
                 </Menu.Item>
                 <Menu.Item position='right' >
-                    <a href='/'>
+                    <a onClick={() => navigate("notebooks") }>
                         <Icon name='sticky note outline' style={{ color: 'white', fontSize: '2em' }} />
                         <label className='nameTitle'>MyNotes </label>
                     </a>
