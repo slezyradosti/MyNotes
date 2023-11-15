@@ -14,7 +14,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(CacheProfileName = "Any-30")]
+        [ResponseCache(CacheProfileName = "NoCache")]
         public async Task<IActionResult> GetNotes(Guid pageId,
             [FromQuery] RequestDto requestDto)
         {

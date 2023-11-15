@@ -20,8 +20,8 @@ namespace API
             {
                 var context = services.GetRequiredService<DataContext>();
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                await context.Database.MigrateAsync();
-                await Seed.SeedData(context, userManager);
+                //await context.Database.MigrateAsync();
+                //await Seed.SeedData(context, userManager);
             }
             catch (Exception ex)
             {
@@ -36,6 +36,8 @@ namespace API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls("http://*:7177");
+                    //webBuilder.UseIISIntegration();
                     webBuilder.UseStartup<Startup>();   
                 });      
     }
