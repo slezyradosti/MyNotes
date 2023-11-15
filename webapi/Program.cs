@@ -36,6 +36,8 @@ namespace API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseUrls("http://*:7177");
+                    //webBuilder.UseIISIntegration();
                     webBuilder.UseStartup<Startup>();   
                 });      
     }

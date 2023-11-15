@@ -43,8 +43,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "https://+:443;http://+:80",
-        //"ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_URLS": "https://+:443;http://+:80"
+        //"ASPNETCORE_ENVIRONMENT": "DockerProd"
       },
       "publishAllPorts": true,
       "useSSL": true
