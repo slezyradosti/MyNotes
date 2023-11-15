@@ -10,16 +10,16 @@ interface Props {
 
 function ImageList({ noteId, deletePhotoFromRecord }: Props) {
     const { photoStore } = useStore();
-    const { getArray, loading, deletePhoto, getOne, selectedElement } = photoStore;
+    const { getArray, loading, getOne, selectedElement } = photoStore;
 
     useEffect(() => {
         photoStore.loadPhotos(noteId);
     }, [photoStore]);
 
     const handleDeletePhoto = (photId: string) => {
-        deletePhoto(photId);
         const photo = getOne(photId)
         deletePhotoFromRecord(noteId, photo.url);
+        //deletePhoto(photId);
     }
 
     return (
