@@ -14,7 +14,7 @@ http://www.mynotes.somee.com
 - Database: MSSQL
 
 # Features
-- Register and Login
+- Registration and Login
 - Get, Create, Edit and Delete notes (including notebooks, units, pages, notes).
 - Add and Delete pictures to notes
 
