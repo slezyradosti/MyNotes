@@ -9,7 +9,8 @@ namespace IndentityLogic.DTOs
         public string Email { get; set; }
 
         [Required]
-        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must be complex")]
+        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,22}$", ErrorMessage = "Password must contain a lowercase letter, a capital letter, " +
+            "a number and a special symbol. Character range: 4-22")]
         public string Password { get; set; }
 
         [Required]
