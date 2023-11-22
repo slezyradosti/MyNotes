@@ -20,7 +20,17 @@ http://www.mynotes.somee.com
 
 # Brief look
 
-![](gif link)
+## Registering and Login
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/registering_loginning.gif)
+
+## Creating Notebook, Unit, Page and Note
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/creating_notebooks.gif)
+
+## Note manipulating
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/image_uploading.gif)
 
 <details>
 <summary>
@@ -57,5 +67,5 @@ Users can log out by clicking their name and choosing “Logout”.
 
 # Database Schema
 
-![](picture link)
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/mynotesdb.png)
 
