@@ -22,15 +22,23 @@ http://www.mynotes.somee.com
 
 ## Registering and Login
 
-![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/registering_loginning.gif)
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/register.gif)
 
-## Creating Notebook, Unit, Page and Note
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/login.gif)
 
-![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/creating_notebooks.gif)
+## Creating Notebook, Unit, Page
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/Creating_notebooks_units_pages.gif)
 
 ## Note manipulating
 
-![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/image_uploading.gif)
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/Creating_note.gif)
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/Note_managing1.gif)
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/Note_managing2.gif)
+
+![](https://github.com/slezyradosti/MyNotes/blob/master/readme-files/Note_managing3.gif)
 
 <details>
 <summary>
