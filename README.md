@@ -5,7 +5,7 @@ Web-application for making notes "MyNotes"
 
 http://mynotes.somee.com
 
-http://www.mynotes.somee.com
+http://www.mynotes.somee.com (The applications is deployed on a free host, therefore is takes only certain quanstity of requests. I am sorry for the inconvenience)
 
 # Technologies
 
